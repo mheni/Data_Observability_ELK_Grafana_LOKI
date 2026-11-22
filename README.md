@@ -1,359 +1,401 @@
-# Parcours de travaux pratiques — Elasticsearch, Logstash, Kibana et Python
+# Formation Data Observability — Elasticsearch, Kibana, Grafana Alloy, Loki et Grafana
 
-## Introduction
+## Présentation
 
-Ce parcours de douze travaux pratiques accompagne progressivement les participants dans la découverte, la mise en œuvre et l’exploitation d’une chaîne de données avec Elasticsearch et l’Elastic Stack.
+Ce parcours de 13 ateliers apprend à ingérer, structurer, rechercher et exploiter des données, puis à analyser les événements techniques qui permettent d’observer le fonctionnement d’un système d’information.
 
-La progression commence par l’installation d’Elasticsearch et la manipulation de documents. Elle aborde ensuite la recherche, la concurrence, la modélisation et l’ingestion Python. Les participants découvrent alors Kibana pour explorer les données et construire des tableaux de bord, puis Logstash et Filebeat pour collecter et structurer les journaux web.
+Il associe deux démarches complémentaires :
 
-Le parcours se termine par un projet de clôture : collecter périodiquement les données de l’API JCDecaux avec Python, les indexer avec un mapping géographique et construire un dashboard Kibana interactif avec actualisation automatique.
+1. Rechercher et analyser des données indexées avec Elasticsearch et Kibana.
+2. Collecter et analyser des logs, construire des indicateurs et investiguer des anomalies avec Grafana Alloy, Loki et Grafana.
 
-Ce README sert de guide de lecture et de navigation. Les commandes, configurations, scripts et corrigés détaillés se trouvent dans chaque TP.
+Le choix de deux jeux de données — un catalogue de films MovieLens et un fichier d’access logs — rend cette distinction concrète. Les mêmes références sont réutilisées au fil des ateliers pour concentrer l’apprentissage sur les méthodes et les outils plutôt que sur la découverte permanente de nouveaux corpus.
 
-## Objectif général
+La finalité est de relier données, événements et indicateurs pour diagnostiquer un incident, en comprenant ce qui est réellement observé, avec quelles limites et sous quelles conditions de sécurité.
 
-À l’issue du parcours, les participants seront capables de construire une chaîne complète de collecte, transformation, indexation, recherche et visualisation des données, puis de la mettre en application dans un projet intégrateur.
+## Objectifs du parcours
 
-## Objectifs pédagogiques
+À l’issue de la formation, les participants doivent savoir :
 
-- Installer Elasticsearch et Kibana et vérifier leur fonctionnement.
-- Utiliser une connexion authentifiée et la validation des certificats lorsque TLS est activé.
-- Concevoir un index et un mapping adaptés aux données et aux recherches attendues.
-- Manipuler des documents avec les API REST : création, lecture, mise à jour et suppression.
-- Protéger des écritures concurrentes et interpréter un conflit de version.
-- Comprendre l’analyse textuelle, les champs `text` et `keyword` et l’autocomplétion.
-- Construire des recherches avec filtres, tris et pagination.
-- Choisir une stratégie de modélisation : dénormalisation, objets imbriqués ou relation parent-enfant.
-- Automatiser un chargement de données avec Python et contrôler les erreurs Bulk.
-- Explorer les documents dans Discover et interroger Elasticsearch avec Dev Tools.
-- Construire des visualisations Lens et un dashboard interactif.
-- Collecter et parser des logs web avec Logstash et Filebeat, en distinguant leurs rôles.
-- Réaliser un projet API → Python → Elasticsearch → Kibana avec données géographiques.
+- Installer et administrer l’environnement de laboratoire sur Ubuntu.
+- Comprendre les rôles d’Elasticsearch, Logstash, Kibana, Alloy, Loki et Grafana.
+- Définir des mappings, analyseurs et modèles de documents adaptés à la recherche.
+- Charger des données par lots et traiter les erreurs d’ingestion.
+- Gérer les mises à jour concurrentes et comprendre le contrôle de version optimiste.
+- Construire des recherches plein texte, filtres, agrégations, tris et paginations.
+- Explorer les données et construire un dashboard interactif dans Kibana.
+- Configurer une collecte de fichiers avec Alloy et expliquer sa configuration.
+- Interroger Loki avec ou sans l’interface Grafana.
+- Extraire des champs, vérifier leur présence et contrôler les erreurs de parsing/conversion.
+- Produire des comptages, débits, ratios et agrégations numériques avec LogQL.
+- Construire dans Grafana des KPI, chronologies, histogrammes, heatmaps, tables et vues d’investigation.
+- Suivre volume, qualité, complétude, fraîcheur et distribution sur un périmètre explicite.
+- Corréler des événements entre Loki et Elasticsearch à l’aide d’identifiants communs.
+- Distinguer un signal d’alerte, une hypothèse de diagnostic et une preuve de cause racine.
 
-## Public cible
+## Public et prérequis
 
-Administrateurs système, DevOps, data engineers, développeurs, consultants techniques et professionnels souhaitant acquérir une pratique de l’Elastic Stack.
+### Public
 
-## Prérequis
+Data engineers, data analysts, développeurs, administrateurs systèmes, ingénieurs DevOps/SRE et équipes impliquées dans l’exploitation des pipelines de données.
 
-- Connaissances de base de Linux et de la ligne de commande.
-- Compréhension des principes HTTP, JSON et des API REST.
-- Notions de Python pour les TPs 07 et 12.
-- Environnement de laboratoire disposant des ressources nécessaires aux services installés.
-- Accès Internet pour les téléchargements et l’API JCDecaux.
-- Droits d’administration sur les machines du laboratoire.
-- Compte développeur et clé API JCDecaux pour le projet de clôture.
+### Prérequis
 
-Les versions exactes, ressources matérielles et paramètres de connexion doivent être fixés par le formateur avant le démarrage. Conserver une combinaison compatible des composants Elastic et du client Python.
+- Utiliser un terminal Linux et comprendre fichiers, permissions et services.
+- Connaître les bases HTTP, JSON et des API REST.
+- Comprendre les notions élémentaires de données structurées et de recherche.
+- Pouvoir exécuter des commandes Python et lire un script simple.
+- Disposer d’un accès SSH et de droits administratifs sur une VM de formation dédiée.
 
-## Vue d’ensemble : le fil des TPs
+Le programme initial est prévu sur quatre jours. Les durées détaillées, extensions et temps d’installation sont à ajuster au groupe ; préparer les VM, paquets et certificats en amont évite de réduire les temps d’investigation et de restitution.
+
+## Pourquoi utiliser MovieLens et des access logs ?
+
+### MovieLens : rechercher des données métier indexées
+
+Le fichier movies.csv fournit un catalogue compréhensible : identifiant du film, titre et genres. Il permet de travailler sur :
+
+- la différence entre identifiant, texte analysé, valeur exacte et champ numérique ;
+- le choix des mappings et des multi-fields ;
+- la recherche par titre, la pertinence et la tolérance aux fautes ;
+- les filtres et agrégations par catégorie ;
+- l’import CSV et la gestion correcte des virgules/guillemets ;
+- la modélisation et l’exploration d’un catalogue indexé.
+
+Une ligne de catalogue décrit un film. Elle n’est pas automatiquement un événement technique, ni la preuve qu’un import s’est terminé avec succès.
+
+Les jeux d’exemples et extensions de modélisation précisent leurs propres structures ; ne pas supposer que tous les champs pédagogiques existent directement dans le CSV d’origine.
+
+### Access logs : comprendre les événements techniques et l’activité du SI
+
+Le fichier access_log représente des requêtes HTTP journalisées. Il permet d’aborder :
+
+- le temps et l’ordre des événements ;
+- les méthodes, chemins, statuts HTTP et tailles de réponses ;
+- la sélection des erreurs et l’investigation de leurs messages ;
+- la collecte continue, les permissions et les positions de lecture ;
+- la construction d’indicateurs de volume et de distribution ;
+- la distinction entre activité réelle, absence de trafic et absence de collecte.
+
+Une ligne de log est un événement observé. Elle ne prouve pas à elle seule la réussite d’une transaction métier ou la cause d’un incident.
+
+### Deux finalités pédagogiques, pas deux frontières rigides
+
+| Question | Catalogue MovieLens | Access logs et instrumentation |
+|---|---|---|
+| Que décrit-on ? | Des objets et leurs attributs | Des événements et observations techniques |
+| Que cherche-t-on ? | Un film, un titre, une catégorie | Une requête, un statut, une période, un incident |
+| Quel enjeu principal ? | Retrouver les bons documents et expliquer la pertinence | Reconstituer une situation et qualifier le fonctionnement du SI |
+| Quelle temporalité ? | État du catalogue et mises à jour | Événements datés, collecte et fenêtres d’analyse |
+| Quels outils sont approfondis ? | Elasticsearch et Kibana | Alloy, Loki et Grafana |
+
+Cette séparation n’interdit pas d’indexer des logs dans Elasticsearch : l’atelier 08 l’utilise justement pour l’observabilité des access logs dans Kibana.
+
+Inversement, lire movies.csv avec Alloy démontre un mécanisme de collecte de lignes ; cela ne transforme pas Loki en table relationnelle ou en moteur de recherche métier équivalent à l’index MovieLens.
+
+Le choix du jeu de données permet donc de distinguer les usages, pas d’imposer une spécialisation absolue à chaque outil.
+
+## Architecture et rôle des composants
 
 ```text
-TP 01 — Installer Elasticsearch
-   ↓
-TP 02 — Définir un mapping et manipuler MovieLens
-   ↓
-TP 03 — Sécuriser les mises à jour concurrentes
-   ↓
-TP 04 — Comprendre la recherche plein texte et les analyseurs
-   ↓
-TP 05 — Construire un moteur de recherche
-   ↓
-TP 06 — Modéliser les relations entre documents
-   ↓
-TP 07 — Charger des données avec Python
-   ↓
-TP 08 — Installer Kibana et explorer les données
-   ↓
-TP 09 — Construire des visualisations et dashboards Lens
-   ↓
-TP 10 — Ingérer, parser et enrichir les logs avec Logstash
-   ↓
-TP 11 — Collecter les logs avec Filebeat et comparer les approches
-   ↓
-TP 12 — Réaliser le projet de clôture JCDecaux
+                          RECHERCHE ET ANALYSE DES DONNÉES
+
+MovieLens / documents / access logs
+                  │
+                  ├──► scripts Python / API Bulk ──► Elasticsearch ──► Kibana
+                  │
+                  └──► Logstash, selon l’exercice ─► Elasticsearch
+
+
+                          COLLECTE ET ANALYSE DES LOGS
+
+access_log / movies.csv / instrumentation de laboratoire
+                  │
+                  ▼
+              Grafana Alloy ──► Loki ◄── requêtes LogQL ── Grafana
+                                  ▲
+                                  └── curl / Python / LogCLI
+
+
+                          FIL ROUGE DE CORRÉLATION
+
+Événements instrumentés avec run_id / batch_id / event_id
+                  ├──► Loki
+                  └──► projection Elasticsearch
+                               │
+                               └──► diagnostic et vues Grafana complémentaires
 ```
 
-Les TPs 01 à 07 constituent le socle Elasticsearch. Les TPs 08 et 09 transforment les données en outils d’exploration et de visualisation. Les TPs 10 et 11 complètent la chaîne d’ingestion. Le TP 12 mobilise les acquis dans un projet autonome.
-
-## Programme détaillé
-
-### TP 01 — Installer et prendre en main Elasticsearch sécurisé sur Ubuntu
-
-**Objectif :** disposer d’une instance de laboratoire opérationnelle et comprendre les premières vérifications d’exploitation.
-
-- Préparer Ubuntu et les paramètres système nécessaires.
-- Installer Elasticsearch depuis le dépôt officiel.
-- Configurer un environnement mono-nœud.
-- Démarrer et contrôler le service.
-- Tester l’API, l’authentification et la connexion HTTPS.
-- Réaliser les premières opérations sur les documents.
-
-**Résultat attendu :** une instance accessible et une checklist de validation complétée.
-
-**Lien avec la suite :** environnement commun aux ateliers d’indexation et de recherche.
-
-### TP 02 — MovieLens : mapping, documents et chargement Bulk
-
-**Objectif :** transformer des métadonnées de films en documents Elasticsearch structurés.
-
-- Explorer les fichiers du jeu MovieLens.
-- Définir les types de champs et créer un mapping explicite.
-- Préparer les données pour l’API Bulk.
-- Créer, lire, modifier et supprimer un film.
-- Vérifier les volumes et les erreurs d’import.
-
-**Résultat attendu :** un index de films exploitable pour les exercices de recherche.
-
-**Lien avec la suite :** fournit le contexte métier et les données des ateliers suivants.
-
-### TP 03 — Gérer la concurrence avec Elasticsearch
-
-**Objectif :** comprendre et éviter les pertes de mises à jour entre clients concurrents.
-
-- Observer `_seq_no` et `_primary_term`.
-- Réaliser une écriture conditionnelle.
-- Reproduire et interpréter un conflit HTTP 409.
-- Incrémenter un compteur avec un script Painless.
-- Étudier les usages et limites de `retry_on_conflict`.
-
-**Résultat attendu :** une démonstration reproductible de conflit et une mise à jour scriptée contrôlée.
-
-**Lien avec la suite :** apporte les bases d’une application qui modifie des données en parallèle.
-
-### TP 04 — Recherche plein texte, analyseurs et champs keyword
-
-**Objectif :** comprendre comment le mapping et l’analyse influencent les résultats de recherche.
-
-- Distinguer `text`, `keyword` et les multi-champs.
-- Observer les tokens avec `_analyze`.
-- Comparer `match`, `operator: and` et `match_phrase`.
-- Utiliser `minimum_should_match`.
-- Combiner recherche textuelle et filtres exacts.
-
-**Résultat attendu :** des requêtes dont le comportement est expliqué à partir des champs et des tokens.
-
-**Lien avec la suite :** prépare les fonctionnalités d’un moteur de recherche plus complet.
-
-### TP 05 — Construire un moteur de recherche avec Elasticsearch
-
-**Objectif :** assembler recherche, filtres, tri, pagination et autocomplétion.
-
-- Construire des requêtes booléennes et des recherches de phrase.
-- Trier sur des champs numériques et des sous-champs `keyword`.
-- Utiliser `from`/`size`, puis PIT et `search_after`.
-- Tester la tolérance aux fautes de frappe.
-- Mettre en œuvre `search_as_you_type`.
-
-**Résultat attendu :** un ensemble de requêtes réutilisables pour une interface de recherche de films.
-
-**Lien avec la suite :** relie le mapping aux besoins fonctionnels d’une application.
-
-### TP 06 — Modéliser les données et les relations
-
-**Objectif :** choisir une représentation adaptée aux accès et aux cycles de vie des documents.
-
-- Comparer dénormalisation, `nested` et relation parent-enfant.
-- Définir une relation `franchise → film` avec un champ `join`.
-- Indexer les enfants avec le routage approprié.
-- Utiliser `parent_id`, `has_parent` et `has_child`.
-- Discuter les limites et coûts du modèle choisi.
-
-**Résultat attendu :** une relation fonctionnelle et une justification du choix de modélisation.
-
-**Lien avec la suite :** encourage à concevoir le modèle avant d’industrialiser l’ingestion.
-
-### TP 07 — Chargement massif dans Elasticsearch avec Python
-
-**Objectif :** automatiser un import CSV avec des scripts lisibles, relançables et contrôlés.
-
-- Préparer un environnement virtuel Python.
-- Configurer le client Elasticsearch et la connexion sécurisée.
-- Créer les mappings avant l’import.
-- Lire les CSV avec des générateurs.
-- Utiliser `streaming_bulk` et contrôler chaque résultat.
-- Vérifier les films, notes et tags importés.
-
-**Résultat attendu :** des scripts d’import et des compteurs de réussite/erreur vérifiables.
-
-**Lien avec la suite :** les données importées deviennent explorables dans Kibana ; les principes Python sont réutilisés au TP 12.
-
-### TP 08 — Kibana : installation, Discover, Data Views et Dev Tools
-
-**Objectif :** utiliser Kibana comme interface d’exploration et d’interrogation.
-
-- Installer Kibana et le connecter à Elasticsearch.
-- Vérifier le service et diagnostiquer l’accès web.
-- Créer des Data Views avec ou sans champ temporel.
-- Explorer les données dans Discover.
-- Utiliser KQL, les filtres et les recherches sauvegardées.
-- Exécuter des requêtes REST dans Dev Tools.
-- Introduire la distinction entre KQL, Query DSL et ES|QL.
-
-**Résultat attendu :** des Data Views fonctionnelles et une investigation sauvegardée.
-
-**Lien avec la suite :** prépare les visualisations et les tableaux de bord.
-
-### TP 09 — Kibana : dashboards et visualisations Lens
-
-**Objectif :** construire une vue synthétique et interactive des événements applicatifs.
-
-- Définir les questions auxquelles doit répondre le dashboard.
-- Créer des métriques, séries temporelles, barres et tableaux agrégés.
-- Calculer un taux d’erreurs avec une formule Lens.
-- Ajouter des contrôles de service, niveau et durée.
-- Organiser les panneaux et sauvegarder le dashboard.
-- Passer de la détection d’un problème au détail dans Discover.
-
-**Résultat attendu :** un dashboard de supervision applicative avec filtres interactifs.
-
-**Lien avec la suite :** les mêmes principes s’appliquent aux logs web et au projet géographique final.
-
-### TP 10 — Logstash : installation, ingestion, Grok/Dissect et enrichissement
-
-**Objectif :** construire progressivement un pipeline de traitement de logs Nginx/Apache.
-
-- Installer Logstash et tester `stdin → stdout`.
-- Lire un fichier de logs web.
-- Comparer Dissect et Grok sur un format Combined.
-- Convertir les types et interpréter l’horodatage.
-- Ajouter des enrichissements et une classification des statuts HTTP.
-- Configurer la sortie Elasticsearch et vérifier les événements dans Kibana.
-- Rendre les échecs de parsing visibles.
-
-**Résultat attendu :** un pipeline validé et des événements HTTP structurés et interrogeables.
-
-**Lien avec la suite :** fournit une référence pour comparer le traitement explicite Logstash aux modules Filebeat.
-
-### TP 11 — Filebeat : installation, ingestion et parsing de logs Apache/Nginx
-
-**Objectif :** mettre en place une collecte légère de fichiers de logs et expliquer sa complémentarité avec Logstash.
-
-- Installer Filebeat et configurer la connexion Elasticsearch.
-- Activer et adapter le module web retenu.
-- Charger les assets et pipelines nécessaires.
-- Tester la configuration et démarrer la collecte.
-- Explorer les champs parsés et vérifier l’arrivée de nouvelles lignes.
-- Comparer la sortie directe Elasticsearch et l’architecture via Logstash.
-
-**Résultat attendu :** une collecte continue fonctionnelle et un choix d’architecture argumenté.
-
-**Lien avec la suite :** complète la compréhension des stratégies d’ingestion, avant le projet autonome par API.
-
-### TP 12 — Projet de clôture : API JCDecaux, Python, Elasticsearch et Kibana
-
-**Objectif :** réaliser une chaîne de données géographiques actualisée périodiquement.
-
-- Obtenir une clé API et découvrir les contrats disponibles.
-- Inspecter la réponse JSON des stations.
-- Créer un mapping avec `station.location` de type `geo_point` avant l’indexation.
-- Collecter, valider et transformer les données avec Python.
-- Indexer les observations avec l’API Bulk et planifier la collecte.
-- Construire une carte des stations et une représentation thermique.
-- Ajouter des indicateurs Lens et des contrôles interactifs.
-- Configurer l’actualisation automatique du dashboard.
-- Distinguer l’historique des observations du dernier état connu de chaque station.
-
-**Résultat attendu :** une démonstration API → Python → Elasticsearch → Kibana, accompagnée d’une note d’architecture et de preuves de validation.
-
-**Livrables du projet :** mapping, script Python, planification, dashboard, contrôles d’ingestion et note de synthèse.
-
-## Jeux de données et continuité pédagogique
-
-| Bloc | Données | Finalité |
-|---|---|---|
-| TPs 02 à 07 | Films, franchises, notes et tags ; jeux de démonstration isolés | Comprendre indexation, recherche, modélisation et import Python |
-| TPs 08 et 09 | Logs applicatifs de démonstration ; index MovieLens disponibles | Explorer, investiguer et visualiser |
-| TPs 10 et 11 | Logs d’accès web Apache/Nginx | Comparer parsing explicite et collecte standardisée |
-| TP 12 | Stations JCDecaux, coordonnées et disponibilités | Intégrer les acquis dans un projet géographique périodique |
-
-Les index de laboratoire peuvent être distincts d’un TP à l’autre. Vérifier systématiquement le nom d’index, le mapping, le volume attendu et la Data View avant un exercice. La progression est conceptuelle : tous les TPs ne partagent pas un unique index.
-
-## Méthode de travail
-
-Chaque TP doit être parcouru dans l’ordre suivant :
-
-1. Lire l’objectif et les prérequis.
-2. Préparer les fichiers, variables et jeux de données.
-3. Exécuter les commandes ou suivre les manipulations d’interface.
-4. Comparer le résultat observé au résultat attendu.
-5. Expliquer ce qui a été réalisé et pourquoi.
-6. Effectuer les points de contrôle.
-7. Diagnostiquer les écarts avec la section Dépannage.
-8. Réaliser le défi final avant de consulter son corrigé.
-9. Conserver les livrables utiles au TP suivant.
-
-La réussite ne se limite pas à obtenir un service démarré ou un graphique visible : le participant doit pouvoir expliquer les champs, les requêtes, les flux et les vérifications effectuées.
-
-## Convention d’environnement
-
-Les ateliers utilisent, selon les cas, les variables suivantes :
+| Composant | Rôle dans la formation |
+|---|---|
+| Elasticsearch | Stocker des documents indexés, les rechercher et les agréger |
+| Logstash | Recevoir, transformer et transmettre les événements des exercices prévus |
+| Kibana | Explorer les documents Elasticsearch et construire des dashboards |
+| Grafana Alloy | Lire les fichiers, appliquer les traitements configurés et transmettre à Loki |
+| Loki | Recevoir, conserver et interroger les logs organisés en flux étiquetés |
+| Grafana | Explorer les données et présenter indicateurs, distributions et investigations |
+| Python / curl | Préparer les données, tester les API et conserver des preuves hors interface |
+
+Loki fonctionne dans le laboratoire comme un service indépendant de Grafana. Grafana n’est pas le stockage des logs. Les rôles internes de Loki — notamment distributor, ingester et querier — sont expliqués dans l’atelier 10 ; ils ne correspondent pas nécessairement à des services système séparés dans le déploiement monolithique du TP.
+
+## Progression des ateliers 01 à 13
+
+| Atelier | Thème | Objectifs et travaux principaux | Résultat / preuve attendue |
+|---|---|---|---|
+| 01 | Installation native et sécurisation de la plateforme | Installer Elasticsearch, Logstash, Kibana, Loki et Grafana ; configurer les accès locaux, certificats et services ; réaliser les premiers tests API | Services identifiés, connexions vérifiées et premiers événements retrouvés |
+| 02 | Mappings, multi-fields et analyseurs | Choisir les types de champs ; distinguer recherche analysée et valeur exacte ; adapter la structure des documents et la recherche MovieLens | Mapping expliqué et recherches cohérentes avec les champs |
+| 03 | Chargement en masse avec Python | Préparer les données et le format Bulk ; charger les jeux prévus ; examiner les résultats d’ingestion et erreurs par élément | Chargement contrôlé et volumes vérifiés, pas seulement un statut HTTP global |
+| 04 | Concurrence et mises à jour | Comprendre le contrôle optimiste, les conflits et les mises à jour Painless ; raisonner sur les modifications concurrentes | Conflit reproduit puis traité sans écrasement silencieux |
+| 05 | Recherche plein texte et pertinence | Comparer les recherches ; utiliser boosts, highlighting et fuzziness ; expliquer pourquoi un résultat apparaît | Requêtes argumentées et lecture de la pertinence sur les documents |
+| 06 | Modélisation Elasticsearch | Comparer dénormalisation, nested et parent/child ; relier le modèle aux requêtes et contraintes de mise à jour | Choix de modèle justifié et limites connues |
+| 07 | Requêtes, agrégations et pagination | Combiner filtres et recherche ; agréger, trier et paginer ; comprendre l’usage de PIT et de la pagination adaptée | Résultats reproductibles, périmètre explicite et agrégations vérifiées |
+| 08 | Dashboard Kibana orienté Data Observability | Utiliser les access logs du parcours ; passer de Discover à Lens, puis à un dashboard interactif et à l’investigation | Tableau de bord trafic/erreurs, distributions et contrôles qualité/temps expliqués |
+| 09 | Collecte avec Grafana Alloy | Réutiliser access_log et movies.csv ; expliquer config.alloy, sources, traitements, labels et destination ; vérifier ajouts et reprise | Configuration comprise et lignes réellement retrouvées dans Loki |
+| 10 | Loki, architecture et premières requêtes LogQL | Localiser Loki et ses données ; comprendre écriture/lecture et composants ; sélectionner les flux et filtrer les lignes via Explore, curl, Python et éventuellement LogCLI | Même recherche reproduite avec et sans Grafana, sur un périmètre comparable |
+| 11 | Parsers et qualité des champs | Parser Apache avec pattern/regexp ; traiter correctement le CSV ; comparer JSON/logfmt sur des copies dérivées ; gérer alias, champs absents et erreurs | Champs contrôlés, valeurs comparées et erreurs visibles plutôt que masquées |
+| 12 | Métriques LogQL | Compter, calculer un débit et un ratio ; utiliser unwrap ; comparer somme, moyenne, maximum et quantile ; distinguer Instant/Range et zéro/absence | Indicateurs validés à un instant de référence et unités correctes |
+| 13 | Dashboard Grafana et incident fil rouge | Construire KPI, histogrammes, heatmaps, tables et logs ; suivre normal/incident/recovery ; corréler les IDs avec Elasticsearch en extension ; définir une alerte d’exercice | Dashboard interactif, diagnostic fondé sur les événements et compte rendu des limites |
+
+### Lecture du parcours en cinq étapes
+
+1. Ateliers 01 à 03 : installer et maîtriser l’entrée des données.
+2. Ateliers 04 à 07 : gérer les documents et interroger efficacement Elasticsearch.
+3. Atelier 08 : transformer l’exploration en dashboard Kibana d’observabilité.
+4. Ateliers 09 à 12 : collecter les fichiers, comprendre Loki et écrire des requêtes LogQL exploitables.
+5. Atelier 13 : réunir indicateurs, visualisations, contrôles et preuves dans une investigation.
+
+Les références de schémas, comptes et commandes restent celles de chaque support. Cette synthèse ne remplace pas les étapes de préparation ou les conditions des résultats attendus.
+
+## Méthode pédagogique commune
+
+Chaque atelier suit autant que possible la même logique :
+
+```text
+Objectif → données et prérequis → manipulation → résultat attendu
+→ explication → point de contrôle → diagnostic → défi → livrable
+```
+
+Les dashboards des ateliers 08 et 13 suivent une progression particulière :
+
+```text
+Explorer les événements → valider les requêtes → créer les visualisations
+→ assembler → ajouter les contrôles → investiguer → vérifier par l’API
+```
+
+Un dashboard prêt à importer est un corrigé ou une aide, pas une preuve de compréhension. Les participants doivent pouvoir expliquer une valeur et retrouver les événements qui la composent.
+
+## Sécurité du laboratoire
+
+### 1. Environnement dédié et périmètre maîtrisé
+
+- Utiliser une VM de formation dédiée, locale ou hébergée dans le cloud, sans données de production.
+- L’installation de référence est native sur Ubuntu, sans Docker ; elle n’est pas un service managé Elastic Cloud ou Grafana Cloud.
+- Préparer les sauvegardes/snapshots nécessaires et un accès de secours avant les changements administratifs.
+- Vérifier les configurations existantes avant toute copie, fusion ou modification.
+- Documenter les versions réellement installées et la compatibilité des composants.
+
+Le dimensionnement proposé à l’atelier 01 — 4 vCPU, 16 Go de RAM et 30 Go disponibles — est une recommandation de laboratoire, pas un minimum garanti pour une charge de production.
+
+### 2. Réseau : ne pas exposer les services applicatifs
+
+| Port de référence | Service | Accès prévu |
+|---:|---|---|
+| 22 | SSH | Accès autorisé depuis les postes/réseaux prévus |
+| 9200 | Elasticsearch | HTTPS local, authentifié |
+| 5601 | Kibana | Boucle locale, accès navigateur via SSH |
+| 8080 | Entrée HTTP Logstash de test | Local uniquement |
+| 3100 | Loki | Local uniquement |
+| 3000 | Grafana | Boucle locale, accès navigateur via SSH |
+| 12345, si configuré | Diagnostic Alloy | Local uniquement ; ne pas ouvrir pour le TP |
+
+Ne pas ouvrir les ports applicatifs sur Internet. Vérifier aussi les autres écoutes effectives, notamment celles du transport Elasticsearch, au lieu de considérer ce tableau comme un inventaire exhaustif.
+
+Exemple de tunnel depuis le poste participant :
 
 ```bash
-export ES_URL='https://localhost:9200'
-export ES_CA='/chemin/vers/http_ca.crt'
+ssh -N \
+  -L 5601:127.0.0.1:5601 \
+  -L 3000:127.0.0.1:3000 \
+  utilisateur@IP_PUBLIQUE_VM
 ```
 
-Le secret Elasticsearch doit être fourni par un mécanisme adapté au laboratoire. Le TP 12 ajoute une clé API JCDecaux et un nom de contrat. Ne jamais publier les valeurs des secrets.
+Les interfaces sont alors consultées localement sur le poste, via le tunnel. HTTP dans ce tunnel est un choix de laboratoire ; il ne remplace pas une architecture TLS applicative de bout en bout.
 
-Vérifier également :
+Le profil Loki du TP est sans couche d’authentification externe et doit rester isolé. Une ouverture à d’autres machines exige un dispositif réseau, TLS et de contrôle d’accès adapté. Les identifiants de session Grafana ne protègent pas automatiquement une API Loki exposée séparément.
 
-- les versions exactes des composants ;
-- les ports disponibles et l’absence de conflit entre services locaux et conteneurs ;
-- la lisibilité des certificats par l’utilisateur ou le service concerné ;
-- les droits de lecture des fichiers de logs ;
-- le fuseau horaire et la période sélectionnée dans Kibana ;
-- la présence des modèles d’index et pipelines requis avant l’ingestion.
+### 3. Authentification, certificats et privilèges
 
-## Précautions importantes pour le formateur
+- Conserver la sécurité Elasticsearch activée.
+- Vérifier les certificats avec la bonne autorité de certification et un nom d’hôte compatible.
+- Ne pas utiliser curl -k ou désactiver TLS pour contourner une erreur.
+- Réserver le compte elastic aux étapes administratives du laboratoire ; utiliser des identités techniques limitées pour les connexions permanentes.
+- Utiliser une clé d’écriture adaptée pour Logstash et une identité de lecture pour les datasources de visualisation.
+- Ne pas réutiliser indifféremment les droits de création d’index, d’ingestion et de lecture.
+- Changer le mot de passe administrateur initial de Grafana lors de l’installation.
 
-Ces points doivent être vérifiés dans les supports et configurations avant une session :
+### 4. Secrets et dépôts de fichiers
 
-- **TP 03 :** dans une mise à jour scriptée, placer les modifications souhaitées dans le script ; ne pas compter sur un bloc `doc` envoyé en parallèle du script. Dans une requête curl JSON standard, conserver le code `source` sur une seule ligne ou échapper correctement les retours à la ligne.
-- **TP 05 :** pour `search_after`, recopier le tableau `sort` complet du dernier résultat, y compris la valeur technique ajoutée lors d’une recherche avec PIT. Réutiliser le dernier identifiant PIT retourné.
-- **TP 06 :** conserver le routage parent pour les enfants. Une mise à jour avec une valeur identique peut produire `noop` ; cela n’est pas un échec.
-- **TP 07 :** fixer une version de client Python compatible avec le serveur. Utiliser des chemins de scripts explicites et des identifiants déterministes adaptés à chaque fichier, sans collision entre tags distincts.
-- **TP 09 :** le jeu initial du TP 08 contient cinq événements : deux INFO, un WARN et deux ERROR. Le taux d’erreurs global attendu est donc 40 %. Une table Lens est agrégée ; utiliser une recherche Discover sauvegardée pour afficher les messages document par document.
-- **TP 10 :** ne pas laisser tous les fichiers de test actifs simultanément dans un même `conf.d`. Isoler les pipelines ; ne pas lancer le service et une instance manuelle avec le même répertoire de données. Les secrets définis pour systemd ne sont pas automatiquement disponibles dans une exécution manuelle. Conserver l’événement brut en cas d’échec de parsing.
-- **TP 11 :** vérifier l’utilisateur réel du service Filebeat ; ne pas supposer qu’un compte ou groupe `filebeat` existe. Le certificat de Kibana peut différer de celui d’Elasticsearch. Vérifier la commande explicite de chargement des pipelines du module avec la version utilisée.
-- **TP 12 :** éviter de sommer plusieurs snapshots d’une même station pour représenter un état courant. Utiliser de préférence un index courant à identifiant stable pour les cartes et KPI, et un index historique pour les tendances. Une heat map historique représente des observations cumulées, pas automatiquement le dernier état des stations.
+Ne jamais publier dans les scripts, README, captures, exports ou dépôts :
 
-Cette liste signale des vérifications et corrections à reporter dans les supports détaillés ; elle ne signifie pas que les fichiers de TP existants ont été automatiquement modifiés.
+- mots de passe, clés API, jetons et en-têtes Authorization ;
+- clés privées, keystores contenant des secrets et fichiers d’environnement réels ;
+- sorties brutes de commandes d’authentification ;
+- URL contenant des identifiants ou liens donnant involontairement accès au laboratoire.
 
-## Validation des acquis
+Utiliser les mécanismes prévus, notamment le keystore Logstash, les saisies protégées et les paramètres sécurisés des datasources. Un export de dashboard ou une capture doit être relu avant diffusion.
 
-| Jalon | Critère de réussite |
-|---|---|
-| Après TP 01–02 | Instance accessible, mapping connu, documents créés et recherchés |
-| Après TP 03–05 | Conflit expliqué, analyse textuelle observée, recherche et pagination maîtrisées |
-| Après TP 06–07 | Modèle argumenté, import Python contrôlé et relançable |
-| Après TP 08–09 | Exploration sauvegardée et dashboard interactif utilisable |
-| Après TP 10–11 | Collecte continue vérifiée, parsing contrôlé, choix Filebeat/Logstash expliqué |
-| Après TP 12 | Projet bout en bout démontré avec géolocalisation, collecte périodique et visualisations cohérentes |
+Révoquer les clés temporaires et supprimer les copies de secrets inutiles à la fin de la formation. Publier seulement des exemples de configuration sans secret réel.
 
-## Organisation suggérée des livrables
+### 5. Comptes de service et permissions
+
+- Exécuter les services avec leurs comptes dédiés, pas avec root par commodité.
+- Donner à Alloy la lecture des fichiers suivis et les droits nécessaires sur son stockage d’état, pas un accès général en écriture aux données sources.
+- Vérifier la traversée des répertoires parents et la lecture effective comme utilisateur du service.
+- Ne pas résoudre un refus de permission avec chmod -R 777.
+- Réserver sudo aux opérations de préparation et d’administration qui le nécessitent.
+
+### 6. Protection des données utilisées
+
+Les access logs peuvent contenir des IP, URL, paramètres, agents utilisateurs et autres informations sensibles. Leur présence dans un support d’exercice ne les rend pas automatiquement publiables sans examen.
+
+- Utiliser uniquement des données autorisées pour la formation.
+- Masquer les informations sensibles avant capture ou partage.
+- Respecter les conditions d’utilisation et d’attribution des jeux MovieLens ; leur fourniture ne vaut pas autorisation de redistribution sans contrôle.
+- Distinguer les références initiales, copies de travail et sondes synthétiques.
+- Ne pas attribuer de position géographique fictive à une IP réelle.
+- Si une géolocalisation est illustrée, utiliser un enrichissement validé avec ses limites, ou un jeu synthétique séparé et annoncé.
+
+### 7. Sauvegarde, modifications et nettoyage
+
+- Sauvegarder une configuration avant modification et la valider avant redémarrage.
+- Ne pas supprimer un index, une Data View, un dashboard ou une source partagée sans vérifier ses dépendances.
+- Ne pas effacer le stockage d’état Alloy pour obtenir artificiellement un compte de lignes attendu.
+- Ne pas confondre arrêt d’un service et suppression de ses données persistantes.
+- Avant la fin de session, conserver les livrables utiles, révoquer les secrets temporaires et arrêter les ressources cloud devenues inutiles.
+
+## Règles d’interprétation des données et indicateurs
+
+### Temps : quatre notions à séparer
+
+1. Date de l’événement source.
+2. Date d’émission de l’instrumentation.
+3. Date de collecte/horodatage retenu par le pipeline.
+4. Période et instant d’évaluation de la requête.
+
+Une archive lue aujourd’hui ne devient pas un trafic utilisateur actuel. Le parcours Alloy de base conserve l’heure de collecte pour faciliter les exercices sur des archives ; les variantes de date événement doivent être explicites.
+
+### Volumes et duplications
+
+Une relecture, une nouvelle sonde ou une copie dans un autre format peut créer de nouvelles entrées. Les fichiers JSON et logfmt dérivés de l’atelier 11 ne sont pas deux populations métier indépendantes.
+
+Dans Elasticsearch, un document peut être remplacé si l’on réutilise son _id. Dans Loki, ajouter de nouveau une ligne n’est pas l’équivalent d’un upsert. Les comptes doivent donc être comparés sur une unité et un périmètre cohérents.
+
+### Qualité et complétude
+
+Ne pas confondre :
+
+- structure impossible à parser ;
+- champ absent ;
+- valeur non convertible ;
+- valeur convertible mais incohérente pour le métier ;
+- référence attendue mais jamais reçue.
+
+Un compteur de lignes reçues ne suffit pas à mesurer la complétude : il faut connaître l’attendu. Un contrat de batch émis ne détecte pas seul un batch dont le résumé n’a jamais été émis ; un inventaire ou contrôle indépendant est nécessaire.
+
+### Métriques et visualisations
+
+- Un ratio doit préciser numérateur, dénominateur, fenêtre et filtres.
+- Zéro erreur observée n’est pas la même chose qu’aucune télémétrie.
+- Un histogramme de moyennes n’est pas un histogramme des observations individuelles.
+- Une heatmap temporelle n’est pas une carte géographique.
+- Une moyenne de p95 n’est pas le p95 global.
+- Quelques échantillons synthétiques ne suffisent pas à démontrer un SLO réel.
+- L’access log de référence ne contient pas de durée permettant de calculer une latence HTTP ; les contrôles de durée restent explicitement pédagogiques.
+
+## Organisation et continuité des fichiers
+
+Organisation proposée pour rassembler les livrables ; elle est à adapter aux noms réellement fournis et ne décrit pas un dépôt déjà assemblé automatiquement :
 
 ```text
-parcours-elastic/
+formation-data-observability/
 ├── README.md
-├── tp01-installation-elasticsearch/
-├── tp02-mapping-movielens/
-├── tp03-concurrence/
-├── tp04-recherche-plein-texte/
-├── tp05-moteur-recherche/
-├── tp06-modelisation/
-├── tp07-python-bulk/
-├── tp08-kibana-exploration/
-├── tp09-kibana-lens-dashboards/
-├── tp10-logstash/
-├── tp11-filebeat/
-└── tp12-projet-jcdecaux/
+├── atelier-01/ ... atelier-07/
+├── atelier-08/       # Kibana et access logs
+├── atelier-09/       # config Alloy et copies des deux sources
+├── atelier-10/       # architecture Loki, LogQL et clients API
+├── atelier-11/       # parsers et copies structurées
+├── atelier-12/       # métriques, référence temporelle et contrôles
+├── atelier-13/       # dashboard, scénario et corrélation
+└── exemples/         # configurations expurgées uniquement
 ```
 
-Cette arborescence est une proposition de rangement, pas un inventaire de fichiers fournis avec ce README. Chaque dossier peut contenir le support du TP, les configurations, scripts, exemples, corrigés et preuves de validation. Aucun fichier de secrets ne doit être versionné.
+Les chemins opérationnels du laboratoire restent ceux des supports, notamment :
 
-## Limites du parcours
+| Usage | Repère de référence |
+|---|---|
+| Configuration Alloy | /etc/alloy/config.alloy, sauf autre chemin explicitement configuré |
+| Sources brutes A09 | /var/log/formation-alloy09/access_log et movies.csv |
+| Vues structurées A11 | /var/log/formation-alloy11/events.jsonl et events.logfmt |
+| Configuration Loki | /etc/loki-formation/loki.yml |
+| Stockage Loki | /var/lib/loki-formation |
+| Service Loki du parcours | loki-formation |
 
-Le parcours construit un socle pratique de recherche, ingestion et visualisation. Il ne remplace pas un parcours complet d’administration de production : cluster multi-nœud, dimensionnement, rétention, sauvegardes/restauration, haute disponibilité et sécurité avancée peuvent faire l’objet d’ateliers complémentaires.
+Les fichiers source ne sont pas à recopier dans un dépôt public par défaut. Les copies de travail et données générées doivent rester identifiées et protégées selon leur contenu.
 
-La recherche vectorielle, sémantique et hybride constitue également un prolongement possible ; elle ne fait pas partie des douze TPs présentés ici.
+### Révisions à utiliser
+
+Ce README décrit la version harmonisée du parcours :
+
+- atelier 08 recentré sur les access logs et la Data Observability ;
+- atelier 09 fondé sur Alloy, access_log et movies.csv ;
+- ateliers 10 à 12 adaptés à ces sources et à leurs copies structurées ;
+- atelier 13 organisé autour du dashboard Grafana et de la simulation instrumentée.
+
+Les anciens passages fondés uniquement sur douze logs JSON de trois services ou sur Promtail ne doivent pas être combinés tels quels avec les versions actualisées. Les compteurs et sélecteurs doivent correspondre au support effectivement utilisé.
+
+## Livrables attendus
+
+Au fil du parcours, conserver :
+
+- les versions et éléments de configuration non sensibles ;
+- mappings, scripts d’import et résultats de contrôle ;
+- bibliothèques de requêtes Elasticsearch et LogQL ;
+- objets de visualisation et exports autorisés ;
+- manifestes de génération et périodes de référence ;
+- réponses API utiles et exemples expurgés ;
+- notes sur les choix de modèle, labels, unités et dénominateurs ;
+- compte rendu du fil rouge avec faits, hypothèses, limites et actions proposées.
+
+Un dashboard exporté ne contient pas les données de ses sources. Un import réussi ne prouve pas que les requêtes, certificats et contrôles fonctionneront sans adaptation dans un autre environnement.
+
+## Validation avant une session
+
+- Vérifier les versions des composants et les menus des interfaces.
+- Répéter l’installation et les contrôles d’accès de l’atelier 01.
+- Vérifier les chemins, comptes de service et permissions.
+- Confirmer les formats, mappings et labels réellement utilisés.
+- Tester le parcours sur un lot identifié et une période documentée.
+- Comparer les chiffres des interfaces aux réponses API.
+- Tester la collecte initiale, les ajouts et la reprise sans réinitialiser arbitrairement l’état.
+- Valider les transformations des histogrammes/heatmaps sur la version Grafana retenue.
+- Distinguer les tests locaux/simulés d’une validation de bout en bout sur la stack.
+
+Les supports et scripts ne sont pas présentés comme une certification de production. Les configurations, extensions et visualisations doivent être validées par le formateur sur l’environnement réellement utilisé.
+
+## Résultat attendu en fin de formation
+
+Le participant doit pouvoir expliquer et démontrer la chaîne suivante :
+
+```text
+Données et événements
+→ ingestion maîtrisée et accès protégés
+→ recherche de documents / analyse de logs
+→ contrôles de qualité, volume, temps et complétude
+→ visualisations interprétables
+→ corrélation et investigation
+→ restitution argumentée et pistes d’amélioration
+```
+
+MovieLens apprend à retrouver et exploiter les données. Les access logs apprennent à observer des événements techniques. Leur utilisation conjointe montre comment rapprocher le contenu des données du fonctionnement des systèmes qui les transportent et les exposent, sans confondre mesure, simulation et preuve.
+
+-- Support de cours et de TP créer par Dr. Ing. Maher HENI pour l'équipe de Bouygues Telecom Novembre 2026- All Rights Reserved
