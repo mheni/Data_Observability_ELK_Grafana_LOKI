@@ -791,5 +791,3 @@ Ne pas exécuter par défaut. Ne pas utiliser un wildcard global ni supprimer le
 Le scénario MovieLens reprend les étapes « préparer le fichier NDJSON » et « charger les films avec l’API Bulk » du TP 02 MovieLens fourni. Le défi réutilise access_log de l’atelier 01. Les anciens exemples _type/doc_type ne sont pas repris : ils ne correspondent pas à l’API du laboratoire 9.x.
 
 Les scripts ont été vérifiés syntaxiquement ; la conversion MovieLens a été exécutée sur un petit CSV de test contenant notamment des virgules, des guillemets et un titre sans année. La conversion access_log a été exécutée sur 1 000 lignes du fichier original fourni. La vérification Bulk a été testée sur des réponses synthétiques de succès, d’échec et de nombre d’items incorrect.
-
-Aucun chargement n’a été effectué sur votre cluster pendant la génération. Valider les requêtes et mappings sur votre environnement avant formation.
