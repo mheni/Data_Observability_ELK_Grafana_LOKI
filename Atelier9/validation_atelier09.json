@@ -1,0 +1,23 @@
+{
+  "preparation_test": {
+    "actual_access_lines": 200,
+    "movies_fixture_records": 3,
+    "csv_quotes_and_commas_preserved": true,
+    "existing_destination_rejected": true,
+    "multiline_csv_rejected": true
+  },
+  "probe_test": {
+    "new_access_lines": 1,
+    "new_movie_records": 1,
+    "marker_shared": true,
+    "http_family_after_template": "5xx"
+  },
+  "regex_sample": {
+    "matched": 200,
+    "sampled": 200,
+    "engine": "Python re structural check; Alloy RE2 runtime not executed"
+  },
+  "component_reference_check": true,
+  "alloy_validate_executed": false,
+  "loki_delivery_executed": false
+}

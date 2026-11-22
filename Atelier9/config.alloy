@@ -1,0 +1,74 @@
+// Configuration de laboratoire : deux fichiers, deux traitements, une destination.
+logging {
+  level = "info"
+}
+
+loki.source.file "access" {
+  targets = [
+    {
+      __path__    = "/var/log/formation-alloy09/access_log",
+      job         = "atelier09",
+      service     = "web-formation",
+      environment = "formation",
+      dataset     = "access",
+      format      = "apache_combined",
+      time_basis  = "collection",
+    },
+  ]
+  tail_from_end = false
+  forward_to    = [loki.process.access.receiver]
+}
+
+loki.process "access" {
+  // Extraction illustrative : la ligne Apache originale reste intacte.
+  stage.regex {
+    expression = `^(?P<client_ip>\S+) \S+ \S+ \[(?P<apache_time>[^\]]+)\] "(?P<request_line>[^"]*)" (?P<status>(?P<status_class>[1-5])\d{2}) (?P<bytes>\d+|-)`
+  }
+
+  // Transformer la famille numerique en libelle : 5 -> 5xx.
+  stage.template {
+    source   = "status_class"
+    template = "{{ if .Value }}{{ .Value }}xx{{ end }}"
+  }
+
+  stage.labels {
+    values = {
+      status_class = "status_class",
+    }
+  }
+
+  forward_to = [loki.write.local.receiver]
+}
+
+loki.source.file "movies" {
+  targets = [
+    {
+      __path__    = "/var/log/formation-alloy09/movies.csv",
+      job         = "atelier09",
+      service     = "movielens-import",
+      environment = "formation",
+      dataset     = "movies",
+      format      = "csv",
+      time_basis  = "collection",
+    },
+  ]
+  tail_from_end = false
+  forward_to    = [loki.process.movies.receiver]
+}
+
+loki.process "movies" {
+  // L'en-tete n'est pas un film.
+  stage.drop {
+    expression          = `^movieId,title,genres\r?$`
+    drop_counter_reason = "movies_csv_header"
+  }
+
+  // Pas de stage.output : on conserve le CSV pour les recherches de lignes.
+  forward_to = [loki.write.local.receiver]
+}
+
+loki.write "local" {
+  endpoint {
+    url = "http://127.0.0.1:3100/loki/api/v1/push"
+  }
+}
