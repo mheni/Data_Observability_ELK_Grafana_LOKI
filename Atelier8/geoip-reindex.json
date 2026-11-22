@@ -1,0 +1,10 @@
+{
+  "source": {
+    "index": "atelier08-access"
+  },
+  "dest": {
+    "index": "atelier08-access-geoip",
+    "pipeline": "atelier08-geoip",
+    "op_type": "create"
+  }
+}

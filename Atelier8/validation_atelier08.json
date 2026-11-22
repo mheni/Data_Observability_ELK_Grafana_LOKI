@@ -1,0 +1,22 @@
+{
+  "static_json_assets": [
+    "access-dashboard-mapping.json",
+    "access-base-pipeline.json",
+    "access-reindex.json",
+    "access-bornes-query.json",
+    "access-validation-query.json",
+    "geoip-pipeline.json",
+    "geoip-reindex.json"
+  ],
+  "embedded_json_validated": 5,
+  "synthetic_geo_test": {
+    "documents": 6,
+    "distinct_positions": 3,
+    "http_4xx_5xx": 3,
+    "http_5xx": 2,
+    "without_real_ip": true,
+    "missing_date_rejected": true
+  },
+  "elasticsearch_pipelines_executed": false,
+  "kibana_ui_validated": false
+}
