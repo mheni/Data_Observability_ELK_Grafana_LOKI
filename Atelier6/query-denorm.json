@@ -1,0 +1,9 @@
+{
+  "size":10,
+  "query":{"bool":{"filter":[
+    {"term":{"category":"science-fiction"}},
+    {"term":{"platform":"A"}},
+    {"term":{"available":true}},
+    {"range":{"price_cents":{"lt":1000}}}
+  ]}}
+}

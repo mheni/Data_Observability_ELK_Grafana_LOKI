@@ -1,0 +1,16 @@
+{
+  "size":10,
+  "query":{"bool":{"filter":[
+    {"term":{"category":"science-fiction"}},
+    {"nested":{
+      "path":"offers",
+      "score_mode":"none",
+      "query":{"bool":{"filter":[
+        {"term":{"offers.platform":"A"}},
+        {"term":{"offers.available":true}},
+        {"range":{"offers.price_cents":{"lt":1000}}}
+      ]}},
+      "inner_hits":{"name":"offres_correspondantes","size":5}
+    }}
+  ]}}
+}

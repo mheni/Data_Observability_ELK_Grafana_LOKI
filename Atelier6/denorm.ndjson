@@ -1,0 +1,8 @@
+{"index":{"_id":"109487-A"}}
+{"offer_id":"109487-A","movie_id":"109487","title":"Interstellar","category":"science-fiction","platform":"A","price_cents":1500,"available":true}
+{"index":{"_id":"109487-B"}}
+{"offer_id":"109487-B","movie_id":"109487","title":"Interstellar","category":"science-fiction","platform":"B","price_cents":800,"available":true}
+{"index":{"_id":"104841-A"}}
+{"offer_id":"104841-A","movie_id":"104841","title":"Gravity","category":"science-fiction","platform":"A","price_cents":700,"available":true}
+{"index":{"_id":"104841-C"}}
+{"offer_id":"104841-C","movie_id":"104841","title":"Gravity","category":"science-fiction","platform":"C","price_cents":1200,"available":true}

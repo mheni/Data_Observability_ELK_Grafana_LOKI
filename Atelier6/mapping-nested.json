@@ -1,0 +1,37 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "movie_id": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text"
+      },
+      "category": {
+        "type": "keyword"
+      },
+      "offers": {
+        "type": "nested",
+        "properties": {
+          "offer_id": {
+            "type": "keyword"
+          },
+          "platform": {
+            "type": "keyword"
+          },
+          "price_cents": {
+            "type": "integer"
+          },
+          "available": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

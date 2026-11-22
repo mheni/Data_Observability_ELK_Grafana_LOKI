@@ -1,0 +1,6 @@
+{"index":{"_id":"9000603","routing":"9000603"}}
+{"relation":"movie","movie_id":"9000603","title":"Voyage vers Mars","category":"science-fiction"}
+{"index":{"_id":"9000603-A","routing":"9000603"}}
+{"relation":{"name":"offer","parent":"9000603"},"offer_id":"9000603-A","platform":"A","price_cents":2000,"available":true}
+{"index":{"_id":"9000603-B","routing":"9000603"}}
+{"relation":{"name":"offer","parent":"9000603"},"offer_id":"9000603-B","platform":"B","price_cents":600,"available":true}

@@ -1,0 +1,19 @@
+{
+  "validation": "Static JSON/NDJSON/Python syntax and local business predicate checks; no Elasticsearch cluster execution",
+  "json_curl_payloads": 15,
+  "ndjson_documents": {
+    "denorm.ndjson": 4,
+    "nested.ndjson": 2,
+    "join.ndjson": 6,
+    "defi-denorm.ndjson": 2,
+    "defi-join.ndjson": 3
+  },
+  "expected_initial_movie_ids": [
+    "104841"
+  ],
+  "expected_after_price_change_movie_ids": [
+    "104841",
+    "109487"
+  ],
+  "join_child_routing_verified": true
+}

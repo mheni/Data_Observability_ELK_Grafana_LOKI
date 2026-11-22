@@ -1,0 +1,12 @@
+{"index":{"_id":"109487","routing":"109487"}}
+{"relation":"movie","movie_id":"109487","title":"Interstellar","category":"science-fiction"}
+{"index":{"_id":"104841","routing":"104841"}}
+{"relation":"movie","movie_id":"104841","title":"Gravity","category":"science-fiction"}
+{"index":{"_id":"109487-A","routing":"109487"}}
+{"relation":{"name":"offer","parent":"109487"},"offer_id":"109487-A","platform":"A","price_cents":1500,"available":true}
+{"index":{"_id":"109487-B","routing":"109487"}}
+{"relation":{"name":"offer","parent":"109487"},"offer_id":"109487-B","platform":"B","price_cents":800,"available":true}
+{"index":{"_id":"104841-A","routing":"104841"}}
+{"relation":{"name":"offer","parent":"104841"},"offer_id":"104841-A","platform":"A","price_cents":700,"available":true}
+{"index":{"_id":"104841-C","routing":"104841"}}
+{"relation":{"name":"offer","parent":"104841"},"offer_id":"104841-C","platform":"C","price_cents":1200,"available":true}

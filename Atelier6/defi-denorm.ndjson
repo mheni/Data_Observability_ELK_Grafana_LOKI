@@ -1,0 +1,4 @@
+{"index":{"_id":"9000603-A"}}
+{"offer_id":"9000603-A","movie_id":"9000603","title":"Voyage vers Mars","category":"science-fiction","platform":"A","price_cents":2000,"available":true}
+{"index":{"_id":"9000603-B"}}
+{"offer_id":"9000603-B","movie_id":"9000603","title":"Voyage vers Mars","category":"science-fiction","platform":"B","price_cents":600,"available":true}
