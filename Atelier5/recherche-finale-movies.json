@@ -1,0 +1,72 @@
+{
+  "size": 5,
+  "_source": [
+    "movie_id",
+    "title",
+    "summary",
+    "genres",
+    "published"
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "multi_match": {
+            "query": "voyage spatial",
+            "type": "best_fields",
+            "fields": [
+              "title^4",
+              "summary^2",
+              "description"
+            ],
+            "operator": "and"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "term": {
+            "published": true
+          }
+        },
+        {
+          "term": {
+            "genres": "Sci-Fi"
+          }
+        }
+      ],
+      "should": [
+        {
+          "match_phrase": {
+            "title": {
+              "query": "voyage spatial",
+              "boost": 3
+            }
+          }
+        }
+      ],
+      "minimum_should_match": 0
+    }
+  },
+  "highlight": {
+    "pre_tags": [
+      "<mark>"
+    ],
+    "post_tags": [
+      "</mark>"
+    ],
+    "fields": {
+      "title": {
+        "number_of_fragments": 0
+      },
+      "summary": {
+        "fragment_size": 150,
+        "number_of_fragments": 1
+      },
+      "description": {
+        "fragment_size": 150,
+        "number_of_fragments": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "analysis": {
+      "analyzer": {
+        "movies_text": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "movie_id": {
+        "type": "integer"
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "movies_text",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        }
+      },
+      "summary": {
+        "type": "text",
+        "analyzer": "movies_text"
+      },
+      "description": {
+        "type": "text",
+        "analyzer": "movies_text"
+      },
+      "year": {
+        "type": "integer"
+      },
+      "genres": {
+        "type": "keyword"
+      },
+      "published": {
+        "type": "boolean"
+      },
+      "source": {
+        "type": "keyword"
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{"index": {"_id": "M001"}}
+{"movie_id": 9000501, "title": "Interstellar", "summary": "Un voyage spatial pour sauver l’humanité.", "description": "Un équipage explore l’espace et affronte la gravité. Le temps transforme la mission en défi.", "year": 2014, "genres": ["Sci-Fi", "Drama"], "published": true, "source": "atelier05-synthetique"}
+{"index": {"_id": "M002"}}
+{"movie_id": 9000502, "title": "Voyage spatial", "summary": "Une mission scientifique à destination d’une planète inconnue.", "description": "Un voyage spatial conduit un équipage vers une nouvelle planète. La mission associe exploration et découverte.", "year": 2026, "genres": ["Sci-Fi", "Adventure"], "published": true, "source": "atelier05-synthetique"}
+{"index": {"_id": "M003"}}
+{"movie_id": 9000503, "title": "Voyage dans le temps", "summary": "Un voyage temporel change le destin d’une famille.", "description": "Une expérience permet de revenir dans le passé. Chaque décision transforme le futur.", "year": 2026, "genres": ["Sci-Fi", "Drama"], "published": true, "source": "atelier05-synthetique"}
+{"index": {"_id": "M004"}}
+{"movie_id": 9000504, "title": "Star Wars", "summary": "Une guerre dans l’espace oppose plusieurs mondes.", "description": "Un voyage spatial conduit les héros vers une planète menacée. La mission devient une aventure.", "year": 1977, "genres": ["Sci-Fi", "Adventure"], "published": true, "source": "atelier05-synthetique"}
+{"index": {"_id": "M005"}}
+{"movie_id": 9000505, "title": "Gravity", "summary": "Survivre dans l’espace après un accident.", "description": "Deux astronautes cherchent à rejoindre une station. Le danger et la survie rythment leur mission.", "year": 2013, "genres": ["Sci-Fi", "Drama"], "published": true, "source": "atelier05-synthetique"}
+{"index": {"_id": "M006"}}
+{"movie_id": 9000506, "title": "La planète bleue", "summary": "Un voyage au fond des océans.", "description": "Un documentaire consacré à la biodiversité marine et à la protection de la planète.", "year": 2026, "genres": ["Documentary"], "published": true, "source": "atelier05-synthetique"}
+{"index": {"_id": "M007"}}
+{"movie_id": 9000507, "title": "Voyage spatial — brouillon", "summary": "Un voyage spatial en préparation.", "description": "Cette fiche de voyage spatial est un brouillon non validé du catalogue.", "year": 2026, "genres": ["Sci-Fi"], "published": false, "source": "atelier05-synthetique"}
+{"index": {"_id": "M008"}}
+{"movie_id": 9000508, "title": "Archive du cinéma", "summary": "Les grands récits de voyage.", "description": "Le programme spatial au cinéma et son histoire constituent le thème de cette archive.", "year": 2026, "genres": ["Documentary"], "published": true, "source": "atelier05-synthetique"}
