@@ -926,10 +926,7 @@ print(json.dumps(report,ensure_ascii=False,indent=2))
 
 Le script construire_requetes11.py et la bibliothèque requetes-logql-atelier11.md sont également joints. Les composants Alloy additionnels doivent être validés avec la version installée avant activation.
 
-## Sources et validation formateur
+## Références Grafana 
+Log queries, Query examples, LogQL template functions et diagnostic des erreurs de pipeline.
 
-Objectifs repris de l’atelier 11 fourni : JSON/logfmt/pattern, champs extraits, valeurs numériques, erreurs et présentation. Alignement sur les deux sources conservées des ateliers 09/10.
 
-Références Grafana : Log queries, Query examples, LogQL template functions et diagnostic des erreurs de pipeline.
-
-Les scripts Python ont été vérifiés syntaxiquement et exécutés sur un échantillon du fichier access_log fourni et un CSV de test avec virgules/guillemets. Les comptes des contrôles synthétiques, l’intégrité des sources et la préparation des requêtes ont été contrôlés localement. Aucun parseur LogQL n’a été exécuté sur Loki et le fragment Alloy n’a pas été validé par le binaire Alloy pendant la génération. Valider les syntaxes, labels d’erreur et résultats sur la version du lab avant formation.
