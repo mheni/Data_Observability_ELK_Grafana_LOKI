@@ -919,10 +919,8 @@ print(json.dumps({'mode':a.mode,'resultType':expected,'series_received':len(resu
 
 Le script construire_requetes12.py et la bibliothèque complète de vingt requêtes sont joints ; les exemples __MARKER__ y sont personnalisés depuis scenario12.json.
 
-## Sources et validation formateur
 
-Objectifs repris de l’atelier 12 initial : count_over_time, rate, ratios, agrégations, unwrap, quantiles, Instant/Range et validation API. Corpus actualisé pour reprendre access_log, MovieLens et les vues A11.
+## Références Grafana : 
+Metric queries, LogQL reference, pipeline errors et Loki HTTP API. Les regroupements autorisés dépendent de la fonction ; la somme sur unwrap emploie ici une agrégation externe.
 
-Références Grafana : Metric queries, LogQL reference, pipeline errors et Loki HTTP API. Les regroupements autorisés dépendent de la fonction ; la somme sur unwrap emploie ici une agrégation externe.
 
-Scripts vérifiés syntaxiquement ; génération des fichiers, comptes et contrôles numériques testés localement. Le contrôle de collecte et le client métrique ont été testés avec des réponses HTTP simulées, pas une instance Loki réelle. Les requêtes LogQL, types d’erreur et interactions Grafana restent à valider sur la version du laboratoire avant formation.
