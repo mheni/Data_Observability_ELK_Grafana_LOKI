@@ -892,15 +892,4 @@ curl -X DELETE "$ES_URL/atelier02-catalogue,atelier02-services?ignore_unavailabl
 
 Ne pas exécuter si les index sont encore nécessaires. Une suppression de Data View Kibana n’est pas une suppression des documents Elasticsearch, et inversement.
 
-## 18. Références et validation formateur
 
-Support aligné sur le programme fourni : jour 1, atelier 2 — types de champs, multi-fields et analyseurs personnalisés.
-
-Références techniques Elastic :
-
-- Field data types : distinction text/keyword et usages des multi-fields.
-- Normalizer : garantie d’un seul token et application à l’indexation et à la recherche.
-- Dynamic field mapping : contrôle du comportement dynamique.
-- Multi-fields : ajout de sous-champs et retraitement des documents existants.
-
-Cette révision conserve les exercices du support initial et les aligne sur le parcours HTTP local de l’atelier 01. Les balises HTML details/summary ne sont pas utilisées. Les fichiers JSON intégrés ont été vérifiés syntaxiquement lors de la génération ; les commandes Elasticsearch n’ont pas été exécutées contre votre cluster. Valider une exécution complète sur les versions retenues avant la session.
