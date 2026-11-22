@@ -923,10 +923,6 @@ print(json.dumps({'streams_received':len(result['data']['result']),
                   'complete_count_guaranteed':False,'raw_response':a.output},indent=2))
 ```
 
-## Sources et validation formateur
+## Références Grafana
+ Loki components, Loki architecture, Query Loki, Log queries, HTTP API et LogCLI. 
 
-Objectifs LogQL conservés à partir de l’atelier 10 fourni. Architecture et fichiers alignés sur les ateliers 01 et 09 actualisés.
-
-Références Grafana : Loki components, Loki architecture, Query Loki, Log queries, HTTP API et LogCLI. Les composants optionnels décrits ne sont pas annoncés comme un inventaire de processus effectivement démarrés sur la VM du participant.
-
-Scripts Python vérifiés syntaxiquement ; écriture des six sondes et constitution de la fenêtre testées sur fichiers temporaires. Le client HTTP a été testé avec des réponses simulées pour vérifier l’encodage, la lecture des flux et les erreurs. Aucune requête n’a été exécutée contre votre instance Loki et aucun service systemd n’a été modifié pendant la génération. Répéter le parcours sur les versions et labels retenus avant formation.
