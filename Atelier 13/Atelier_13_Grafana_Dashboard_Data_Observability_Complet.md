@@ -809,8 +809,5 @@ Les scripts, requêtes et exports sont joints. La génération a été testée l
 
 Aucun import Grafana, exécution LogQL réelle, publication Elasticsearch réelle ni activation d’alerte n’a été effectué pendant la génération. Les transformations, options de heatmap et datasource doivent être répétées sur les versions du laboratoire. Le support ne présente pas un export généré comme un dashboard déjà validé en interface.
 
-## Sources de préparation
-
-Méthode de l’atelier 08 et programme Data Observability fournis : exploration préalable, construction de panneaux, contrôles interactifs, diagnostic et corrélation finale Loki/Elasticsearch.
-
-Documentation Grafana : Histogram, Heatmap, Introduction to histograms and heatmaps, transformations Extract fields/Convert field type, variables, data links et dashboards. Points structurants : distribution d’observations, heatmap temporelle, effet des agrégations préalables et portée explicite des variables.
+## Documentation Grafana :
+Histogram, Heatmap, Introduction to histograms and heatmaps, transformations Extract fields/Convert field type, variables, data links et dashboards. Points structurants : distribution d’observations, heatmap temporelle, effet des agrégations préalables et portée explicite des variables.
