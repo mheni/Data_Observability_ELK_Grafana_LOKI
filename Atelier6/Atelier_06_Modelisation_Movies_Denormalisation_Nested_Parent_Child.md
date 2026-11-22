@@ -943,10 +943,3 @@ curl -X DELETE "$ES_URL/atelier06-object,atelier06-denorm,atelier06-nested,ateli
 
 L’atelier 07 approfondira l’interrogation des données, les agrégations, les tris et la pagination profonde.
 
-## 19. Références et validation formateur
-
-Alignement : programme fourni, jour 2, atelier 6 — cas métier avec relations et comparaison des approches.
-
-Documentation Elastic : Arrays, Nested field type, Nested query, Join field type, Routing field et Retrieve inner hits.
-
-Cette révision conserve les sections et objectifs du support initial, remplace le catalogue de produits par des films et adapte la connexion au mode simple de l’atelier 01. Les JSON et NDJSON ont été vérifiés syntaxiquement ; le code Python a été vérifié syntaxiquement. Les commandes et le script de mesure n’ont pas été exécutés contre votre cluster dans cet environnement. Le formateur doit valider l’ensemble avec les versions, droits et paramètres retenus avant la session.
