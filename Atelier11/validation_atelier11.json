@@ -1,0 +1,16 @@
+{
+  "test_sources": {
+    "actual_access_sample": 30,
+    "unrecognized_access_added": 1,
+    "movies_fixture_records": 3
+  },
+  "derived_records_per_format": 38,
+  "controls": 4,
+  "csv_quotes_commas_and_multiline_preserved": true,
+  "logfmt_scalar_values_round_trip_checked": true,
+  "sources_sha256_unchanged": true,
+  "existing_output_rejected": true,
+  "queries_generated": 13,
+  "logql_executed_against_loki": false,
+  "alloy_validate_executed": false
+}

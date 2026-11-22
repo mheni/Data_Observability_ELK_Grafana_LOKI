@@ -1,0 +1,26 @@
+// Ajout A11 : vues derivees seulement ; ne remplace pas les deux sources A09.
+// Necessite loki.write "local" deja defini dans config.alloy.
+loki.source.file "atelier11_normalises" {
+  targets = [
+    {
+      __path__    = "/var/log/formation-alloy11/events.jsonl",
+      job         = "atelier11",
+      service     = "normalisation-lab",
+      environment = "formation",
+      dataset     = "normalised",
+      format      = "json",
+      time_basis  = "collection",
+    },
+    {
+      __path__    = "/var/log/formation-alloy11/events.logfmt",
+      job         = "atelier11",
+      service     = "normalisation-lab",
+      environment = "formation",
+      dataset     = "normalised",
+      format      = "logfmt",
+      time_basis  = "collection",
+    },
+  ]
+  tail_from_end = false
+  forward_to    = [loki.write.local.receiver]
+}
