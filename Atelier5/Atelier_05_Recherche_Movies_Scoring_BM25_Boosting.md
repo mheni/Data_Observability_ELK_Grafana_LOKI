@@ -863,8 +863,5 @@ curl -X DELETE "$ES_URL/atelier05-movies?pretty"
 
 ## Références et validation formateur
 
-Objectifs conservés à partir de l’atelier 05 fourni. Corpus remplacé pour harmonisation avec les ateliers MovieLens et enrichi de textes synthétiques pour les exercices multi-champs.
-
 Références techniques : Elastic, Similarity settings et BM25 ; Practical BM25 ; Multi-match query ; Highlighting ; Match query et fuzziness ; API Explain. Les anciennes documentations TF-IDF peuvent expliquer les fondements mais ne doivent pas remplacer la documentation de scoring de la version utilisée.
 
-Les JSON intégrés et les exemples Python ont été vérifiés syntaxiquement. Le corpus joint contient huit documents et seize lignes NDJSON avec saut de ligne final. Les requêtes, scripts de diagnostic et scores n’ont pas été exécutés contre un cluster Elasticsearch lors de la génération : valider le scénario avec les versions retenues avant formation.
