@@ -89,8 +89,6 @@ Ces douze événements ne sont pas des lignes extraites de votre access_log ni d
 
 Les champs service, environment, level, status et les IDs sont des keyword pour les filtres, tris et regroupements ; message est text pour la recherche de mots. duration_ms et records_processed sont numériques, @timestamp est une date.
 
-
-
 Nous utilisons douze événements du 3 novembre 2026, entre 08:00 et 08:11 UTC. Les horodatages sont fixes pour que tous les stagiaires disposent des mêmes résultats.
 
 ### Objectif
@@ -959,4 +957,4 @@ Alignement : programme fourni, jour 3, atelier 7 — requêtes booléennes, agr�
 
 Documentation Elastic : Boolean query, Terms aggregation, Cardinality aggregation, Date histogram, Paginate search results, Open/Close point in time.
 
-Les JSON et exemples Python ont été vérifiés syntaxiquement ; les chiffres ont été recalculés depuis le corpus. L’exporteur a été testé avec des réponses HTTP simulées pour le parcours complet, le défi et un échec partiel, notamment la rotation des IDs PIT et la fermeture du dernier contexte. Il n’a pas été exécuté contre Elasticsearch pendant la génération. Les chiffres attendus sont dérivés du corpus pédagogique présenté ; valider l’exécution complète sur les versions retenues avant la session.
+
