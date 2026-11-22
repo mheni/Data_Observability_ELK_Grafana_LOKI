@@ -1,0 +1,32 @@
+{
+  "scenario_local_test": {
+    "access_appended": 4,
+    "movies_appended": 2,
+    "timeout_lines": 2,
+    "timeout_excluding_recovered": 1,
+    "timeout_or_missing": 3,
+    "error_code_lines": 2,
+    "csv_quotes_preserved": true
+  },
+  "window_ns_to_rfc3339_test": true,
+  "api_client_mock_tests": [
+    {
+      "case": "success",
+      "passed": true,
+      "http_simulated": true
+    },
+    {
+      "case": "http_error",
+      "passed": true,
+      "http_simulated": true
+    },
+    {
+      "case": "wrong_type",
+      "passed": true,
+      "http_simulated": true
+    }
+  ],
+  "loki_server_execution": false,
+  "grafana_ui_execution": false,
+  "logql_server_parsing_validation": false
+}
