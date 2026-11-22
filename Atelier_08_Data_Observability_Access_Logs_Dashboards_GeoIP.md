@@ -1038,4 +1038,4 @@ Cette version conserve l’exploration Discover, Lens, les formules, le dashboar
 
 Références : Elastic, Lens et heat map charts ; GeoIP processor ; geo_point ; Maps vector layers ; Data Views et dashboard controls.
 
-Les JSON et le script Python ont été vérifiés syntaxiquement. La génération des six événements géographiques a été testée sur une réponse de bornes simulée ; aucun document réel n’a reçu de coordonnées inventées. Les pipelines Painless, réindexations, téléchargements GeoIP et manipulations Kibana restent à valider sur la version, les droits et le réseau retenus pour la formation.
+
