@@ -734,10 +734,6 @@ curl -X DELETE "$ES_URL/atelier04-movies?pretty"
 
 Cette suppression cible uniquement le nouvel index du TP. Les films des ateliers précédents restent conservés.
 
-## Références et validation formateur
-
-Support révisé à partir de l’atelier 04 fourni et de la diapositive « Contrôle optimiste ou verrouillage pessimiste ».
+## Références et 
 
 Documentation de référence : Elastic, Optimistic concurrency control et Update API ; PostgreSQL, Explicit locking, notamment SELECT FOR UPDATE et deadlocks. La comparaison SQL est illustrative et n’exige pas l’installation d’un SGBDR dans la VM.
-
-Les commandes n’ont pas été exécutées sur votre cluster lors de la génération. Les corps JSON et la syntaxe des exemples Python ont été vérifiés ; les scripts Painless et scénarios concurrents restent à tester sur les versions retenues avant formation. Les résultats numériques supposent la séquence d’étapes indiquée, sans autre écriture externe.
