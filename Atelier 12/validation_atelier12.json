@@ -1,0 +1,35 @@
+{
+  "scenario_entries": {
+    "access": 4,
+    "movies": 2,
+    "json": 12,
+    "logfmt": 12
+  },
+  "valid_duration_samples": 9,
+  "numeric_reference_checked": true,
+  "tests": [
+    {
+      "test": "collecte_complete",
+      "passed": true,
+      "http_simulated": true
+    },
+    {
+      "test": "doublon_detecte",
+      "passed": true,
+      "http_simulated": true
+    },
+    {
+      "test": "client_instant",
+      "passed": true,
+      "http_simulated": true
+    },
+    {
+      "test": "client_range",
+      "passed": true,
+      "http_simulated": true
+    }
+  ],
+  "queries_generated": 20,
+  "logql_executed_on_loki": false,
+  "grafana_ui_tested": false
+}

@@ -1,0 +1,15 @@
+indicateur,population,valeur,unite
+count,access,4,lignes/5m
+count,movies,2,lignes/5m
+rate,access,0.013333333333333334,lignes/s
+rate,movies,0.006666666666666667,lignes/s
+ratio_5xx,access,0.25,ratio
+bytes_sum,access,1000,octets
+bytes_avg,access,250,octets
+bytes_max,access,400,octets
+duration_total,controls,12,lignes
+duration_valid,controls,9,echantillons
+duration_avg,access-demo,1360,ms
+duration_avg,movies-demo,575,ms
+duration_max,access-demo,5000,ms
+duration_max,movies-demo,800,ms
