@@ -1,0 +1,18 @@
+{
+  "size":0,
+  "track_total_hits":true,
+  "query":{"term":{"environment":"formation"}},
+  "aggs":{
+    "par_service":{
+      "terms":{"field":"service","size":10,"order":{"_key":"asc"}},
+      "aggs":{
+        "duree_moyenne":{"avg":{"field":"duration_ms"}},
+        "duree_max":{"max":{"field":"duration_ms"}},
+        "erreurs":{
+          "filter":{"term":{"level":"ERROR"}}
+        },
+        "enregistrements":{"sum":{"field":"records_processed"}}
+      }
+    }
+  }
+}

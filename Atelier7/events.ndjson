@@ -1,0 +1,24 @@
+{"index":{"_id":"E001"}}
+{"event_id":"E001","@timestamp":"2026-11-03T08:00:00Z","service":"movies-api","environment":"formation","pipeline_id":"movies","run_id":"R001","level":"INFO","status":"success","message":"Import movies completed","duration_ms":100,"records_processed":1000}
+{"index":{"_id":"E002"}}
+{"event_id":"E002","@timestamp":"2026-11-03T08:01:00Z","service":"movies-api","environment":"formation","pipeline_id":"movies","run_id":"R002","level":"WARN","status":"slow","message":"Slow response from source database","duration_ms":1200,"records_processed":800}
+{"index":{"_id":"E003"}}
+{"event_id":"E003","@timestamp":"2026-11-03T08:02:00Z","service":"movies-api","environment":"formation","pipeline_id":"movies","run_id":"R003","level":"ERROR","status":"failed","message":"Connection timeout to source database","duration_ms":5000,"records_processed":0,"error_code":"TIMEOUT"}
+{"index":{"_id":"E004"}}
+{"event_id":"E004","@timestamp":"2026-11-03T08:03:00Z","service":"ratings-worker","environment":"formation","pipeline_id":"ratings","run_id":"R004","level":"INFO","status":"success","message":"Ratings transformation completed","duration_ms":200,"records_processed":400}
+{"index":{"_id":"E005"}}
+{"event_id":"E005","@timestamp":"2026-11-03T08:04:00Z","service":"ratings-worker","environment":"formation","pipeline_id":"ratings","run_id":"R005","level":"ERROR","status":"failed","message":"Invalid schema in ratings input","duration_ms":300,"records_processed":0,"error_code":"SCHEMA"}
+{"index":{"_id":"E006"}}
+{"event_id":"E006","@timestamp":"2026-11-03T08:05:00Z","service":"ratings-worker","environment":"formation","pipeline_id":"ratings","run_id":"R006","level":"WARN","status":"slow","message":"Transformation duration above threshold","duration_ms":2200,"records_processed":300}
+{"index":{"_id":"E007"}}
+{"event_id":"E007","@timestamp":"2026-11-03T08:06:00Z","service":"access-exporter","environment":"formation","pipeline_id":"access_logs","run_id":"R007","level":"INFO","status":"success","message":"Access log export completed","duration_ms":400,"records_processed":200}
+{"index":{"_id":"E008"}}
+{"event_id":"E008","@timestamp":"2026-11-03T08:07:00Z","service":"access-exporter","environment":"formation","pipeline_id":"access_logs","run_id":"R008","level":"ERROR","status":"failed","message":"Connection timeout to log storage provider","duration_ms":5000,"records_processed":0,"error_code":"TIMEOUT"}
+{"index":{"_id":"E009"}}
+{"event_id":"E009","@timestamp":"2026-11-03T08:08:00Z","service":"access-exporter","environment":"formation","pipeline_id":"access_logs","run_id":"R009","level":"INFO","status":"success","message":"Access log export recovery completed","duration_ms":600,"records_processed":250}
+{"index":{"_id":"E010"}}
+{"event_id":"E010","@timestamp":"2026-11-03T08:09:00Z","service":"movies-api","environment":"formation","pipeline_id":"movies","run_id":"R010","level":"INFO","status":"success","message":"Import recovered after connection timeout","duration_ms":150,"records_processed":1100}
+{"index":{"_id":"E011"}}
+{"event_id":"E011","@timestamp":"2026-11-03T08:10:00Z","service":"ratings-worker","environment":"test","pipeline_id":"ratings","run_id":"R011","level":"ERROR","status":"failed","message":"Test connection timeout intentionally generated","duration_ms":5000,"records_processed":0,"error_code":"TIMEOUT"}
+{"index":{"_id":"E012"}}
+{"event_id":"E012","@timestamp":"2026-11-03T08:11:00Z","service":"access-exporter","environment":"formation","pipeline_id":"access_logs","run_id":"R012","level":"INFO","status":"success","message":"Final access_logs export completed","duration_ms":700,"records_processed":300}

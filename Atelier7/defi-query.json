@@ -1,0 +1,18 @@
+{
+  "size":10,
+  "track_total_hits":true,
+  "_source":["event_id","@timestamp","pipeline_id","run_id","level","message","duration_ms"],
+  "sort":[{"duration_ms":"desc"},{"event_id":"asc"}],
+  "query":{"bool":{"filter":[
+    {"term":{"environment":"formation"}},
+    {"terms":{"level":["WARN","ERROR"]}},
+    {"range":{"@timestamp":{"gte":"2026-11-03T08:00:00Z","lt":"2026-11-03T08:15:00Z"}}}
+  ]}},
+  "aggs":{"par_pipeline":{
+    "terms":{"field":"pipeline_id","size":10,"order":{"_key":"asc"}},
+    "aggs":{
+      "moyenne_ms":{"avg":{"field":"duration_ms"}},
+      "maximum_ms":{"max":{"field":"duration_ms"}}
+    }
+  }}
+}

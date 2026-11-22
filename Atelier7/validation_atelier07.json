@@ -1,0 +1,52 @@
+{
+  "corpus_events": 12,
+  "training_events": 11,
+  "alert_events": 5,
+  "service_statistics": {
+    "movies-api": {
+      "events": 4,
+      "avg": 1612.5,
+      "max": 5000,
+      "errors": 1,
+      "records": 2900
+    },
+    "ratings-worker": {
+      "events": 3,
+      "avg": 900,
+      "max": 2200,
+      "errors": 1,
+      "records": 700
+    },
+    "access-exporter": {
+      "events": 4,
+      "avg": 1675,
+      "max": 5000,
+      "errors": 1,
+      "records": 750
+    }
+  },
+  "exporter_simulated_tests": [
+    {
+      "case": "standard",
+      "passed": true,
+      "mock_http": true,
+      "search_calls": 5,
+      "closed_latest_pit": true
+    },
+    {
+      "case": "defi",
+      "passed": true,
+      "mock_http": true,
+      "search_calls": 4,
+      "closed_latest_pit": true
+    },
+    {
+      "case": "partial_failure",
+      "passed": true,
+      "mock_http": true,
+      "search_calls": 2,
+      "closed_latest_pit": true
+    }
+  ],
+  "real_elasticsearch_execution": false
+}

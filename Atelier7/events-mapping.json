@@ -1,0 +1,20 @@
+{
+  "settings":{"number_of_shards":1,"number_of_replicas":0},
+  "mappings":{
+    "dynamic":"strict",
+    "properties":{
+      "event_id":{"type":"keyword"},
+      "@timestamp":{"type":"date"},
+      "service":{"type":"keyword"},
+      "environment":{"type":"keyword"},
+      "pipeline_id":{"type":"keyword"},
+      "run_id":{"type":"keyword"},
+      "level":{"type":"keyword"},
+      "status":{"type":"keyword"},
+      "message":{"type":"text"},
+      "duration_ms":{"type":"integer"},
+      "records_processed":{"type":"integer"},
+      "error_code":{"type":"keyword"}
+    }
+  }
+}
