@@ -985,10 +985,3 @@ Ne pas supprimer globalement le sincedb ni le stockage Alloy pour forcer un reje
 
 ---
 
-## Notes de validation
-
-Le fichier d’origine a été conservé. Les 102 972 timestamps du corpus complet ont été remplacés et les autres octets de chaque ligne ont été comparés à l’original. L’échantillon contient 1 000 lignes. Le script Python a été exécuté pour produire les fichiers joints.
-
-Cette validation porte sur la transformation des fichiers, pas sur une exécution des six services. Tester les configurations sur les versions retenues avant formation, notamment Grok, Loki, Alloy, keystores et droits de l’accès Grafana.
-
-Références de préparation : documentation Elastic sur le filtre date et locale, file input, Grok et installation Debian ; documentation Grafana Alloy sur stage.regex, stage.timestamp, loki.source.file et loki.write. Les formats atypiques du fichier ne sont pas corrigés par le simple réhorodatage.
