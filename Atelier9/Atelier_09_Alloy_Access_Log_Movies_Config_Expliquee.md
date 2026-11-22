@@ -934,10 +934,4 @@ print(json.dumps({'marker':marker,'kind':a.kind,'synthetic':True,
                   'movie_id_note':'ID de test repete volontairement ; Loki conserve les lignes, sans upsert'},ensure_ascii=False,indent=2))
 ```
 
-## Sources et validation formateur
 
-Support révisé à partir de l’atelier 09 fourni, en réutilisant access_log et MovieLens des ateliers précédents. Références Grafana : syntaxe Alloy, configuration Linux, loki.source.file, loki.process, loki.write et commande validate.
-
-Les scripts Python ont été vérifiés syntaxiquement et exécutés localement sur des fichiers de test, dont un échantillon du vrai access_log et un CSV avec virgules/guillemets. Les cas de refus de sortie existante et CSV multiligne ont été testés. Les motifs d’extraction ont été contrôlés sur les lignes échantillonnées avec les limites décrites.
-
-Le binaire Alloy, le service systemd et l’envoi Loki n’ont pas été exécutés dans l’environnement de génération. Le formateur doit utiliser alloy validate puis répéter les tests d’ingestion sur les versions installées. Le fichier joint n’est pas annoncé comme validé par le compilateur Alloy.
