@@ -1,0 +1,25 @@
+{
+  "movies_fixture": {
+    "documents": 3,
+    "ndjson_lines": 6,
+    "without_year": 1,
+    "source": "movies.csv",
+    "destination": "movies.ndjson"
+  },
+  "access_original_first_1000": {
+    "lines_read": 1000,
+    "documents": 1000,
+    "rejected": 0,
+    "ndjson_lines": 2000,
+    "source_file_sha256": "cecab1dd28eb07c41478cbe7662443f1fd0390f2c503f5e6869c98532382cdfd"
+  },
+  "checker_success": {
+    "returncode": 0
+  },
+  "checker_failure": {
+    "returncode": 1
+  },
+  "checker_incomplete": {
+    "returncode": 1
+  }
+}
