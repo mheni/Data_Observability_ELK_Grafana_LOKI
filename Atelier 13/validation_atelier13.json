@@ -1,0 +1,48 @@
+{
+  "local_generator": {
+    "json_events": 38,
+    "records": 29,
+    "batches": 6,
+    "heartbeats": 3,
+    "raw_access": 15,
+    "raw_movies": 14,
+    "input_prefixes_preserved": true
+  },
+  "histogram_bins_counts": {
+    "0_1000": 6,
+    "1000_2000": 3,
+    "4000_5000": 3,
+    "8000_9000": 3
+  },
+  "delay_values_counts": {
+    "2_seconds": 25,
+    "600_seconds": 4
+  },
+  "mock_loki_tests": [
+    {
+      "case": "complete",
+      "passed": true,
+      "network_simulated": true
+    },
+    {
+      "case": "duplicate",
+      "passed": true,
+      "network_simulated": true
+    }
+  ],
+  "mock_elasticsearch_bulk": {
+    "documents": 38,
+    "passed": true
+  },
+  "dashboard_structure": {
+    "main_panels": 21,
+    "histograms": 2,
+    "heatmaps": 2,
+    "unique_ids_and_disjoint_positions": true,
+    "queries_resolved": 20
+  },
+  "actual_loki_execution": false,
+  "actual_grafana_import": false,
+  "actual_elasticsearch_write": false,
+  "actual_alert_activation": false
+}

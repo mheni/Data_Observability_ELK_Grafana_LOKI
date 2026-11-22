@@ -1,0 +1,27 @@
+sum(
+  sum_over_time(
+    {job="atelier11",format="json"}
+    | json kind="a13_kind", dataset_value="source_dataset", accepted_value="accepted_count"
+    | __error__=""
+    | kind="batch"
+    | dataset_value="movies"
+    | accepted_value!=""
+    | unwrap accepted_value
+    | __error__=""
+    [5m]
+  )
+)
+/
+sum(
+  sum_over_time(
+    {job="atelier11",format="json"}
+    | json kind="a13_kind", dataset_value="source_dataset", expected_value="expected"
+    | __error__=""
+    | kind="batch"
+    | dataset_value="movies"
+    | expected_value!=""
+    | unwrap expected_value
+    | __error__=""
+    [5m]
+  )
+)

@@ -1,0 +1,7 @@
+phase,dataset,expected,attempted,accepted,rejected,missing,completeness,source_delay_seconds
+normal,access,5,5,5,0,0,1.0,2
+normal,movies,5,5,5,0,0,1.0,2
+incident,access,5,5,5,0,0,1.0,2
+incident,movies,5,4,2,2,1,0.4,600
+recovery,access,5,5,5,0,0,1.0,2
+recovery,movies,5,5,5,0,0,1.0,2

@@ -1,0 +1,92 @@
+{
+  "id": null,
+  "uid": "a13-investigation",
+  "title": "[A13] Investigation par evenement ou batch",
+  "description": "Dashboard de laboratoire : mesures de collecte et simulation instrumentee ; pas de latence HTTP reelle.",
+  "schemaVersion": 39,
+  "version": 1,
+  "timezone": "utc",
+  "editable": true,
+  "refresh": "",
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "loki_ds",
+        "label": "Source Loki",
+        "type": "datasource",
+        "query": "loki",
+        "refresh": 1,
+        "current": {}
+      },
+      {
+        "name": "run",
+        "label": "Lot A13",
+        "type": "textbox",
+        "query": "RUN_A13_A_REMPLACER",
+        "current": {
+          "text": "RUN_A13_A_REMPLACER",
+          "value": "RUN_A13_A_REMPLACER"
+        },
+        "skipUrlSync": false
+      },
+      {
+        "name": "event_id",
+        "label": "Evenement ou prefixe de batch",
+        "type": "textbox",
+        "query": "",
+        "current": {
+          "text": "",
+          "value": ""
+        }
+      }
+    ]
+  },
+  "tags": [
+    "formation",
+    "data-observability",
+    "a13"
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "title": "JSON et logs bruts correles",
+      "type": "logs",
+      "datasource": {
+        "type": "loki",
+        "uid": "${loki_ds}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 18
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${loki_ds}"
+          },
+          "editorMode": "code",
+          "expr": "{job=~\"atelier09|atelier11\"} |= \"${run}\" |= \"${event_id}\"",
+          "queryType": "range",
+          "instant": false,
+          "range": true,
+          "maxLines": 2000
+        }
+      ],
+      "options": {
+        "showTime": true,
+        "enableLogDetails": true,
+        "wrapLogMessage": true,
+        "dedupStrategy": "none",
+        "sortOrder": "Ascending"
+      }
+    }
+  ]
+}
