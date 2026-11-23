@@ -444,6 +444,8 @@ Alloy utilise le même dépôt. Si un paquet manque pour l’architecture retenu
 ## D2 — Configuration locale Loki
 
 ```bash
+sudo groupadd --system loki
+sudo usermod -aG loki loki
 if systemctl cat loki.service >/dev/null 2>&1; then
   sudo systemctl disable --now loki.service
 fi
@@ -483,13 +485,7 @@ YAML
 sudo chown root:loki /etc/loki-formation/loki.yml
 sudo chmod 640 /etc/loki-formation/loki.yml
 
-Creer le groupe 
 
-sudo groupadd —system loki
-
-Et rattacher loki : 
-
-sudo usermod -aG loki loki
 ```
 
 La date from configure le schéma, pas les dates des logs. Stockage filesystem et une instance unique sont des choix de lab.
