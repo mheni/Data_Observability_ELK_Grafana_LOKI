@@ -665,6 +665,10 @@ sudo chmod o+r /var/log/formation/access_log
 sudo systemctl start alloy
 sudo systemctl status alloy --no-pager
 sudo journalctl -u alloy -n 30 --no-pager
+
+curl -s -G http://127.0.0.1:3100/loki/api/v1/query \
+  --data-urlencode 'query=count_over_time({job="atelier01-access"}[7d])'
+
 ```
 
 
