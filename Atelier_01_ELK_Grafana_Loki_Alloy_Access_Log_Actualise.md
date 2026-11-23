@@ -617,6 +617,56 @@ loki.write "local" {
 }
 ALLOY
 ```
+### 
+```bash
+sudo systemctl stop alloy
+sudo cp -n /etc/alloy/config.alloy /etc/alloy/config.alloy.avant-tp01
+
+sudo tee /etc/alloy/config.alloy > /dev/null <<'ALLOY'
+loki.source.file "access_log" {
+  targets = [
+    {
+      __path__ = "/var/log/formation/access_log",
+      job      = "atelier01-access",
+      service  = "web-formation",
+    },
+  ]
+  tail_from_end = false
+  forward_to    = [loki.process.access_log.receiver]
+}
+
+loki.process "access_log" {
+  stage.regex {
+    expression = `^\S+ \S+ \S+ \[(?P<apache_time>[^\]]+)\] `
+  }
+
+  stage.timestamp {
+    source            = "apache_time"
+    format            = "02/Jan/2006:15:04:05 -0700"
+    action_on_failure = "skip"
+  }
+
+  forward_to = [loki.write.local.receiver]
+}
+
+loki.write "local" {
+  endpoint {
+    url = "http://127.0.0.1:3100/loki/api/v1/push"
+  }
+}
+ALLOY
+
+sudo alloy fmt /etc/alloy/config.alloy > /dev/null && echo "syntaxe OK"
+
+sudo find /var/lib/alloy -name 'positions.yml' -delete
+
+sudo chmod o+r /var/log/formation/access_log
+
+sudo systemctl start alloy
+sudo systemctl status alloy --no-pager
+sudo journalctl -u alloy -n 30 --no-pager
+```
+
 
 ### Explication
 
