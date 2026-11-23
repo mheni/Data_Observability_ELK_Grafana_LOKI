@@ -642,14 +642,7 @@ curl -s -X POST http://127.0.0.1:3100/flush
 
 dans /etc/loki/local-config.yaml
 
-```bash
-ingester:
-  chunk_idle_period: 1m
-  max_chunk_age: 5m
 
-querier:
-  query_ingesters_within: 0
-  ```
 
 ### Explication
 
@@ -683,7 +676,7 @@ Le démarrage renouvelle les groupes du service. Ses positions sont persistantes
 
 ## E4 — Rechercher les lignes et contrôler les temps
 
-Dans Explore, choisir les quinze dernières minutes, puis actualiser :
+Dans Explore, choisir les dernieres 48 h, puis actualiser :
 
 ```logql
 {job="atelier01-access"}
