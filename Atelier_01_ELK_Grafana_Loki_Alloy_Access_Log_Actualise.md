@@ -582,42 +582,7 @@ Le paquet est normalement déjà installé en D1. Le test de lecture doit réuss
 
 ## E2 — Source, extraction de date et sortie Loki
 
-```bash
-sudo systemctl stop alloy
-sudo cp -n /etc/alloy/config.alloy /etc/alloy/config.alloy.avant-tp01
-sudo tee /etc/alloy/config.alloy > /dev/null <<'ALLOY'
-loki.source.file "access_log" {
-  targets = [
-    {
-      __path__ = "/var/log/formation/access_log",
-      job      = "atelier01-access",
-      service  = "web-formation",
-    },
-  ]
-  tail_from_end = false
-  forward_to = [loki.process.access_log.receiver]
-}
 
-loki.process "access_log" {
-  stage.regex {
-    expression = `^\S+ \S+ \S+ \[(?P<apache_time>.*?)\] `
-  }
-  stage.timestamp {
-    source = "apache_time"
-    format = "02/Jan/2006:15:04:05 -0700"
-    action_on_failure = "skip"
-  }
-  forward_to = [loki.write.local.receiver]
-}
-
-loki.write "local" {
-  endpoint {
-    url = "http://127.0.0.1:3100/loki/api/v1/push"
-  }
-}
-ALLOY
-```
-### 
 ```bash
 sudo systemctl stop alloy
 sudo cp -n /etc/alloy/config.alloy /etc/alloy/config.alloy.avant-tp01
@@ -668,9 +633,19 @@ sudo journalctl -u alloy -n 30 --no-pager
 
 curl -s -G http://127.0.0.1:3100/loki/api/v1/query \
   --data-urlencode 'query=count_over_time({job="atelier01-access"}[7d])'
-
+curl -s -X POST http://127.0.0.1:3100/flush
 ```
 
+dans /etc/loki/local-config.yaml
+
+```bash
+ingester:
+  chunk_idle_period: 1m
+  max_chunk_age: 5m
+
+querier:
+  query_ingesters_within: 0
+  ```
 
 ### Explication
 
