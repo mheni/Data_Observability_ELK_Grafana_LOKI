@@ -168,7 +168,7 @@ access_log → atelier 3 : Python + Bulk → atelier03-access
 | Console | API Elasticsearch + JSON | `GET atelier08-access/_count` |
 | Discover, mode ES|QL | ES|QL | `FROM atelier08-access | STATS n = COUNT(*)` |
 
-La requête `status >= 500 and status < 600` est valide en KQL. Zéro résultat ne prouve pas une erreur de syntaxe : il peut simplement n’exister aucun 5xx dans l’échantillon ou dans la période sélectionnée. Le diagnostic de la section 6 doit être réalisé avant de changer les formules. [web:52]
+La requête `status >= 500 and status < 600` est valide en KQL. Zéro résultat ne prouve pas une erreur de syntaxe : il peut simplement n’exister aucun 5xx dans l’échantillon ou dans la période sélectionnée. Le diagnostic de la section 6 doit être réalisé avant de changer les formules. 
 
 ## 3. Préparer les données : connexion, contrôles et projection
 
@@ -580,7 +580,7 @@ Lucene  : status:[500 TO 599]
 ES|QL   : FROM atelier08-access | WHERE status >= 500 AND status < 600
 ```
 
-Une formule `count(...)` ne se colle pas dans la barre KQL : elle se saisit dans l’éditeur Formula d’une dimension Lens. [web:52][web:74]
+Une formule `count(...)` ne se colle pas dans la barre KQL : elle se saisit dans l’éditeur Formula d’une dimension Lens. 
 
 ### 6.5 Générer les fichiers de résultat attendus par les scripts
 
@@ -714,7 +714,7 @@ Cette procédure sera utilisée à chaque création de panneau :
 5. Repérer les trois zones : champs à gauche ; aperçu au centre ; dimensions de la couche à droite.
 6. Au-dessus de l’aperçu, ouvrir le sélecteur de type de graphique. Choisir le type indiqué dans chaque exercice ( sous section).
 
-Si vous voyez un éditeur de requête ES|QL à la place des dimensions, revenir au mode Point-and-click. Lens permet de glisser les champs dans le panneau des dimensions ; un clic sur une zone « Drop a field or click to add » permet aussi de choisir une fonction. [web:74]
+Si vous voyez un éditeur de requête ES|QL à la place des dimensions, revenir au mode Point-and-click. Lens permet de glisser les champs dans le panneau des dimensions ; un clic sur une zone « Drop a field or click to add » permet aussi de choisir une fonction.
 
 ### 10.3 Procédure commune : terminer un panneau
 
@@ -724,7 +724,7 @@ Si vous voyez un éditeur de requête ES|QL à la place des dimensions, revenir 
 4. Saisir le titre et confirmer.
 5. Cliquer Save sur le dashboard.
 
-Sauvegarder le panneau et sauvegarder le dashboard sont deux gestes à vérifier. Si vous partez de Visualize Library, Lens peut proposer Save puis le choix du dashboard à la place de Save and return. [web:74]
+Sauvegarder le panneau et sauvegarder le dashboard sont deux gestes à vérifier. Si vous partez de Visualize Library, Lens peut proposer Save puis le choix du dashboard à la place de Save and return.
 
 ## 11. Construire les KPI : manipulations détaillées
 
@@ -791,7 +791,7 @@ Résultat attendu si S = 0 : la tuile affiche zéro. Une formule correcte peut p
 5. Comparer la valeur à la tuile de la section 11.3.
 6. Annuler ce panneau de test pour ne pas garder un doublon.
 
-Les formules Lens peuvent filtrer leurs agrégations avec `kql='...'`. Les fonctions de filtrage de dimension et la barre globale n’ont pas la même portée. [web:74]
+Les formules Lens peuvent filtrer leurs agrégations avec `kql='...'`. Les fonctions de filtrage de dimension et la barre globale n’ont pas la même portée.
 
 ### 11.5 KPI « Octets connus »
 
@@ -847,7 +847,7 @@ count(kql='status >= 500 and status < 600') / count(kql='status >= 100 and statu
 9. Comparer la valeur affichée à `100 × S / V`, si V est supérieur à zéro.
 10. Enregistrer `[A08] Part 5xx — statuts valides`.
 
-Exemple de calcul explicatif seulement : 2 réponses 5xx sur 100 statuts valides donnent une valeur de formule 0,02, affichée 2 %. Ce n’est pas un chiffre imposé au corpus. Les ratios et le format Percent sont documentés dans Lens. [web:74]
+Exemple de calcul explicatif seulement : 2 réponses 5xx sur 100 statuts valides donnent une valeur de formule 0,02, affichée 2 %. Ce n’est pas un chiffre imposé au corpus. Les ratios et le format Percent sont documentés dans Lens.
 
 ### 12.2 Part des erreurs HTTP 4xx + 5xx
 
@@ -908,7 +908,7 @@ Si V = 0, ne pas transformer l’absence de dénominateur en « service sans err
 10. Pour les 1 000 documents fournis, choisir un minimum de `1 seconde` (`1s`) : ils ne couvrent que cinq secondes. Un intervalle d’une minute regrouperait ici tout l’échantillon dans une seule barre. Pour un autre corpus, choisir le minimum à partir des bornes mesurées.
 11. Fermer le volet de dimension.
 
-Le minimum demandé peut être ajusté par Kibana pour limiter le nombre de barres. Ne pas demander des milliers d’intervalles sur une archive couvrant des années. [web:74]
+Le minimum demandé peut être ajusté par Kibana pour limiter le nombre de barres. Ne pas demander des milliers d’intervalles sur une archive couvrant des années.
 
 ### 13.2 Ajouter le comptage
 
@@ -935,7 +935,7 @@ Si toutes les requêtes tiennent dans une seule barre, vérifier l’étendue r�
 11. Garder la légende visible pour identifier les classes.
 12. Enregistrer `[A08] Requêtes dans le temps par classe HTTP`.
 
-Top values affiche les classes réellement présentes. L’absence de série 5xx si S = 0 est normale. Les opérations Date histogram et Top values sont configurables dans les dimensions Lens. [web:74]
+Top values affiche les classes réellement présentes. L’absence de série 5xx si S = 0 est normale. Les opérations Date histogram et Top values sont configurables dans les dimensions Lens. 
 
 ### 13.4 Tester l’interaction temporelle
 
@@ -1057,7 +1057,7 @@ Recommencer les étapes précédentes avec :
 | `url_path` | Options list | `Chemin` |
 | `bytes` | Range slider | `Taille connue` |
 
-Pour le Range slider, déplacer une borne puis observer le filtrage. Retirer ensuite la sélection : ce contrôle peut exclure les documents sans taille. Les contrôles filtrent les panneaux pertinents selon leurs champs et sources. [web:59][web:60]
+Pour le Range slider, déplacer une borne puis observer le filtrage. Retirer ensuite la sélection : ce contrôle peut exclure les documents sans taille. Les contrôles filtrent les panneaux pertinents selon leurs champs et sources.
 
 ### 18.3 Ajouter la table Discover
 
@@ -1099,7 +1099,7 @@ Pour le Range slider, déplacer une borne puis observer le filtrage. Retirer ens
 7. Utiliser Open in Console si proposé pour examiner la requête sans la modifier.
 8. Fermer Inspect et comparer le résultat aux références de la section 6.
 
-Ne pas comparer un comptage Elasticsearch sans filtre à un panneau limité à une méthode ou à une période différente. L’inspecteur permet de consulter les données, requêtes et, selon le panneau, d’exporter le tableau en CSV. [web:74]
+Ne pas comparer un comptage Elasticsearch sans filtre à un panneau limité à une méthode ou à une période différente. L’inspecteur permet de consulter les données, requêtes et, selon le panneau, d’exporter le tableau en CSV.
 
 ## 20. Alertes : comprendre règle, alerte et action
 
@@ -1112,7 +1112,7 @@ Ne pas comparer un comptage Elasticsearch sans filtre à un panneau limité à u
 | Connector | Configuration de connexion à un service de notification |
 | Action | Notification ou autre opération exécutée selon la configuration |
 
-Une règle n’utilise pas automatiquement la période absolue du dashboard. Elle évalue sa propre fenêtre glissante, par exemple les cinq dernières minutes. Une archive de 2017 ne peut donc pas déclencher une règle basée sur les cinq dernières minutes de `@timestamp`. [web:44][web:51]
+Une règle n’utilise pas automatiquement la période absolue du dashboard. Elle évalue sa propre fenêtre glissante, par exemple les cinq dernières minutes. Une archive de 2017 ne peut donc pas déclencher une règle basée sur les cinq dernières minutes de `@timestamp`.
 
 ### 20.1 Vérification obligatoire
 
@@ -1126,7 +1126,7 @@ Avant de faire réaliser les manipulations aux débutants :
 6. Vérifier la disponibilité et les conditions de licence du connecteur envisagé.
 7. Si le lab initial sans sécurité ne permet pas l’alerting, préparer une variante sécurisée avant la séance. Ne pas demander aux stagiaires d’activer la sécurité au milieu de l’exercice.
 
-Les fonctions d’alerte peuvent être bloquées par l’absence de clé de chiffrement ou de configuration requise. Ne pas contourner les droits ni désactiver TLS pour « débloquer » l’atelier. [web:66][web:67]
+Les fonctions d’alerte peuvent être bloquées par l’absence de clé de chiffrement ou de configuration requise. Ne pas contourner les droits ni désactiver TLS pour « débloquer » l’atelier. 
 
 
 ## 21. Préparer un corpus récent séparé pour tester les règles
@@ -1193,7 +1193,7 @@ Ne pas appliquer ce pipeline au corpus réel : il remplace volontairement la dat
 15. Ne pas ajouter d’action externe à ce stade. Si un avertissement indique qu’aucune notification ne sera envoyée, le distinguer d’une impossibilité de créer la règle.
 16. Cliquer Save / Create rule.
 
-La règle Index threshold propose les clauses WHEN, OVER/GROUPED OVER, la comparaison, la fenêtre et le filtre KQL. [web:44]
+La règle Index threshold propose les clauses WHEN, OVER/GROUPED OVER, la comparaison, la fenêtre et le filtre KQL. 
 
 ### 22.2 Injecter un événement de test récent
 
@@ -1246,7 +1246,7 @@ Attendu juste après l’injection : au moins un document.
 5. Comprendre qu’injecter un 200 ne neutralise pas un 503 encore dans la fenêtre.
 6. Désactiver la règle en fin de séance pour éviter de laisser tourner les tests.
 
-Une alerte active puis récupérée valide le cycle ; cliquer seulement sur un bouton de test ne prouve pas que l’exécution planifiée fonctionne. [web:44]
+Une alerte active puis récupérée valide le cycle ; cliquer seulement sur un bouton de test ne prouve pas que l’exécution planifiée fonctionne. 
 
 ## 23. Ajouter une notification, uniquement si le connecteur est autorisé
 
@@ -1264,11 +1264,11 @@ Parcours optionnel. Une règle peut être étudiée sans envoyer de message exte
 10. Observer le nouvel état et  vérifier la notification.
 11. Si l’alerte existe mais pas le message, contrôler séparément l’action, le connecteur, la fréquence et les erreurs d’exécution.
 
-La disponibilité des actions dépend de la configuration, des droits et de la licence. Ne pas présenter l’envoi d’e-mails comme acquis sans serveur SMTP et connecteur opérationnels. [web:44][web:66]
+La disponibilité des actions dépend de la configuration, des droits et de la licence. Ne pas présenter l’envoi d’e-mails comme acquis sans serveur SMTP et connecteur opérationnels. 
 
 ## 24. Approfondissement guidé : comparer deux fenêtres réellement disponibles
 
-Le corpus par défaut couvre cinq secondes et le fichier complet dix minutes. Une comparaison H-1 ou J-1 n’est pas réalisable avec ces seules données. Nous utilisons un décalage de trois secondes uniquement pour apprendre la fonction, sans présenter ces quelques secondes comme une tendance métier. [web:74]
+Le corpus par défaut couvre cinq secondes et le fichier complet dix minutes. Une comparaison H-1 ou J-1 n’est pas réalisable avec ces seules données. Nous utilisons un décalage de trois secondes uniquement pour apprendre la fonction, sans présenter ces quelques secondes comme une tendance métier. 
 
 1. Ouvrir le dashboard et créer Lens → Line.
 2. Choisir `[A08] Access logs`.
@@ -1320,7 +1320,7 @@ Lire les deux `doc_count`. Les bornes sont explicites et les fenêtres ne se che
 7. Régler une couleur contrastée.
 8. Sauvegarder et revenir au dashboard.
 
-Une ligne de référence visuelle ne crée aucune règle d’alerte. Son unité doit correspondre à la mesure : nombre par intervalle, et non requêtes par seconde si la métrique n’est pas normalisée. [web:74]
+Une ligne de référence visuelle ne crée aucune règle d’alerte. Son unité doit correspondre à la mesure : nombre par intervalle, et non requêtes par seconde si la métrique n’est pas normalisée. 
 
 ### 25.2 Ajouter une annotation statique
 
@@ -1332,7 +1332,7 @@ Une ligne de référence visuelle ne crée aucune règle d’alerte. Son unité 
 6. Choisir une icône et une couleur lisibles.
 7. Sauvegarder.
 
-Ne pas étiqueter « déploiement » ou « panne » une date pour laquelle vous n’avez aucune preuve. L’annotation est ici un repère de lecture, pas une causalité établie. [web:74]
+Ne pas étiqueter « déploiement » ou « panne » une date pour laquelle vous n’avez aucune preuve. L’annotation est ici un repère de lecture, pas une causalité établie.
 
 ## 26. Approfondissement guidé : analyse ES|QL indépendante
 
@@ -1357,8 +1357,7 @@ FROM atelier08-access
 8. Sauvegarder la session `[A08] ES|QL — chemins en erreur` si les droits le permettent.
 9. Revenir au dashboard sans remplacer sa Data View par une requête.
 
-Objectif pédagogique : KQL filtre des documents dans une Data View ; ES|QL permet d’écrire une chaîne de filtrage, agrégation et tri. Les visualisations en mode Query constituent un parcours distinct dans Lens. [web:74]
-
+Objectif pédagogique : KQL filtre des documents dans une Data View ; ES|QL permet d’écrire une chaîne de filtrage, agrégation et tri. Les visualisations en mode Query constituent un parcours distinct dans Lens.
 ## 27. Carte guidée reproductible avec les fichiers réellement fournis
 
 Le pack fournit déjà `preparer_geo_demo.py` : nous l’utilisons au lieu d’introduire une deuxième structure géographique. Il crée six documents, trois positions distinctes et aucune IP réelle. Il dépend de `access-bornes.json`, généré en section 6.5. [file:90]
@@ -1479,7 +1478,7 @@ Si aucun 4xx/5xx n’est présent, réaliser l’investigation sur une classe ex
 5. Inclure les objets liés si l’option est proposée.
 6. Conserver l’export NDJSON avec le compte rendu.
 
-L’export des objets Kibana ne sauvegarde pas les documents Elasticsearch. Ne pas supposer qu’il constitue une sauvegarde portable des règles, des secrets ou des connecteurs ; prévoir leur gestion séparément selon les possibilités du déploiement. [file:38][web:71]
+L’export des objets Kibana ne sauvegarde pas les documents Elasticsearch. Ne pas supposer qu’il constitue une sauvegarde portable des règles, des secrets ou des connecteurs ; prévoir leur gestion séparément selon les possibilités du déploiement. 
 
 ## 30. Dépannage rapide et critères de réussite
 
