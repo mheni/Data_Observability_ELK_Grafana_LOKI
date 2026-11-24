@@ -1,0 +1,35 @@
+{
+  "description": "Classification et trace ingestion du corpus access_log atelier08",
+  "processors": [
+    {
+      "set": {
+        "field": "ingested_at",
+        "value": "{{{_ingest.timestamp}}}"
+      }
+    },
+    {
+      "set": {
+        "field": "service",
+        "value": "web-formation"
+      }
+    },
+    {
+      "set": {
+        "field": "environment",
+        "value": "formation"
+      }
+    },
+    {
+      "set": {
+        "field": "dataset",
+        "value": "access_log_reel"
+      }
+    },
+    {
+      "script": {
+        "lang": "painless",
+        "source": "if (ctx.status != null) { int s = Integer.parseInt(ctx.status.toString()); ctx.status = s; ctx.status_class = s >= 100 && s < 600 ? Integer.toString((int)(s / 100)) + 'xx' : 'autre'; ctx.is_http_error = s >= 400 && s < 600; } if (ctx.path != null) { String p = ctx.path.toString(); int q = p.indexOf('?'); ctx.url_path = q >= 0 ? p.substring(0, q) : p; } if (ctx['@timestamp'] != null) { ctx.ingest_delay_ms = java.time.Duration.between(java.time.ZonedDateTime.parse(ctx['@timestamp']), java.time.ZonedDateTime.parse(ctx.ingested_at)).toMillis(); }"
+      }
+    }
+  ]
+}

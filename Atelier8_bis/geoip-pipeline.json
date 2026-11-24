@@ -1,0 +1,34 @@
+{
+  "description": "GeoIP optionnel ; ne pas fabriquer des coordonnees pour les IP sans resultat",
+  "processors": [
+    {
+      "geoip": {
+        "field": "client_ip",
+        "target_field": "client_geo",
+        "properties": [
+          "country_iso_code",
+          "country_name",
+          "city_name",
+          "location"
+        ],
+        "ignore_missing": true,
+        "on_failure": [
+          {
+            "append": {
+              "field": "tags",
+              "value": "_geoip_failed",
+              "allow_duplicates": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "set": {
+        "if": "ctx.client_geo != null && ctx.client_geo.location != null",
+        "field": "geo_source",
+        "value": "geoip"
+      }
+    }
+  ]
+}

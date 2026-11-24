@@ -1,0 +1,43 @@
+{
+  "docs": [
+    {
+      "_source": {
+        "@timestamp": "2026-11-22T18:51:30Z",
+        "client_ip": "216.244.66.246",
+        "method": "GET",
+        "path": "/docs/triton/pages.html",
+        "status": 200,
+        "bytes": 5639,
+        "message": "216.244.66.246 - - [22/Nov/2026:18:51:30 +0000] \"GET /docs/triton/pages.html HTTP/1.1\" 200 5639 \"-\" \"Mozilla/5.0 (compatible; DotBot/1.1; http://www.opensiteexplorer.org/dotbot, help@moz.com)\"",
+        "request_line": "GET /docs/triton/pages.html HTTP/1.1",
+        "user_agent": "Mozilla/5.0 (compatible; DotBot/1.1; http://www.opensiteexplorer.org/dotbot, help@moz.com)"
+      }
+    },
+    {
+      "_source": {
+        "@timestamp": "2026-11-22T18:51:30Z",
+        "client_ip": "199.21.99.207",
+        "method": "GET",
+        "path": "/docs/triton/class_triton_1_1_wind_fetch-members.html",
+        "status": 200,
+        "bytes": 1845,
+        "message": "199.21.99.207 - - [22/Nov/2026:18:51:30 +0000] \"GET /docs/triton/class_triton_1_1_wind_fetch-members.html HTTP/1.1\" 200 1845 \"-\" \"Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)\"",
+        "request_line": "GET /docs/triton/class_triton_1_1_wind_fetch-members.html HTTP/1.1",
+        "user_agent": "Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)"
+      }
+    },
+    {
+      "_source": {
+        "@timestamp": "2026-11-22T18:51:30Z",
+        "client_ip": "199.21.99.207",
+        "method": "GET",
+        "path": "/docs/triton/class_triton_1_1_breaking_waves_parameters-members.html",
+        "status": 200,
+        "bytes": 1967,
+        "message": "199.21.99.207 - - [22/Nov/2026:18:51:30 +0000] \"GET /docs/triton/class_triton_1_1_breaking_waves_parameters-members.html HTTP/1.1\" 200 1967 \"-\" \"Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)\"",
+        "request_line": "GET /docs/triton/class_triton_1_1_breaking_waves_parameters-members.html HTTP/1.1",
+        "user_agent": "Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)"
+      }
+    }
+  ]
+}

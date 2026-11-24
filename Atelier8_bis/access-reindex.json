@@ -1,0 +1,25 @@
+{
+  "source": {
+    "index": "atelier03-access",
+    "_source": [
+      "@timestamp",
+      "client_ip",
+      "method",
+      "path",
+      "status",
+      "bytes",
+      "message",
+      "request_line",
+      "user_agent"
+    ]
+  },
+  "dest": {
+    "index": "atelier08-access",
+    "pipeline": "atelier08-access-base",
+    "op_type": "create"
+  },
+  "script": {
+    "lang": "painless",
+    "source": "ctx._source.event_id = ctx._id;"
+  }
+}

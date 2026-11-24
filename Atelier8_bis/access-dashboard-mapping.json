@@ -1,0 +1,89 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "event_id": {
+        "type": "keyword"
+      },
+      "@timestamp": {
+        "type": "date"
+      },
+      "ingested_at": {
+        "type": "date"
+      },
+      "ingest_delay_ms": {
+        "type": "long"
+      },
+      "client_ip": {
+        "type": "keyword"
+      },
+      "method": {
+        "type": "keyword"
+      },
+      "path": {
+        "type": "keyword",
+        "ignore_above": 4096
+      },
+      "url_path": {
+        "type": "keyword",
+        "ignore_above": 4096
+      },
+      "status": {
+        "type": "integer"
+      },
+      "status_class": {
+        "type": "keyword"
+      },
+      "is_http_error": {
+        "type": "boolean"
+      },
+      "bytes": {
+        "type": "long"
+      },
+      "message": {
+        "type": "text"
+      },
+      "request_line": {
+        "type": "text"
+      },
+      "user_agent": {
+        "type": "text"
+      },
+      "service": {
+        "type": "keyword"
+      },
+      "environment": {
+        "type": "keyword"
+      },
+      "dataset": {
+        "type": "keyword"
+      },
+      "geo_source": {
+        "type": "keyword"
+      },
+      "client_geo": {
+        "properties": {
+          "country_iso_code": {
+            "type": "keyword"
+          },
+          "country_name": {
+            "type": "keyword"
+          },
+          "city_name": {
+            "type": "keyword"
+          },
+          "location": {
+            "type": "geo_point"
+          }
+        }
+      },
+      "tags": {
+        "type": "keyword"
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "size": 0,
+  "track_total_hits": true,
+  "aggs": {
+    "classes": {
+      "terms": {
+        "field": "status_class",
+        "size": 10
+      }
+    },
+    "erreurs_http": {
+      "filter": {
+        "range": {
+          "status": {
+            "gte": 400,
+            "lt": 600
+          }
+        }
+      }
+    },
+    "erreurs_serveur": {
+      "filter": {
+        "range": {
+          "status": {
+            "gte": 500,
+            "lt": 600
+          }
+        }
+      }
+    },
+    "octets_connus": {
+      "sum": {
+        "field": "bytes"
+      }
+    },
+    "sans_statut": {
+      "filter": {
+        "bool": {
+          "must_not": [
+            {
+              "exists": {
+                "field": "status"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "sans_methode": {
+      "filter": {
+        "bool": {
+          "must_not": [
+            {
+              "exists": {
+                "field": "method"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "sans_taille": {
+      "filter": {
+        "bool": {
+          "must_not": [
+            {
+              "exists": {
+                "field": "bytes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "geolocalises": {
+      "filter": {
+        "exists": {
+          "field": "client_geo.location"
+        }
+      }
+    },
+    "ip_distinctes_estimees": {
+      "cardinality": {
+        "field": "client_ip",
+        "precision_threshold": 1000
+      }
+    },
+    "statuts_valides": {
+      "filter": {
+        "range": {
+          "status": {
+            "gte": 100,
+            "lt": 600
+          }
+        }
+      }
+    },
+    "sans_date": {
+      "filter": {
+        "bool": {
+          "must_not": [
+            {
+              "exists": {
+                "field": "@timestamp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "erreurs_4xx": {
+      "filter": {
+        "range": {
+          "status": {
+            "gte": 400,
+            "lt": 500
+          }
+        }
+      }
+    },
+    "statuts": {
+      "terms": {
+        "field": "status",
+        "size": 100,
+        "order": {
+          "_key": "asc"
+        }
+      }
+    }
+  }
+}

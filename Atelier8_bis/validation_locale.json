@@ -1,0 +1,113 @@
+{
+  "nature": "Tests locaux sur fichiers joints ; aucune execution Elasticsearch/Kibana",
+  "source_sha256": "09693e55a8bcb1dedd3659c23833aa06a4ad2c8fb5f46b7fd2d9b93ee941c815",
+  "sample_1000": {
+    "documents": 1000,
+    "status": {
+      "200": 881,
+      "301": 71,
+      "304": 18,
+      "403": 2,
+      "404": 28
+    },
+    "date_min": "2026-11-22T18:51:30Z",
+    "date_max": "2026-11-22T18:51:35Z",
+    "missing_method": 0,
+    "missing_bytes": 341,
+    "bytes_sum": 9614598,
+    "distinct_ips": 154
+  },
+  "full_corpus": {
+    "lines": 102972,
+    "regex_rejected": 0,
+    "date_min": "2026-11-22T18:51:30Z",
+    "date_max": "2026-11-22T19:01:30Z",
+    "statuses": {
+      "200": 91074,
+      "301": 7833,
+      "304": 1056,
+      "403": 88,
+      "404": 2298,
+      "302": 20,
+      "408": 252,
+      "206": 71,
+      "400": 29,
+      "500": 248,
+      "405": 3
+    }
+  },
+  "projected_fields_undeclared": [],
+  "geo_demo": {
+    "returncode": 0,
+    "documents": 6,
+    "distinct_positions": 3,
+    "undeclared_fields": []
+  },
+  "bulk_checker": [
+    {
+      "test": "succes",
+      "returncode": 0,
+      "expected": 0,
+      "ok": true
+    },
+    {
+      "test": "rejet",
+      "returncode": 1,
+      "expected": 1,
+      "ok": true
+    },
+    {
+      "test": "incomplet",
+      "returncode": 1,
+      "expected": 1,
+      "ok": true
+    }
+  ],
+  "elasticsearch_pipelines_executed": false,
+  "kibana_ui_validated": false,
+  "helper_tests": [
+    {
+      "mode": "bornes",
+      "expected_rc": 0,
+      "actual_rc": 0,
+      "ok": true
+    },
+    {
+      "mode": "bornes",
+      "expected_rc": 1,
+      "actual_rc": 1,
+      "ok": true
+    },
+    {
+      "mode": "simulate",
+      "expected_rc": 1,
+      "actual_rc": 1,
+      "ok": true
+    },
+    {
+      "mode": "reindex",
+      "expected_rc": 0,
+      "actual_rc": 0,
+      "ok": true
+    },
+    {
+      "mode": "reindex",
+      "expected_rc": 1,
+      "actual_rc": 1,
+      "ok": true
+    },
+    {
+      "mode": "bulk",
+      "expected_rc": 0,
+      "actual_rc": 0,
+      "ok": true
+    },
+    {
+      "mode": "bulk",
+      "expected_rc": 1,
+      "actual_rc": 1,
+      "ok": true
+    }
+  ],
+  "embedded_json_parsed": 5
+}

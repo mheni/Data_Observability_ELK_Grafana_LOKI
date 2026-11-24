@@ -1,0 +1,26 @@
+{
+  "size": 0,
+  "track_total_hits": true,
+  "aggs": {
+    "premier_evenement": {
+      "min": {
+        "field": "@timestamp"
+      }
+    },
+    "dernier_evenement": {
+      "max": {
+        "field": "@timestamp"
+      }
+    },
+    "premiere_ingestion": {
+      "min": {
+        "field": "ingested_at"
+      }
+    },
+    "derniere_ingestion": {
+      "max": {
+        "field": "ingested_at"
+      }
+    }
+  }
+}
