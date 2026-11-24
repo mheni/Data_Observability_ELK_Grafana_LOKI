@@ -258,6 +258,10 @@ curl --fail-with-body -sS -X PUT "$ES_URL/atelier08-access" \
 curl --fail-with-body -sS -X PUT "$ES_URL/_ingest/pipeline/atelier08-access-base" \
   -H 'Content-Type: application/json' --data-binary @access-base-pipeline.json
 ```
+Cette requête crée ou remplace un pipeline d’ingestion nommé atelier08-access-base dans Elasticsearch.
+
+Elle enregistre les traitements décrits dans le fichier access-base-pipeline.json. Elle n’insère aucun log, ne lance pas la réindexation et ne modifie pas les documents déjà présents. Dans votre atelier, ce pipeline sera utilisé ensuite par la requête de réindexation.
+
 
 ### Mapping de référence
 
