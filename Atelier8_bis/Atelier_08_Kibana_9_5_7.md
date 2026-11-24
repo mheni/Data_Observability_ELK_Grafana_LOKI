@@ -82,7 +82,7 @@ GET atelier03-access/_count
 - Index déjà rempli : conserver son contenu et poursuivre avec les contrôles de section 4.
 - Index absent : appliquer le mapping avec la première commande ci-dessous.
 - Index existant mais vide : inspecter `_mapping` ; si compatible, sauter la commande de création et importer.
-- Mapping incompatible ou données d’une autre session : arrêter et convenir d’un index distinct avec le formateur ; ne pas supprimer automatiquement.
+- Mapping incompatible ou données d’une autre session : arrêter et convenir d’un index distinct  ; ne pas supprimer automatiquement.
 
 Terminal, cas d’un index absent, avec les options de sécurité de l’atelier 1 si nécessaires :
 
@@ -1122,11 +1122,6 @@ Avant de faire réaliser les manipulations aux débutants :
 
 Les fonctions d’alerte peuvent être bloquées par l’absence de clé de chiffrement ou de configuration requise. Ne pas contourner les droits ni désactiver TLS pour « débloquer » l’atelier. [web:66][web:67]
 
-### 20.2 Point d’arrêt si Rules n’est pas utilisable
-
-La présence des JSON de l’atelier ne prouve pas que l’alerting du serveur est configuré. Le formateur doit valider un cycle réel avant la séance : création de la règle, exécution, déclenchement puis récupération. Les prérequis incluent les droits, la clé persistante et, en mode sécurisé, les clés API ; la documentation mentionne également `search.allow_expensive_queries`. [web:67]
-
-Si le module est indisponible, ne pas immobiliser les débutants et ne pas reconfigurer tout le cluster pendant le TP : réaliser la requête de comptage de la section 22.2, expliquer la condition et reporter la création de règle sur l’environnement préparé. Ce repli est une vérification manuelle de condition, pas une alerte Kibana planifiée et ne valide pas le critère « cycle d’alerte réussi ».
 
 ## 21. Préparer un corpus récent séparé pour tester les règles
 
@@ -1416,12 +1411,11 @@ Les identifiants stables du générateur évitent de multiplier ces mêmes six d
 
 Un filtre global sur un chemin réel peut vider cette carte indépendante, dont les chemins valent `/demo`. Effacer les filtres d’investigation pour tester la carte, ou l’ouvrir dans Maps. Si les paramètres de panneau le permettent, ignorer les filtres globaux uniquement pour ce panneau de simulation et l’indiquer dans sa description. Une période excluant le premier événement peut aussi masquer tous les points.
 
-Si le fond ne charge pas, faire vérifier le service cartographique par le formateur ; le téléchargement de tuiles est une dépendance réseau distincte de la présence des coordonnées. Ne pas contourner TLS.
 
 ### 27.3 GeoIP réel : option non bloquante
 
 1. Dans Console, exécuter `GET _ingest/geoip/stats`.
-2. Faire préparer le pipeline `geoip-pipeline.json` par le formateur selon l’annexe A.
+2. Faire préparer le pipeline `geoip-pipeline.json`selon l’annexe A.
 3. Copier une IP publique d’un document source dans la requête `_simulate` de l’annexe.
 4. Vérifier si `client_geo.location` est réellement produit.
 5. Seulement après ce test, réindexer dans `atelier08-access-geoip` et vérifier les erreurs de traitement.
@@ -1429,7 +1423,7 @@ Si le fond ne charge pas, faire vérifier le service cartographique par le forma
 7. Créer une Data View exacte sur l’index enrichi, puis reprendre les clics Maps avec ce champ.
 8. Si la base ou les coordonnées ne sont pas disponibles, conserver la carte de simulation. Ne pas en faire un échec du socle dashboard.
 
-Ne jamais attribuer une ville fictive à une IP réelle. La base GeoIP n’est pas incluse dans les fichiers fournis. [file:88][file:89]
+Ne jamais attribuer une ville fictive à une IP réelle. La base GeoIP n’est pas incluse dans les fichiers fournis. 
 
 ## 28. Scénario final guidé et corrigé attendu
 
