@@ -31,7 +31,7 @@ Ce support remplace le précédent atelier 08. Il conserve le corpus access logs
 
 La cible demandée est 9.5.7. Les procédures s’appuient sur la documentation officielle actuelle et les fichiers du parcours ; elles n’ont pas été exécutées sur votre instance. Les variantes de libellés utiles sont indiquées, sans prétendre que chaque bouton occupe une position identique dans tous les déploiements. Ne pas confondre le mode Lens « Point-and-click » avec le mode « Query ». Le socle utilise Point-and-click et KQL. [web:74]
 
-### Consigne formateur avant la séance
+### Consigne avant la séance
 
 1. Vérifier les droits de création des Data Views, dashboards et visualisations.
 2. Vérifier que `atelier03-access` est rempli et que `status` est numérique.
@@ -684,8 +684,6 @@ Ne pas nommer cette tuile « Visiteurs » : une IP n’est pas une personne, et 
 4. Prévoir une largeur suffisante pour lire le titre et la valeur.
 5. Cliquer Save.
 
-Point de contrôle formateur : chaque participant explique la différence entre nombre de documents, somme d’octets et nombre d’IP distinctes.
-
 ## 12. Construire et vérifier les taux
 
 ### 12.1 Part 5xx parmi les statuts valides
@@ -805,7 +803,6 @@ Top values affiche les classes réellement présentes. L’absence de série 5xx
 5. Revenir à la période absolue du corpus avec le sélecteur de temps.
 6. Cliquer Save uniquement lorsque le contexte initial est restauré.
 
-Note formateur : demander « le nombre de requêtes a baissé, est-ce une perte de données ? ». Réponse attendue : non, nous avons restreint la période.
 
 ## 14. Visualiser la distribution des tailles
 
@@ -974,7 +971,7 @@ Ne pas comparer un comptage Elasticsearch sans filtre à un panneau limité à u
 
 Une règle n’utilise pas automatiquement la période absolue du dashboard. Elle évalue sa propre fenêtre glissante, par exemple les cinq dernières minutes. Une archive de 2017 ne peut donc pas déclencher une règle basée sur les cinq dernières minutes de `@timestamp`. [web:44][web:51]
 
-### 20.1 Vérification formateur obligatoire
+### 20.1 Vérification obligatoire
 
 Avant de faire réaliser les manipulations aux débutants :
 
@@ -1109,7 +1106,7 @@ Une alerte active puis récupérée valide le cycle ; cliquer seulement sur un b
 
 ## 23. Ajouter une notification, uniquement si le connecteur est autorisé
 
-Parcours optionnel, préparé avec le formateur. Une règle peut être étudiée sans envoyer de message externe.
+Parcours optionnel. Une règle peut être étudiée sans envoyer de message externe.
 
 1. Ouvrir la règle → Edit.
 2. Aller dans Actions → Add action.
@@ -1120,7 +1117,7 @@ Parcours optionnel, préparé avec le formateur. Une règle peut être étudiée
 7. Pour ajouter le nom de règle ou les valeurs, utiliser le sélecteur de variables du formulaire. Ne pas recopier au hasard une variable d’un autre type de règle.
 8. Sauvegarder.
 9. Réinjecter un 503 avec la commande de la section 22.2.
-10. Observer le nouvel état et faire vérifier la notification par le formateur.
+10. Observer le nouvel état et  vérifier la notification.
 11. Si l’alerte existe mais pas le message, contrôler séparément l’action, le connecteur, la fréquence et les erreurs d’exécution.
 
 La disponibilité des actions dépend de la configuration, des droits et de la licence. Ne pas présenter l’envoi d’e-mails comme acquis sans serveur SMTP et connecteur opérationnels. [web:44][web:66]
@@ -1252,14 +1249,13 @@ Créer une Data View `[A08] Carte SIMULATION` sur le motif exact `atelier08-map-
 13. Dans le dashboard en mode Edit, choisir Add from library et ajouter cette carte.
 14. Ajouter un texte visible : `Carte pédagogique indépendante : aucune provenance réelle des requêtes n’est représentée.`
 
-Si le fond ne charge pas, distinguer les points du service de fond cartographique : faire vérifier les accès réseau et la configuration par le formateur. Ne pas contourner TLS. Si un filtre global du dashboard vide une couche indépendante, retirer ce filtre et tester Maps seul. [file:38]
 
 ### 27.3 Extension GeoIP réelle, si la base est disponible
 
 Le parcours reproductible ci-dessus ne remplace pas un enrichissement réel. Pour ce dernier :
 
 1. Dans Console, exécuter `GET _ingest/geoip/stats`.
-2. Faire préparer par le formateur le pipeline GeoIP de l’annexe.
+2. Faire préparer le pipeline GeoIP de l’annexe.
 3. Ouvrir un document source et copier une IP publique réellement présente.
 4. Dans la requête `_simulate` de l’annexe, remplacer l’IP de boucle locale par cette IP.
 5. Exécuter et vérifier `client_geo.location` ou les tags de diagnostic.
@@ -1308,7 +1304,6 @@ Si aucun 4xx/5xx n’est présent, réaliser l’investigation sur une classe ex
 3. Réouvrir `[A08] Diagnostic Access logs`.
 4. Vérifier titres, contrôles, table Discover et période.
 5. Vérifier qu’aucun filtre de test n’est resté actif.
-6. Tester la lecture avec un compte autorisé si le formateur en fournit un.
 
 ### 29.2 Exporter les objets Kibana
 
@@ -1357,26 +1352,12 @@ L’export des objets Kibana ne sauvegarde pas les documents Elasticsearch. Ne p
 | Carte | Simulation explicitement identifiée ou couverture GeoIP documentée |
 | Conservation | Dashboard sauvegardé ; règle de test désactivée |
 
-### Note formateur à faire reformuler
 
-« Je sais quelle donnée je compte, sur quelle période et avec quels filtres. Je vérifie les résultats Elasticsearch avant de conclure qu’une formule est fausse. Je distingue un graphique historique d’une règle planifiée et une simulation d’un événement réel. »
-
-## 31. Sources et limites de validation
-
-- Les fichiers de départ définissent le schéma, le corpus et la séparation entre projection réelle et démonstrations. [file:37][file:38]
-- La syntaxe des plages KQL est documentée par Elastic. [web:52]
-- Lens documente les dimensions, formules, pourcentages, décalages, annotations et Inspect. [web:74]
-- Les procédures de création de dashboard et de contrôles suivent les fonctions documentées. [web:59][web:62]
-- Les règles Index threshold et leurs prérequis sont documentés séparément du dashboard. [web:44][web:66][web:67]
-
-Ce document est un guide préparé pour 9.5.7, pas un procès-verbal de test de votre instance. Le formateur doit confirmer les libellés, droits et connecteurs sur le Space de formation avant diffusion. Les chiffres dépendent du corpus importé ; aucun succès de réindexation, affichage ou déclenchement réel n’est présumé.
-
-## Annexe A — Définition du pipeline GeoIP réel (formateur)
+## Annexe A — Définition du pipeline GeoIP réel
 
 ### Préconditions et limites
 
 - Base GeoIP disponible et à jour sur les nœuds d’ingestion.
-- Accès réseau et politique du lab compatibles avec son téléchargement, ou base gérée par le formateur.
 - IP publiques résolubles ; IP privées, réservées, proxys ou données anciennes peuvent ne pas produire de coordonnées.
 - Une localisation IP est approximative et peut représenter un fournisseur ou un point de sortie, pas l’utilisateur.
 
