@@ -27,7 +27,7 @@ Les résultats concernent le fichier joint, avec le script joint et `--limit 100
 
 Le fichier complet contient 102 972 lignes reconnues par la regex, couvre seulement dix minutes (18:51:30 à 19:01:30 UTC) et contient 248 statuts 500. Il ne contient pas plusieurs heures ou plusieurs jours d’historique. Charger tout le fichier ne résout donc pas l’exercice de comparaison H-1. Le test complet a vérifié les correspondances de format et les dates ; il n’a pas indexé les documents.
 
-### 0.2 Choix pédagogiques pour éviter les impasses
+### 0.2 Choix pédagogiques :
 
 - Socle : conserver les 1 000 documents de l’atelier 3, les statuts 5xx à zéro et les dates originales.
 - Histogrammes et heatmap : minimum de 1 seconde pour cet échantillon, pas cinq minutes ou une heure.
@@ -365,7 +365,7 @@ Elle enregistre les traitements décrits dans le fichier access-base-pipeline.js
 | status_class | 2xx, 3xx, 4xx, 5xx… pour les regroupements |
 | is_http_error | Vrai pour les statuts 400 à 599 |
 | url_path | Chemin sans query string, pour limiter la cardinalité et l’exposition de paramètres |
-| ingested_at | Heure d’ingestion de cette projection pédagogique |
+| ingested_at | Heure d’ingestion de cette projection |
 | ingest_delay_ms | Écart entre événement et ingestion de la projection |
 | dataset | Identifie le corpus réel, séparément des démonstrations |
 | client_geo.location | geo_point réservé à l’enrichissement/carte |
@@ -638,14 +638,16 @@ Résultat attendu : les documents du corpus deviennent visibles. « Last 15 minu
 ### 8.1 Ajouter les colonnes
 
 1. Dans la liste de champs à gauche, rechercher `event_id`.
-2. Survoler le champ et cliquer l’icône d’ajout en colonne ; son infobulle indique l’action d’ajout.
-3. Effacer la recherche de champs.
-4. Répéter pour `client_ip`, `method`, `url_path`, `status`, `bytes` et `message`.
-5. Garder également `@timestamp`.
-6. Déplacer les en-têtes de colonnes par glisser-déposer pour obtenir : date, IP, méthode, chemin, statut, octets, message.
-7. Cliquer l’en-tête `@timestamp` pour changer l’ordre de tri.
-8. Cliquer la flèche d’ouverture au début d’une ligne.
-9. Dans le détail du document, comparer `path` et `url_path` : les paramètres éventuels ont été retirés dans `url_path`.
+  <img width="218" height="221" alt="image" src="https://github.com/user-attachments/assets/953a52ad-0fc8-432e-a659-e7dd93f4dd3e" />
+
+3. Survoler le champ et cliquer l’icône d’ajout en colonne ; son infobulle indique l’action d’ajout.
+4. Effacer la recherche de champs.
+5. Répéter pour `client_ip`, `method`, `url_path`, `status`, `bytes` et `message`.
+6. Garder également `@timestamp`.
+7. Déplacer les en-têtes de colonnes par glisser-déposer pour obtenir : date, IP, méthode, chemin, statut, octets, message.
+8. Cliquer l’en-tête `@timestamp` pour changer l’ordre de tri.
+9. Cliquer la flèche d’ouverture au début d’une ligne.
+10. Dans le détail du document, comparer `path` et `url_path` : les paramètres éventuels ont été retirés dans `url_path`.
 
 ### 8.2 Tester les recherches une par une
 
@@ -686,7 +688,7 @@ Contrôle : zéro 5xx dans Console doit donner zéro 5xx dans Discover sur la to
 7. Confirmer la sauvegarde.
 8. Revenir ensuite à une barre KQL vide avant de créer les autres panneaux.
 
-Cette table garde une requête locale d’erreurs ; elle ne doit pas imposer le filtre d’erreur aux KPI de trafic total. [file:38]
+Cette table garde une requête locale d’erreurs ; elle ne doit pas imposer le filtre d’erreur aux KPI de trafic total. 
 
 ## 10. Créer le dashboard et apprendre à ouvrir Lens
 
@@ -1278,7 +1280,7 @@ Le corpus par défaut couvre cinq secondes et le fichier complet dix minutes. Un
 8. Saisir `count(shift='3s')` et le libellé `Trois secondes auparavant`.
 9. Ne pas ajouter Top values et ne pas mélanger un décalage de trois secondes avec un intervalle d’une minute.
 10. Observer que les points courants de 18:51:33 à 18:51:35 se comparent aux points de 18:51:30 à 18:51:32.
-11. Enregistrer `[A08] Comparaison pédagogique — décalage 3 secondes`.
+11. Enregistrer `[A08] Comparaison — décalage 3 secondes`.
 12. Si la version de l’éditeur refuse ce décalage court ou si le corpus diffère, utiliser le repli ci-dessous ; ne pas inventer des heures absentes.
 13. Restaurer la période complète après l’exercice ou définir une période locale au panneau si l’option est disponible.
 
