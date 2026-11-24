@@ -134,7 +134,7 @@ Ce support remplace le précédent atelier 08. Il conserve le corpus access logs
 
 ### Note de compatibilité
 
-La cible demandée est 9.5.7. Les procédures s’appuient sur la documentation officielle actuelle et les fichiers du parcours ; elles n’ont pas été exécutées sur votre instance. Les variantes de libellés utiles sont indiquées, sans prétendre que chaque bouton occupe une position identique dans tous les déploiements. Ne pas confondre le mode Lens « Point-and-click » avec le mode « Query ». Le socle utilise Point-and-click et KQL. [web:74]
+La cible demandée est 9.5.7. Les procédures s’appuient sur la documentation officielle actuelle et les fichiers du parcours ; elles n’ont pas été exécutées sur votre instance. Les variantes de libellés utiles sont indiquées, sans prétendre que chaque bouton occupe une position identique dans tous les déploiements. Ne pas confondre le mode Lens « Point-and-click » avec le mode « Query ». Le socle utilise Point-and-click et KQL.
 
 ### Consigne avant la séance
 
