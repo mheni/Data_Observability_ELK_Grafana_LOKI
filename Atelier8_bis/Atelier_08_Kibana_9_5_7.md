@@ -712,7 +712,7 @@ Cette procédure sera utilisée à chaque création de panneau :
 3. Choisir le mode Point-and-click, pas Query.
 4. Dans le sélecteur de Data View de Lens, choisir `[A08] Access logs`.
 5. Repérer les trois zones : champs à gauche ; aperçu au centre ; dimensions de la couche à droite.
-6. Au-dessus de l’aperçu, ouvrir le sélecteur de type de graphique. Choisir le type indiqué dans chaque exercice.
+6. Au-dessus de l’aperçu, ouvrir le sélecteur de type de graphique. Choisir le type indiqué dans chaque exercice ( sous section).
 
 Si vous voyez un éditeur de requête ES|QL à la place des dimensions, revenir au mode Point-and-click. Lens permet de glisser les champs dans le panneau des dimensions ; un clic sur une zone « Drop a field or click to add » permet aussi de choisir une fonction. [web:74]
 
