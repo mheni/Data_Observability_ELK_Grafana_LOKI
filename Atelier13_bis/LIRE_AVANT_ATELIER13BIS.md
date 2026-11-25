@@ -40,11 +40,6 @@ Les commandes ne sont pas une opération idempotente de réinitialisation. Les d
 - 30 attendues, 27 validées, 2 rejetées et 1 manquante ; complétude 90 %.
 - Les répertoires de préparation sous le compte utilisateur et ceux du scénario sous sudo n’ont pas les mêmes droits : les manifestes visibles via tee servent aux scripts de lecture utilisateur.
 
-## Contenu des sous-dossiers
-
-- originaux/ : scripts d’origine des ateliers 11/13, conservés pour comparaison. Ne pas les utiliser à la place des adaptations.
-- references_autonomes/ : petit exemple des références synthétiques ; la procédure recommandée les régénère dans sources13bis.
-
 ## Limites de validation
 
 validation_locale13bis.json décrit des tests Python, JSON, Bash et des réponses HTTP simulées. Aucune validation de configuration par un vrai binaire Alloy, livraison Loki, compilation LogQL ou import Grafana n’est revendiquée ici. La version de Grafana n’était pas fournie ; les libellés anglais avec explications françaises sont à confirmer dans le laboratoire. L’export JSON de secours ne remplace pas le parcours manuel.
