@@ -1,0 +1,51 @@
+{
+  "scope": "Local tests only; no live Alloy/Loki/Grafana/Elasticsearch execution",
+  "normalization": {
+    "access": 5,
+    "movies": 5,
+    "controls": 4,
+    "json": 14,
+    "logfmt": 14,
+    "csv_quotes_preserved": true
+  },
+  "scenario": {
+    "records": 29,
+    "batches": 6,
+    "heartbeats": 3,
+    "expected": 30,
+    "accepted": 27,
+    "rejected": 2,
+    "missing": 1,
+    "http_codes": {
+      "200": 12,
+      "503": 2,
+      "404": 1
+    },
+    "source_delay_distribution": {
+      "2": 25,
+      "600": 4
+    },
+    "http_bytes": 43284,
+    "unique_json_ids": 38
+  },
+  "mock_http_tests": {
+    "normalization_verifier_success": true,
+    "scenario_verifier_success": true,
+    "scenario_surplus_rejected": true
+  },
+  "artifacts": {
+    "exploration_queries": 60,
+    "dashboard_panels": 24,
+    "api_queries": 24,
+    "syntax_python": true,
+    "syntax_bash": true,
+    "json_parsed": true,
+    "support_personalization_tested": true,
+    "query_parentheses_static_check": true
+  },
+  "alloy_binary_validation": false,
+  "loki_delivery_validated": false,
+  "logql_server_compilation": false,
+  "grafana_ui_validated": false,
+  "elasticsearch_published": false
+}

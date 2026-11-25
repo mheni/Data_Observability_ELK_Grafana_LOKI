@@ -1,0 +1,51 @@
+// Instance de TP isolee : ne pas concatener dans la configuration Alloy existante.
+// Aucun stage.timestamp : la date Loki est celle de collecte, pas la date Apache.
+loki.source.file "a13bis_raw" {
+  targets = [
+    {
+      __path__ = "/var/log/formation13bis/raw/access_log",
+      job = "atelier13bis_raw",
+      dataset = "access",
+      environment = "formation",
+      time_basis = "collection",
+    },
+    {
+      __path__ = "/var/log/formation13bis/raw/movies.csv",
+      job = "atelier13bis_raw",
+      dataset = "movies",
+      environment = "formation",
+      time_basis = "collection",
+    },
+  ]
+  tail_from_end = false
+  forward_to = [loki.write.a13bis.receiver]
+}
+
+loki.source.file "a13bis_structured" {
+  targets = [
+    {
+      __path__ = "/var/log/formation13bis/json/events.jsonl",
+      job = "atelier13bis",
+      format = "json",
+      service = "normalisation-lab",
+      environment = "formation",
+      time_basis = "collection",
+    },
+    {
+      __path__ = "/var/log/formation13bis/logfmt/events.logfmt",
+      job = "atelier13bis",
+      format = "logfmt",
+      service = "normalisation-lab",
+      environment = "formation",
+      time_basis = "collection",
+    },
+  ]
+  tail_from_end = false
+  forward_to = [loki.write.a13bis.receiver]
+}
+
+loki.write "a13bis" {
+  endpoint {
+    url = "http://127.0.0.1:3100/loki/api/v1/push"
+  }
+}
