@@ -1,6 +1,0 @@
-Corpus,Phase,Expected,Records,Accepted,Rejected,Missing,Completeness
-All,All,30,29,27,2,1,0.9
-movies,All,15,14,12,2,1,0.8
-movies,incident,5,4,2,2,1,0.4
-movies,recovery,5,5,5,0,0,1
-access,incident,5,5,5,0,0,1
