@@ -1,0 +1,47 @@
+{
+  "source": {
+    "file": "donnees/access_log_actualise",
+    "sha256": "09693e55a8bcb1dedd3659c23833aa06a4ad2c8fb5f46b7fd2d9b93ee941c815",
+    "nonempty_lines": 102972
+  },
+  "local_functional_tests": {
+    "complete_preparation_executed": true,
+    "lines_per_format": {
+      "raw": 102972,
+      "json": 102972,
+      "logfmt": 102972
+    },
+    "unique_json_record_ids": 102972,
+    "all_json_status_counts_match_source": true,
+    "raw_copy_sha256_matches_source": true,
+    "missing_methods": 267,
+    "missing_sizes": 34985,
+    "bytes_sum": 1293498000,
+    "logfmt_representative_rows_checked": 20,
+    "maximum_line_bytes": {
+      "raw": 1308,
+      "json": 1841,
+      "logfmt": 1753
+    },
+    "mock_http_volume_and_status_verifier_success": true,
+    "mock_http_surplus_rejected": true,
+    "personalized_documents_generated": true,
+    "resolved_explore_files": 60,
+    "principal_dashboard_panels": 24,
+    "detail_dashboard_panels": 1,
+    "python_syntax_checked": true,
+    "bash_syntax_checked": true,
+    "json_parsing_checked": true,
+    "query_parentheses_static_check": true
+  },
+  "not_executed": {
+    "alloy_binary_validation": true,
+    "systemd_service_installation": true,
+    "real_loki_ingestion": true,
+    "logql_server_compilation": true,
+    "grafana_ui_import_and_clicks": true
+  },
+  "live_verification_scope": "aggregate counts per format and HTTP status distribution; not all event IDs",
+  "prerequisites": "Ubuntu natif, Python 3, Loki local mono-tenant non authentifie, Grafana, Alloy installe et compte/groupe alloy",
+  "note": "Les tests HTTP simules ne sont pas une validation de la stack du laboratoire."
+}
