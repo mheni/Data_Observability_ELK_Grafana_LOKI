@@ -120,7 +120,7 @@ Les mêmes identifiants sont stables pour un fichier inchangé. Une autre versio
 | Livrables | Tableau de bord enregistré, investigation Découvrir, règle testée, bilan de validation |
 | Outils | Console, Découvrir, Vues de données, Lens, Tableaux de bord, Règles, Cartes |
 
-Ce support remplace le précédent atelier 08. Il conserve le corpus access logs et détaille les manipulations de l’interface. Il ne nécessite pas de réaliser la partie MovieLens de l’atelier 3. [file:37][file:38]
+Ce support remplace le précédent atelier 08. Il conserve le corpus access logs et détaille les manipulations de l’interface. Il ne nécessite pas de réaliser la partie MovieLens de l’atelier 3. 
 
 ### Conventions de lecture
 
