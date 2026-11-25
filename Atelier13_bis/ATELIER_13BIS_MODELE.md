@@ -124,17 +124,12 @@ python3 --version
 Ne pas créer ensuite un nouveau dossier vide et y lancer les commandes sans copier les fichiers.
 
 ### 4.2 Générer les références autonomes
-
-# Créer les fichiers de départ.
+```bash
 python3 preparer_sources13bis.py --output-dir sources13bis
-
-# Remplacer les cinq exemples Apache par votre fichier complet.
 cp -- access_log_actualise sources13bis/access_log
-
-# Vérifier le fichier copié.
 wc -l sources13bis/access_log
 head -n 5 sources13bis/access_log
-
+```
 ```bash
 python3 - <<'PY'
 import json
@@ -159,12 +154,6 @@ manifeste.write_text(
     encoding="utf-8"
 )
 PY
-```
-```bash
-python3 preparer_sources13bis.py --output-dir sources13bis
-cat sources13bis/sources-manifest.json
-head -n 5 sources13bis/access_log
-cat sources13bis/movies.csv
 ```
 
 Attendu : cinq lignes Apache et cinq enregistrements de films, plus l’en-tête CSV. Le dossier déjà présent est refusé pour ne pas remplacer une source suivie.
