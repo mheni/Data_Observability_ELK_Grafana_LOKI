@@ -11,7 +11,7 @@ getent group alloy >/dev/null
 for p in "$SOURCES/access_log" "$SOURCES/movies.csv" "$CORPUS/events.jsonl" "$CORPUS/events.logfmt" "$CORPUS/manifest.json"; do
   test -s "$p" || { echo "Fichier absent/vide : $p" >&2; exit 1; }
 done
-curl --fail-with-body -fsS http://127.0.0.1:3100/ready >/dev/null
+curl -fsS http://127.0.0.1:3100/ready >/dev/null
 if ss -ltnH 'sport = :12346' | grep -q .; then echo 'Port 12346 deja occupe. Arreter et adapter avant installation.' >&2; exit 1; fi
 for p in /var/log/formation13bis /var/lib/alloy-atelier13bis /etc/alloy-atelier13bis /etc/systemd/system/alloy-atelier13bis.service; do
   if [[ -e "$p" ]]; then echo "Ressource deja presente : $p ; ne pas ecraser. Consulter le support." >&2; exit 1; fi
