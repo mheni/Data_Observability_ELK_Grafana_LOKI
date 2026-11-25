@@ -1,0 +1,31 @@
+{
+  "scope": "Defi 13 : indexation OpenSSH dans Loki et corrige Grafana de 25 panneaux",
+  "source_used_for_tests": "journal synthetique de 2000 lignes au format syslog OpenSSH ; OpenSSH_2k.log de Loghub non disponible dans l environnement",
+  "local_tests": {
+    "preparer_script_executed": true,
+    "raw_and_json_lines_equal": 2000,
+    "classification_matches_generator_ground_truth": true,
+    "overwrite_refused": true,
+    "mock_loki_verifier_success": true,
+    "mock_surplus_rejected": true,
+    "mock_event_type_mismatch_rejected": true,
+    "dashboard_json_generated_panels": 25,
+    "python_syntax": true,
+    "bash_syntax_installer": true,
+    "logql_parentheses_static_check": true,
+    "markdown_code_fences_balanced": true
+  },
+  "not_executed": {
+    "real_openssh_2k_file": true,
+    "alloy_validation_or_service_start": true,
+    "real_loki_ingestion": true,
+    "logql_server_compilation": true,
+    "grafana_ui_clicks": true,
+    "dashboard_import": true
+  },
+  "known_assumptions": [
+    "La commande curl de telechargement du fichier Loghub n a pas pu etre testee.",
+    "Les noms de champs apres Group by et la disposition des menus Grafana dependent de la version.",
+    "Le classeur couvre les formats syslog OpenSSH courants ; other_unclassified_lines doit etre lu sur le fichier reel."
+  ]
+}
