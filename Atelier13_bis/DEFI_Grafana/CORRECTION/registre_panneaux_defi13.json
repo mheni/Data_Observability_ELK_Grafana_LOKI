@@ -1,0 +1,521 @@
+[
+  {
+    "id": "P01",
+    "title": "Lignes indexées",
+    "kind": "stat",
+    "queries": [
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n[$__range]\n))",
+        "type": "instant",
+        "legend": null
+      }
+    ],
+    "purpose": "Taille du périmètre observé dans Loki pour ce lot.",
+    "ref": "N",
+    "limit": "Une ligne n’est ni une session ni une personne.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P02",
+    "title": "Enregistrements canoniques",
+    "kind": "stat",
+    "queries": [
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_auth=\"is_auth_record\"\n| __error__=\"\"\n| v_auth=\"1\"\n[$__range]\n)) or vector(0)",
+        "type": "instant",
+        "legend": null
+      }
+    ],
+    "purpose": "Dénominateur explicite : seulement les résultats d’authentification Failed/Accepted reconnus.",
+    "ref": "A",
+    "limit": "Les messages PAM, déconnexions et résumés de répétition ne sont pas ajoutés ici.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P03",
+    "title": "Échecs canoniques",
+    "kind": "stat",
+    "queries": [
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_fail=\"is_failure\"\n| __error__=\"\"\n| v_fail=\"1\"\n[$__range]\n)) or vector(0)",
+        "type": "instant",
+        "legend": null
+      }
+    ],
+    "purpose": "Nombre d’échecs d’authentification reconnus (méthode Failed …).",
+    "ref": "F",
+    "limit": "Une ligne d’échec n’est pas forcément une tentative distincte : voir P21 pour les résumés répétés.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P04",
+    "title": "Succès canoniques",
+    "kind": "stat",
+    "queries": [
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_ok=\"is_success\"\n| __error__=\"\"\n| v_ok=\"1\"\n[$__range]\n)) or vector(0)",
+        "type": "instant",
+        "legend": null
+      }
+    ],
+    "purpose": "Zéro est une valeur correcte si le journal ne contient aucune connexion Accepted.",
+    "ref": "S",
+    "limit": "Ne pas fabriquer de succès pour remplir le tableau de bord.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P05",
+    "title": "IP sources distinctes",
+    "kind": "stat",
+    "queries": [
+      {
+        "expr": "count(\nsum by (v_ip) (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_ip=\"source_ip\"\n| __error__=\"\"\n| v_ip!=\"\"\n[$__range]\n))\n)",
+        "type": "instant",
+        "legend": null
+      }
+    ],
+    "purpose": "Diversité des adresses IP extraites, toutes lignes confondues.",
+    "ref": "U",
+    "limit": "Une IP n’est pas une personne. Cette formule compte des séries : une limite de séries Loki peut la bloquer si le corpus contient beaucoup d’adresses.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P06",
+    "title": "Part d’échec canonique",
+    "kind": "stat",
+    "queries": [
+      {
+        "expr": "(\nsum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_fail=\"is_failure\"\n| __error__=\"\"\n| v_fail=\"1\"\n[$__range]\n)) or vector(0)\n)\n/\n(\nsum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_auth=\"is_auth_record\"\n| __error__=\"\"\n| v_auth=\"1\"\n[$__range]\n))\n)",
+        "type": "instant",
+        "legend": null
+      }
+    ],
+    "purpose": "Échecs rapportés aux seuls enregistrements canoniques.",
+    "ref": "F / A",
+    "limit": "Ne pas multiplier par 100 : l’unité pourcentage le fait. Ne pas diviser par toutes les lignes.",
+    "unit": "percentunit",
+    "decimals": 2,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P07",
+    "title": "Lignes sans IP extraite",
+    "kind": "stat",
+    "queries": [
+      {
+        "expr": "(\nsum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_ip=\"source_ip\"\n| __error__=\"\"\n| v_ip=\"\"\n[$__range]\n)) or vector(0)\n)\n/\n(\nsum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n[$__range]\n))\n)",
+        "type": "instant",
+        "legend": null
+      }
+    ],
+    "purpose": "Part des lignes dont aucune adresse IP n’a pu être extraite.",
+    "ref": "(N − I) / N",
+    "limit": "Une absence d’IP est normale pour plusieurs messages PAM ou de service.",
+    "unit": "percentunit",
+    "decimals": 2,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P08",
+    "title": "Alertes « POSSIBLE BREAK-IN »",
+    "kind": "stat",
+    "queries": [
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_type=\"event_type\"\n| __error__=\"\"\n| v_type=~\"reverse_mapping|address_mismatch\"\n[$__range]\n)) or vector(0)",
+        "type": "instant",
+        "legend": null
+      }
+    ],
+    "purpose": "Messages sshd qui signalent un défaut de correspondance DNS/adresse.",
+    "ref": "B",
+    "limit": "Cette phrase est émise par sshd : elle n’établit pas à elle seule une intrusion.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P09",
+    "title": "Collecte dans le temps — fenêtre 1 min",
+    "kind": "timeseries",
+    "queries": [
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n[1m]\n))",
+        "type": "range",
+        "legend": null
+      }
+    ],
+    "purpose": "Visualiser le chargement dans Loki.",
+    "ref": "pic de collecte",
+    "limit": "L’axe temps est celui de la collecte, pas l’heure syslog des événements. Voir P11 pour l’heure écrite dans les lignes.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {
+      "interval": "1s"
+    },
+    "logs_limit": null
+  },
+  {
+    "id": "P10",
+    "title": "Répartition par type d’événement",
+    "kind": "piechart",
+    "queries": [
+      {
+        "expr": "sum by (v_type) (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_type=\"event_type\"\n| __error__=\"\"\n| v_type!=\"\"\n[$__range]\n))",
+        "type": "instant",
+        "legend": "{{v_type}}"
+      }
+    ],
+    "purpose": "Quels types de messages dominent le fichier ?",
+    "ref": "event_type_counts",
+    "limit": "Un type fréquent n’est pas un taux d’attaque : il décrit des catégories de lignes.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": "{{v_type}}",
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P11",
+    "title": "Messages par heure syslog",
+    "kind": "barchart",
+    "queries": [
+      {
+        "expr": "{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_type=\"event_type\"\n| __error__=\"\"",
+        "type": "range",
+        "legend": null
+      }
+    ],
+    "purpose": "Répartition des lignes selon l’heure écrite dans le journal.",
+    "ref": "hour_counts",
+    "limit": "Le journal n’indique pas l’année : le graphique utilise seulement l’heure de la journée, sans date historique. La requête affiche au plus 5000 lignes.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {
+      "transform": "hour_count"
+    },
+    "logs_limit": 5000
+  },
+  {
+    "id": "P12",
+    "title": "Échecs et succès par heure syslog",
+    "kind": "barchart",
+    "queries": [
+      {
+        "expr": "{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_auth=\"is_auth_record\"\n| __error__=\"\"\n| v_auth=\"1\"",
+        "type": "range",
+        "legend": null
+      }
+    ],
+    "purpose": "Comparer les deux issues canoniques selon l’heure du journal.",
+    "ref": "F et S par heure",
+    "limit": "Si S = 0, la série des succès reste à zéro. Ne pas ajouter une série artificielle.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {
+      "transform": "hour_outcome"
+    },
+    "logs_limit": 5000
+  },
+  {
+    "id": "P13",
+    "title": "Top 10 IP — échecs canoniques",
+    "kind": "bargauge",
+    "queries": [
+      {
+        "expr": "topk(10,\nsum by (v_ip) (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_ip=\"source_ip\", v_fail=\"is_failure\"\n| __error__=\"\"\n| v_ip!=\"\"\n| v_fail=\"1\"\n[$__range]\n))\n)",
+        "type": "instant",
+        "legend": "{{v_ip}}"
+      }
+    ],
+    "purpose": "Contributeurs aux échecs reconnus, limités aux dix premiers.",
+    "ref": "top10_failure_ips",
+    "limit": "La somme du top peut être inférieure à F : d’autres IP et des lignes sans IP existent.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": "{{v_ip}}",
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P14",
+    "title": "Top 10 utilisateurs — échecs canoniques",
+    "kind": "bargauge",
+    "queries": [
+      {
+        "expr": "topk(10,\nsum by (v_user) (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_user=\"user_name\", v_fail=\"is_failure\"\n| __error__=\"\"\n| v_user!=\"\"\n| v_fail=\"1\"\n[$__range]\n))\n)",
+        "type": "instant",
+        "legend": "{{v_user}}"
+      }
+    ],
+    "purpose": "Noms d’utilisateurs les plus visés dans les échecs reconnus.",
+    "ref": "top10_failure_users",
+    "limit": "Un nom d’utilisateur peut être invalide : ce n’est pas une preuve de compte compromis.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": "{{v_user}}",
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P15",
+    "title": "Échecs : utilisateur valide ou invalide",
+    "kind": "piechart",
+    "queries": [
+      {
+        "expr": "sum by (v_valid) (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_valid=\"user_valid\", v_fail=\"is_failure\"\n| __error__=\"\"\n| v_fail=\"1\"\n| v_valid!=\"\"\n[$__range]\n))",
+        "type": "instant",
+        "legend": "{{v_valid}}"
+      }
+    ],
+    "purpose": "Distinguer les échecs sur des noms d’utilisateurs invalides des autres échecs.",
+    "ref": "failure_user_validity",
+    "limit": "« true » signifie que sshd n’a pas signalé un utilisateur invalide ; ce n’est pas une preuve qu’un compte existe côté métier.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": "{{v_valid}}",
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P16",
+    "title": "Codes de déconnexion reçus",
+    "kind": "bargauge",
+    "queries": [
+      {
+        "expr": "sum by (v_code) (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_type=\"event_type\", v_code=\"disconnect_code\"\n| __error__=\"\"\n| v_type=\"disconnect_received\"\n| v_code!=\"\"\n[$__range]\n))",
+        "type": "instant",
+        "legend": "Code {{v_code}}"
+      }
+    ],
+    "purpose": "Lire les motifs numériques de déconnexion annoncés par le protocole.",
+    "ref": "disconnect_codes",
+    "limit": "Les codes se lisent avec le texte du message ; un code ne désigne pas à lui seul une cause.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": "Code {{v_code}}",
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P17",
+    "title": "Analyse par IP",
+    "kind": "table",
+    "queries": [
+      {
+        "expr": "{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_ip=\"source_ip\"\n| __error__=\"\"\n| v_ip!=\"\"",
+        "type": "range",
+        "legend": null
+      }
+    ],
+    "purpose": "Comparer volume, enregistrements canoniques, échecs, succès et part d’échec par IP.",
+    "ref": "rows_by_ip_top10_failures",
+    "limit": "Un taux de 100 % avec une ligne n’a pas le même poids que 100 % avec cent lignes. Le tableau est calculé sur les 5000 premières lignes renvoyées.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {
+      "transform": "table_ip"
+    },
+    "logs_limit": 5000
+  },
+  {
+    "id": "P18",
+    "title": "Analyse par utilisateur",
+    "kind": "table",
+    "queries": [
+      {
+        "expr": "{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_user=\"user_name\"\n| __error__=\"\"\n| v_user!=\"\"",
+        "type": "range",
+        "legend": null
+      }
+    ],
+    "purpose": "Même lecture, avec le nom d’utilisateur observé.",
+    "ref": "rows_by_user_top10_failures",
+    "limit": "Les lignes sans nom d’utilisateur sont absentes de cette table, pas supprimées du total.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {
+      "transform": "table_user"
+    },
+    "logs_limit": 5000
+  },
+  {
+    "id": "P19",
+    "title": "Ports sources des enregistrements canoniques",
+    "kind": "bargauge",
+    "queries": [
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_auth=\"is_auth_record\", v_port=\"source_port\"\n| __error__=\"\"\n| v_auth=\"1\"\n| v_port!=\"\"\n| v_port>=0\n| v_port<1024\n[$__range]\n))",
+        "type": "instant",
+        "legend": "0–1 023"
+      },
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_auth=\"is_auth_record\", v_port=\"source_port\"\n| __error__=\"\"\n| v_auth=\"1\"\n| v_port!=\"\"\n| v_port>=1024\n| v_port<32768\n[$__range]\n))",
+        "type": "instant",
+        "legend": "1 024–32 767"
+      },
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_auth=\"is_auth_record\", v_port=\"source_port\"\n| __error__=\"\"\n| v_auth=\"1\"\n| v_port!=\"\"\n| v_port>=32768\n| v_port<49152\n[$__range]\n))",
+        "type": "instant",
+        "legend": "32 768–49 151"
+      },
+      {
+        "expr": "sum (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_auth=\"is_auth_record\", v_port=\"source_port\"\n| __error__=\"\"\n| v_auth=\"1\"\n| v_port!=\"\"\n| v_port>=49152\n| v_port<65536\n[$__range]\n))",
+        "type": "instant",
+        "legend": "49 152–65 535"
+      }
+    ],
+    "purpose": "Distribution des ports sources par plages choisies.",
+    "ref": "port_bins_canonical",
+    "limit": "Ce sont les ports côté client, pas les ports d’écoute du serveur ; les largeurs sont inégales, donc barres par catégories.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P20",
+    "title": "Suffixes des noms d’hôte distants",
+    "kind": "bargauge",
+    "queries": [
+      {
+        "expr": "topk(10,\nsum by (v_tld) (count_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_tld=\"source_host_tld\"\n| __error__=\"\"\n| v_tld!=\"\"\n[$__range]\n))\n)",
+        "type": "instant",
+        "legend": ".{{v_tld}}"
+      }
+    ],
+    "purpose": "Indice DNS pour les lignes qui mentionnent un nom d’hôte, jamais une géolocalisation.",
+    "ref": "hostname_tld_counts_top10",
+    "limit": "Un suffixe de domaine ne prouve ni le pays ni l’identité de l’émetteur.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": ".{{v_tld}}",
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P21",
+    "title": "Répétitions résumées par sshd",
+    "kind": "stat",
+    "queries": [
+      {
+        "expr": "sum(\n  sum_over_time(\n{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_type=\"event_type\", v_n=\"repeat_count\"\n| __error__=\"\"\n| v_type=\"message_repeat\"\n| v_n!=\"\"\n| unwrap v_n\n| __error__=\"\"\n[$__range]\n  )\n) or vector(0)",
+        "type": "instant",
+        "legend": null
+      }
+    ],
+    "purpose": "Additionner les répétitions annoncées dans « message repeated N times ».",
+    "ref": "R",
+    "limit": "Cette somme n’est pas ajoutée à F : elle sert à signaler des tentatives que le journal a résumées.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  },
+  {
+    "id": "P22",
+    "title": "Détail des échecs canoniques",
+    "kind": "logs",
+    "queries": [
+      {
+        "expr": "{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_fail=\"is_failure\", v_type=\"event_type\", raw=\"raw_line\"\n| __error__=\"\"\n| v_fail=\"1\"\n| line_format \"{{.raw}}\"",
+        "type": "range",
+        "legend": null
+      }
+    ],
+    "purpose": "Revenir à la ligne source des échecs reconnus.",
+    "ref": "F lignes (affichage ≤ 500)",
+    "limit": "Le panneau affiche un extrait ; le nombre total est P03.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": 500
+  },
+  {
+    "id": "P23",
+    "title": "Lignes non classées",
+    "kind": "logs",
+    "queries": [
+      {
+        "expr": "{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_fail=\"is_failure\", v_type=\"event_type\", raw=\"raw_line\"\n| __error__=\"\"\n| v_type=\"other\"\n| line_format \"{{.raw}}\"",
+        "type": "range",
+        "legend": null
+      }
+    ],
+    "purpose": "Inspecter ce que le classeur n’a pas reconnu.",
+    "ref": "other_unclassified_lines",
+    "limit": "Zéro est une valeur correcte. Ces lignes ne doivent pas être supprimées ni renommées pour faire coïncider les totaux.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": 500
+  },
+  {
+    "id": "P24",
+    "title": "Détail des alertes « POSSIBLE BREAK-IN »",
+    "kind": "logs",
+    "queries": [
+      {
+        "expr": "{job=\"defi13_openssh\",format=\"json\",lot=\"${lot}\"}\n| json v_fail=\"is_failure\", v_type=\"event_type\", raw=\"raw_line\"\n| __error__=\"\"\n| v_type=~\"reverse_mapping|address_mismatch\"\n| line_format \"{{.raw}}\"",
+        "type": "range",
+        "legend": null
+      }
+    ],
+    "purpose": "Lire les messages DNS/adresse qui ont déclenché P08.",
+    "ref": "B lignes (affichage ≤ 500)",
+    "limit": "Le message provient de sshd ; il ne remplace pas une analyse d’incident.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": 500
+  },
+  {
+    "id": "P25",
+    "title": "Contrat de lecture",
+    "kind": "text",
+    "queries": [],
+    "purpose": "Placer les définitions, limites et références dans le tableau de bord.",
+    "ref": "—",
+    "limit": "Le texte n’est pas une donnée Loki.",
+    "unit": "none",
+    "decimals": 0,
+    "legend": null,
+    "extra": {},
+    "logs_limit": null
+  }
+]
