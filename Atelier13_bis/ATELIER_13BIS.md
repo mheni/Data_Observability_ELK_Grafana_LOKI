@@ -233,7 +233,7 @@ Ouvrir ensuite `livrables13bis/ATELIER_13BIS_PERSONNALISE.md` et `livrables13bis
 4. Dans la requête A, coller le bloc suivant depuis le support personnalisé :
 
 ```logql
-{job="atelier13bis_raw",dataset="access",format="raw",lot="__LOT__"}
+{job="atelier13bis_raw",dataset="access",format="raw"}
 ```
 
 5. Dans le sélecteur temporel, choisir une période absolue avec from_utc/to_utc de reference13bis.json, puis appliquer.
@@ -246,7 +246,7 @@ Ouvrir ensuite `livrables13bis/ATELIER_13BIS_PERSONNALISE.md` et `livrables13bis
 Remplacer A par :
 
 ```logql
-{job="atelier13bis",format="json",lot="__LOT__"}
+{job="atelier13bis",format="json"}
 | json v_status="status"
 | __error__=""
 | v_status="500"
