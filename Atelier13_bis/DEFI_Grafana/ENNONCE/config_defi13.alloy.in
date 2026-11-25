@@ -1,0 +1,37 @@
+// Collecte du défi 13 : OpenSSH_2k.log en brut et en JSON classé.
+loki.source.file "openssh_raw" {
+  targets = [
+    {
+      __path__ = "/var/log/defi13-openssh/openssh.log",
+      job      = "defi13_openssh_raw",
+      format   = "raw",
+      lot      = "__LOT__",
+    },
+  ]
+  tail_from_end = false
+  forward_to    = [loki.write.defi13.receiver]
+}
+
+loki.source.file "openssh_json" {
+  targets = [
+    {
+      __path__ = "/var/log/defi13-openssh/events.jsonl",
+      job      = "defi13_openssh",
+      format   = "json",
+      lot      = "__LOT__",
+    },
+  ]
+  tail_from_end = false
+  forward_to    = [loki.write.defi13.receiver]
+}
+
+loki.write "defi13" {
+  endpoint {
+    url                 = "http://127.0.0.1:3100/loki/api/v1/push"
+    batch_size          = "256KiB"
+    retry_on_http_429   = true
+    min_backoff_period  = "1s"
+    max_backoff_period  = "30s"
+    max_backoff_retries = 0
+  }
+}

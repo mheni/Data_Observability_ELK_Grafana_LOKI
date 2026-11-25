@@ -1,0 +1,14 @@
+[Unit]
+Description=Grafana Alloy - defi 13 OpenSSH
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=alloy
+Group=alloy
+ExecStart=__BINARY__ run --server.http.listen-addr=127.0.0.1:12348 --storage.path=/var/lib/alloy-defi13 /etc/alloy-defi13/config.alloy
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
