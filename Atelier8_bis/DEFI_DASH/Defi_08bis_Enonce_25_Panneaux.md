@@ -9,7 +9,7 @@ Indexer les logs par la commande Bulk du pack, valider chaque item, puis constru
 | ID | Titre / fonction | Type |
 |---|---|---|
 | P01 | Documents indexés | Indicateur |
-| P02 | Enregistrements canoniques | Indicateur |
+| P02 | Enregistrements canoniques | Indicateur |count(kql='auth_record: true')
 | P03 | Échecs canoniques | Indicateur |
 | P04 | Succès canoniques | Indicateur |
 | P05 | IP distinctes estimées | Indicateur |
