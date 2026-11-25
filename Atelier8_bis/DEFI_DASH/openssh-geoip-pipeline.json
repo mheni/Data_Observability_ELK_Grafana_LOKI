@@ -1,0 +1,43 @@
+{
+  "description": "GeoIP reel des IP publiques extraites de Loghub OpenSSH ; aucune coordonnee fabriquee",
+  "processors": [
+    {
+      "set": {
+        "field": "ingested_at",
+        "value": "{{{_ingest.timestamp}}}"
+      }
+    },
+    {
+      "geoip": {
+        "if": "ctx.source_ip_public == true && ctx.geo_source != 'geoip_cache'",
+        "field": "source_ip",
+        "target_field": "source_geo",
+        "properties": [
+          "continent_name",
+          "country_iso_code",
+          "country_name",
+          "region_name",
+          "city_name",
+          "location"
+        ],
+        "ignore_missing": true,
+        "download_database_on_pipeline_creation": true,
+        "on_failure": [
+          {
+            "append": {
+              "field": "tags",
+              "value": "geoip_processor_failed",
+              "allow_duplicates": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "script": {
+        "lang": "painless",
+        "source": "if (ctx.source_geo != null && ctx.source_geo.location != null) { ctx.geo_status = 'located'; if (ctx.geo_source != 'geoip_cache') { ctx.geo_source = 'elasticsearch_geoip'; ctx.geo_reference_at = ctx.ingested_at; } } else { ctx.geo_status = ctx.source_ip == null ? 'no_ip' : 'not_located'; }"
+      }
+    }
+  ]
+}

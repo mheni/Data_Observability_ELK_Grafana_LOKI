@@ -1,0 +1,87 @@
+{
+  "size": 0,
+  "track_total_hits": true,
+  "aggs": {
+    "first_event": {
+      "min": {
+        "field": "@timestamp"
+      }
+    },
+    "last_event": {
+      "max": {
+        "field": "@timestamp"
+      }
+    },
+    "event_types": {
+      "terms": {
+        "field": "event_type",
+        "size": 30
+      }
+    },
+    "auth_records": {
+      "filter": {
+        "term": {
+          "auth_record": true
+        }
+      }
+    },
+    "failures": {
+      "filter": {
+        "term": {
+          "auth_outcome": "failure"
+        }
+      }
+    },
+    "successes": {
+      "filter": {
+        "term": {
+          "auth_outcome": "success"
+        }
+      }
+    },
+    "with_ip": {
+      "filter": {
+        "exists": {
+          "field": "source_ip"
+        }
+      }
+    },
+    "located": {
+      "filter": {
+        "exists": {
+          "field": "source_geo.location"
+        }
+      }
+    },
+    "public_ip_records": {
+      "filter": {
+        "term": {
+          "source_ip_public": true
+        }
+      }
+    },
+    "missing_date": {
+      "missing": {
+        "field": "@timestamp"
+      }
+    },
+    "distinct_ips_estimate": {
+      "cardinality": {
+        "field": "source_ip",
+        "precision_threshold": 3000
+      }
+    },
+    "countries": {
+      "terms": {
+        "field": "source_geo.country_name",
+        "size": 30
+      }
+    },
+    "geo_diagnostics": {
+      "terms": {
+        "field": "tags",
+        "size": 20
+      }
+    }
+  }
+}

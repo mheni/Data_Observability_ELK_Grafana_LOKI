@@ -1,0 +1,25 @@
+{
+  "size": 10000,
+  "track_total_hits": true,
+  "_source": [
+    "source_ip",
+    "source_geo",
+    "geo_source"
+  ],
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "exists": {
+            "field": "source_geo.location"
+          }
+        },
+        {
+          "term": {
+            "geo_source": "elasticsearch_geoip"
+          }
+        }
+      ]
+    }
+  }
+}

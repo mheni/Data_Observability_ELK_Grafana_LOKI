@@ -1,0 +1,111 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "@timestamp": {
+        "type": "date"
+      },
+      "ingested_at": {
+        "type": "date"
+      },
+      "geo_reference_at": {
+        "type": "date"
+      },
+      "event_id": {
+        "type": "keyword"
+      },
+      "timestamp_policy": {
+        "type": "keyword"
+      },
+      "source_file_sha256": {
+        "type": "keyword"
+      },
+      "host_name": {
+        "type": "keyword"
+      },
+      "program": {
+        "type": "keyword"
+      },
+      "dataset": {
+        "type": "keyword"
+      },
+      "event_type": {
+        "type": "keyword"
+      },
+      "auth_outcome": {
+        "type": "keyword"
+      },
+      "auth_method": {
+        "type": "keyword"
+      },
+      "user_name": {
+        "type": "keyword"
+      },
+      "geo_source": {
+        "type": "keyword"
+      },
+      "geo_status": {
+        "type": "keyword"
+      },
+      "tags": {
+        "type": "keyword"
+      },
+      "line_number": {
+        "type": "integer"
+      },
+      "process_pid": {
+        "type": "integer"
+      },
+      "source_port": {
+        "type": "integer"
+      },
+      "repeat_count": {
+        "type": "integer"
+      },
+      "auth_record": {
+        "type": "boolean"
+      },
+      "invalid_user": {
+        "type": "boolean"
+      },
+      "source_ip_public": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "text"
+      },
+      "content": {
+        "type": "text"
+      },
+      "source_ip": {
+        "type": "ip"
+      },
+      "source_geo": {
+        "properties": {
+          "continent_name": {
+            "type": "keyword"
+          },
+          "country_iso_code": {
+            "type": "keyword"
+          },
+          "country_name": {
+            "type": "keyword"
+          },
+          "region_name": {
+            "type": "keyword"
+          },
+          "city_name": {
+            "type": "keyword"
+          },
+          "location": {
+            "type": "geo_point"
+          }
+        }
+      }
+    }
+  }
+}

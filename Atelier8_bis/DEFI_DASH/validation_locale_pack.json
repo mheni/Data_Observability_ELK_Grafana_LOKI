@@ -1,0 +1,83 @@
+{
+  "scope": "Tests locaux sur six extraits consultes et cas limites synthetiques, pas sur les 2000 lignes completes",
+  "remote_sample_downloaded": false,
+  "elasticsearch_pipeline_executed": false,
+  "bulk_indexed_on_cluster": false,
+  "geoip_database_validated": false,
+  "kibana_ui_validated": false,
+  "python_syntax_files": [
+    "exporter_cache_geo.py",
+    "preparer_openssh.py",
+    "verifier_reponse.py"
+  ],
+  "json_assets_parsed": [
+    "openssh-validation-query.json",
+    "export-cache-query.json",
+    "openssh-geoip-pipeline.json",
+    "openssh-mapping.json"
+  ],
+  "fixture_parser": {
+    "input_lines": 10,
+    "documents": 9,
+    "rejected": 1,
+    "auth_records": 3,
+    "repeat_summary_not_expanded": true,
+    "ipv6": true,
+    "private_ip_classification": true,
+    "ids_stable": true,
+    "mapping_fields_consistent": true,
+    "offline_cache_join_test": true
+  },
+  "response_checks": [
+    {
+      "test": "bulk_success",
+      "expected": 0,
+      "actual": 0,
+      "ok": true
+    },
+    {
+      "test": "bulk_partial",
+      "expected": 1,
+      "actual": 1,
+      "ok": true
+    },
+    {
+      "test": "bulk_incomplete",
+      "expected": 1,
+      "actual": 1,
+      "ok": true
+    },
+    {
+      "test": "simulate_no_geo",
+      "expected": 1,
+      "actual": 1,
+      "ok": true
+    },
+    {
+      "test": "simulate_geo",
+      "expected": 0,
+      "actual": 0,
+      "ok": true
+    },
+    {
+      "test": "simulate_error",
+      "expected": 1,
+      "actual": 1,
+      "ok": true
+    },
+    {
+      "test": "validation_total_9",
+      "expected": 0,
+      "actual": 0,
+      "ok": true
+    },
+    {
+      "test": "validation_total_10",
+      "expected": 1,
+      "actual": 1,
+      "ok": true
+    }
+  ],
+  "cache_export_fixture_test": true,
+  "production_expected_counts": "A calculer avec preparation.json apres acquisition du fichier reel"
+}
