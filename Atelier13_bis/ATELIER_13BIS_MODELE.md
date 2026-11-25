@@ -1,6 +1,6 @@
 # Atelier 13 bis — De fichiers autonomes à un tableau de bord Grafana complet avec Loki
 
-Fusion pédagogique des ateliers 11 et 13 : préparer → collecter → explorer avec LogQL → vérifier → créer chaque panneau → investiguer.
+Parcours de l'atelier sous forme de projet : préparer → collecter → explorer avec LogQL → vérifier → créer chaque panneau → investiguer.
 
 ## 1. Fiche pédagogique et contrat de l’atelier
 
@@ -17,7 +17,7 @@ Fusion pédagogique des ateliers 11 et 13 : préparer → collecter → explorer
 | Durée complète réaliste | Environ 1,5 à 2 jours avec exercices et explications ; le formateur peut répartir les panneaux |
 | Extension | Projection des mêmes événements dans Elasticsearch et règle Grafana-managed |
 
-Ce pack intègre les objectifs de l’atelier 11 — parsers, alias, CSV, conversions et erreurs — et le fil rouge normal/incident/recovery de l’atelier 13. Il remplace leurs dépendances aux sources A09/A11 par des sources et une collecte dédiées. [file:178][file:164]
+Ce pack intègre les objectifs de l’atelier 11 — parsers, alias, CSV, conversions et erreurs — et le fil rouge normal/incident/recovery de l’atelier 13. Il remplace leurs dépendances aux sources A09/A11 par des sources et une collecte dédiées. 
 
 ### 1.1 Ce qui est autonome et ce qui ne l’est pas
 
@@ -78,7 +78,7 @@ Aucune latence HTTP ni position géographique réelle n’est ajoutée. Le temps
 | JSON | `job="atelier13bis", format="json"` |
 | logfmt | `job="atelier13bis", format="logfmt"` |
 
-`source_dataset`, `phase`, `accepted`, `status`, `title`, `run_id` et `event_id` restent dans les lignes : on les extrait à la requête. On ne crée pas un label de stockage par film, IP ou événement. Un parser LogQL ne réécrit pas rétroactivement l’index. [web:188]
+`source_dataset`, `phase`, `accepted`, `status`, `title`, `run_id` et `event_id` restent dans les lignes : on les extrait à la requête. On ne crée pas un label de stockage par film, IP ou événement. Un parser LogQL ne réécrit pas rétroactivement l’index. 
 
 ## 3. Vérifier l’infrastructure avant de créer des données
 
@@ -169,8 +169,7 @@ Le script lit les originaux sans les modifier. Il conserve les lignes Apache dan
 | C_MISSING | INFO | absent | absent | absent | Champ manquant, message mentionnant ERROR |
 | C_NEGATIVE | ERROR | -5 | -5ms | 1KB | Convertible mais incohérent pour une durée positive |
 
-Les contrôles sont étiquetés `synthetic=true`. Une recherche textuelle d’ERROR et une égalité sur le champ `level` ne répondront pas à la même question. Le JSON valide n’assure ni champ complet, ni valeur convertible, ni sens métier correct. [file:178]
-
+Les contrôles sont étiquetés `synthetic=true`. Une recherche textuelle d’ERROR et une égalité sur le champ `level` ne répondront pas à la même question. Le JSON valide n’assure ni champ complet, ni valeur convertible, ni sens métier correct. 
 ## 5. Charger les fichiers dans Loki avec une collecte dédiée
 
 ### 5.1 Pourquoi un service distinct ?
@@ -189,7 +188,7 @@ Ouvrir `config-atelier13bis.alloy`. Repérer :
 4. `forward_to=[loki.write.a13bis.receiver]`.
 5. L’unique composant `loki.write "a13bis"` avec l’URL `/loki/api/v1/push`.
 
-Aucun parser d’ingestion et aucun `stage.timestamp` n’est utilisé : le but est de parser dans LogQL. Les dates Apache de référence restent du texte ; le timestamp Loki est l’heure de collecte. Cela évite aussi de soumettre involontairement un vieux timestamp source aux limites de Loki. `loki.source.file` lit les lignes et les transmet au writer configuré. [web:190]
+Aucun parser d’ingestion et aucun `stage.timestamp` n’est utilisé : le but est de parser dans LogQL. Les dates Apache de référence restent du texte ; le timestamp Loki est l’heure de collecte. Cela évite aussi de soumettre involontairement un vieux timestamp source aux limites de Loki. `loki.source.file` lit les lignes et les transmet au writer configuré. 
 
 ### 5.3 Installer la collecte
 
@@ -237,7 +236,7 @@ Ne pas remplacer le lot par une nouvelle normalisation parce que la collecte pre
 | incident | 200, 200, 503, 503, 404 | 5 attendues, 4 tentées, 2 validées, 2 rejetées, 1 manquante avant lecture | 600 s sur les 4 records movies |
 | recovery | 5 sondes HTTP 200 | 5 attendues, 5 tentées et validées | 2 s |
 
-Les rejets sont `title_missing` et `duplicate_movie_id`. La phase recovery ne rattrape pas les anomalies précédentes. Les 503 access ne sont pas automatiquement la cause des rejets de catalogue : le scénario les place dans une même phase pour apprendre à distinguer les signaux. [file:165]
+Les rejets sont `title_missing` et `duplicate_movie_id`. La phase recovery ne rattrape pas les anomalies précédentes. Les 503 access ne sont pas automatiquement la cause des rejets de catalogue : le scénario les place dans une même phase pour apprendre à distinguer les signaux. 
 
 ### 6.2 Exécuter un seul nouveau run
 
@@ -353,7 +352,7 @@ Remplacer le texte de la requête A par le bloc suivant, dans le guide personnal
 5. Exécuter de nouveau ; attendre quatre records.
 6. Développer chacun pour lire `accepted`, `quality_reason`, `batch_id`, `event_id`, `event_time` et `source_delay_seconds`.
 
-Loki renvoie les lignes et les champs extraits ; Grafana Explore permet de raffiner une requête avant de l’utiliser dans un panneau. [web:191]
+Loki renvoie les lignes et les champs extraits ; Grafana Explore permet de raffiner une requête avant de l’utiliser dans un panneau. 
 
 ## 8. Parcours Explore complet : apprendre avant de dessiner
 
@@ -378,7 +377,7 @@ Ouvrir le guide personnalisé `GUIDE_60_REQUETES_EXPLORE.md`. Chaque fiche préc
 6. Exécuter E22 : C_NEGATIVE est convertible mais incohérent pour le besoin de durée positive.
 7. Exécuter E26 : mauvais parser sur un autre format, donc erreur de structure.
 
-Les erreurs ne sont pas toujours supprimées par Loki. Elles sont transmises dans `__error__`, et le filtre doit être placé après l’étape qui les crée, notamment après `unwrap`. [web:187][web:188]
+Les erreurs ne sont pas toujours supprimées par Loki. Elles sont transmises dans `__error__`, et le filtre doit être placé après l’étape qui les crée, notamment après `unwrap`. 
 
 ### 8.2 Avant les requêtes métriques
 
@@ -388,7 +387,7 @@ Les erreurs ne sont pas toujours supprimées par Loki. Elles sont transmises dan
 - `sum_over_time` sur `accepted_count` additionne les compteurs des résumés, pas les occurrences d’un mot.
 - Une fenêtre de 10 s évaluée tous les 10 s reste une construction de fenêtres ; ne pas sommer ses points pour reconstituer un total sans étudier les bornes et recouvrements.
 
-Les métriques sur lignes et les métriques sur valeurs dépliées par unwrap ne sont pas interchangeables. [web:186]
+Les métriques sur lignes et les métriques sur valeurs dépliées par unwrap ne sont pas interchangeables. 
 
 ## 9. Créer le tableau de bord et ses variables, clic par clic
 
