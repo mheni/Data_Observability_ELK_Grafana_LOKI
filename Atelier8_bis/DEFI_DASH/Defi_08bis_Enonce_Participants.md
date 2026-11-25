@@ -16,39 +16,38 @@ Version cible : Elasticsearch / Kibana 9.5.7, interface française.
 | Cartographie | Positions issues d’un enrichissement GeoIP réel des IP extraites |
 | Prérequis | Atelier 8 terminé, Python 3, git, curl, cluster accessible et droits adaptés |
 
-Le format suit l’atelier 8 joint : manipulations détaillées, interface française, type de graphique « Indicateur », validation des données et enregistrement explicite des panneaux. Les intitulés traduits autres que « Indicateur » sont des repères à confirmer sur le Space de formation ; ce document n’est pas un test de chaque écran 9.5.7. [file:122]
+Le format suit l’atelier 8 joint : manipulations détaillées, interface française, type de graphique « Indicateur », validation des données et enregistrement explicite des panneaux. Les intitulés traduits autres que « Indicateur » sont des repères à confirmer sur le Space de formation ; ce document n’est pas un test de chaque écran 9.5.7. 
 
 ### Pourquoi ce corpus ?
 
-OpenSSH fournit des messages d’authentification et de connexion avec des IP publiques, des utilisateurs, des ports et des types de messages variés. Le fichier consulté contient notamment des lignes `Failed password`, `Invalid user`, des messages PAM, des déconnexions et des résumés `message repeated`. Cela permet un tableau de bord différent du HTTP tout en réutilisant Bulk, Lens et Cartes. [web:139]
+OpenSSH fournit des messages d’authentification et de connexion avec des IP publiques, des utilisateurs, des ports et des types de messages variés. Le fichier consulté contient notamment des lignes `Failed password`, `Invalid user`, des messages PAM, des déconnexions et des résumés `message repeated`. Cela permet un tableau de bord différent du HTTP tout en réutilisant Bulk, Lens et Cartes. 
 
-Attention : ces logs ne contiennent pas de coordonnées natives. La géolocalisation est ajoutée par GeoIP. Nous choisissons donc un corpus géolocalisable, pas un fichier prétendument déjà muni de latitude/longitude. Le jeu Apache de Loghub est présenté comme un journal d’erreurs, et non comme l’access log de l’atelier 8 : on ne lui attribue pas automatiquement les mêmes champs. [web:125][web:139]
+Attention : ces logs ne contiennent pas de coordonnées natives. La géolocalisation est ajoutée par GeoIP. Nous choisissons donc un corpus géolocalisable, pas un fichier prétendument déjà muni de latitude/longitude. Le jeu Apache de Loghub est présenté comme un journal d’erreurs, et non comme l’access log de l’atelier 8 : on ne lui attribue pas automatiquement les mêmes champs. 
 
 ## 2. Points de vigilance avant de distribuer le défi
 
 ### 2.1 Les dépendances obligatoires pour une vraie carte
 
-Le formateur doit valider avant la séance :
+Valider avant de commencer :
 
 - Téléchargement de l’échantillon OpenSSH ou copie locale autorisée.
 - Fonctionnement du pipeline GeoIP sur des IP réellement présentes dans cet échantillon.
 - Au moins un document avec `source_geo.location` après simulation et après import ; plusieurs positions sont préférables pour enseigner les regroupements.
 - Fonctionnement de Cartes et accès au fond cartographique autorisé.
-- Droits de lecture/création d’index, gestion du pipeline pour le formateur, vues de données, visualisations et tableaux de bord.
+- Droits de lecture/création d’index, gestion du pipeline, vues de données, visualisations et tableaux de bord.
 
-Le processeur GeoIP s’appuie sur une base de géolocalisation ; sa création peut déclencher le téléchargement de la base. Ce téléchargement n’est ni immédiat ni garanti dans un réseau filtré. Une IP publique ne garantit pas non plus une coordonnée disponible. [web:126]
+Le processeur GeoIP s’appuie sur une base de géolocalisation ; sa création peut déclencher le téléchargement de la base. Ce téléchargement n’est ni immédiat ni garanti dans un réseau filtré. Une IP publique ne garantit pas non plus une coordonnée disponible.
 
-Si la VM est isolée, utiliser le cache de véritables résultats GeoIP exporté par le formateur selon la section 18. Le pack ne contient pas de cache géographique réel préfabriqué et ne prétend pas embarquer une base GeoIP. Sans base opérationnelle ni cache réel préparé, le défi cartographique ne peut pas être validé : le reporter plutôt que créer des villes fictives.
 
 ### 2.2 Licence et confidentialité
 
-Loghub indique une disponibilité pour la recherche ou le travail académique, avec attribution au dépôt, citation du travail Loghub lorsque pertinente et conservation de la notice dans les copies. Avant un usage commercial ou une redistribution dans une formation payante, vérifier les conditions applicables ; ce document n’accorde pas de droits supplémentaires. Les logs peuvent contenir des IP et des noms d’utilisateurs. Ne pas contacter, scanner ou tester les serveurs correspondant à ces adresses. [web:141]
+Loghub indique une disponibilité pour la recherche ou le travail académique, avec attribution au dépôt, citation du travail Loghub lorsque pertinente et conservation de la notice dans les copies. Avant un usage commercial ou une redistribution dans une formation payante, vérifier les conditions applicables ; ce document n’accorde pas de droits supplémentaires. Les logs peuvent contenir des IP et des noms d’utilisateurs. Ne pas contacter, scanner ou tester les serveurs correspondant à ces adresses. 
 
 Le pack pédagogique ne redistribue pas l’échantillon complet ni une base GeoIP. Il fournit les scripts et le chemin d’acquisition. Préparer une copie locale autorisée si l’accès GitHub est bloqué pendant la formation.
 
 ### 2.3 Dates incomplètes et interprétation
 
-Les lignes consultées commencent par exemple par `Dec 10 06:55:46` : l’année et le fuseau ne sont pas indiqués. Le convertisseur impose une convention explicite : année 2000 et décalage UTC +0000. Ce ne sont pas des métadonnées historiques prouvées. Elles servent à créer un axe temporel reproductible et sont inscrites dans `timestamp_policy`. [web:139]
+Les lignes consultées commencent par exemple par `Dec 10 06:55:46` : l’année et le fuseau ne sont pas indiqués. Le convertisseur impose une convention explicite : année 2000 et décalage UTC +0000. Ce ne sont pas des métadonnées historiques prouvées. Elles servent à créer un axe temporel reproductible et sont inscrites dans `timestamp_policy`. 
 
 Ne pas réhorodater silencieusement à aujourd’hui. Ne pas inventer une heure différente par numéro de ligne. Pour cet échantillon, nous positionnons les mois/jours/heures tels qu’ils apparaissent sous la convention choisie ; le script ne déduit pas un changement d’année. Si un autre corpus traverse décembre/janvier, définir et documenter une nouvelle politique avant l’import.
 
@@ -62,7 +61,7 @@ Ne pas réhorodater silencieusement à aujourd’hui. Ne pas inventer une heure 
 - Le taux d’échec porte donc sur les enregistrements canoniques reconnus, pas sur toutes les tentatives réelles du serveur.
 - Une géolocalisation actuelle d’une IP ancienne n’établit pas sa localisation au moment du log, ni celle d’une personne.
 
-Ces règles évitent les doubles comptages et les interprétations abusives des messages réellement visibles dans l’échantillon. [web:139]
+Ces règles évitent les doubles comptages et les interprétations abusives des messages réellement visibles dans l’échantillon. 
 
 ---
 
