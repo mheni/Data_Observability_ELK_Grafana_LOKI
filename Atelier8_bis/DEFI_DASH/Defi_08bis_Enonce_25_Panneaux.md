@@ -2,10 +2,6 @@
 
 Cible : Kibana 9.5.7 en français. Le type de valeur unique s’appelle « Indicateur ».
 
-## Préparation
-
-Réutiliser le premier pack du défi OpenSSH Loghub : scripts, mapping, pipeline et fichier OpenSSH_2k.log acquis selon sa notice. Ne pas changer le schéma pour remplir les graphiques. Les coordonnées sont issues d’un enrichissement GeoIP réel ou d’un cache réel préparé par le formateur, jamais de villes inventées.
-
 ## Mission
 
 Indexer les logs par la commande Bulk du pack, valider chaque item, puis construire les 25 panneaux suivants. Répondre à une question différente par panneau, conserver les documents bruts et expliciter les limites de chaque taux et de la carte. Le corrigé détaillé joint explique chaque construction jusqu’à son enregistrement.
