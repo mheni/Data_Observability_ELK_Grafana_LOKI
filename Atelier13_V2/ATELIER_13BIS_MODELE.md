@@ -1,6 +1,5 @@
 # Atelier 13 bis — Corpus access complet : Loki, Explore et dashboard Grafana guidé
 
-Révision des deux supports fournis : le fichier `access_log_actualise` remplace les cinq références Apache comme source principale. Les requêtes, résultats attendus, variables et panneaux ont été réécrits ; il ne s’agit pas d’un simple remplacement de `A13B_SEED`. Les anciens documents limitaient la préparation à cinq références puis sélectionnaient le run synthétique dans les panneaux. [file:228][file:229]
 
 ## 0. Vous avez déjà commencé : reprendre sans réimporter
 
@@ -17,11 +16,6 @@ python3 analyser_access13bis.py --source sources13bis/access_log \
 cat preparation13bis.json
 ```
 
-Si la sortie existe déjà, choisir un autre nom ; ne pas l’écraser sans la lire.
-
-5. Vérifier que `access` dans `preparation13bis.json` correspond bien au fichier complet. Pour le fichier joint analysé : 102 972. Si le manifeste indique encore 5, arrêter : le bon fichier a été copié trop tard ou une autre normalisation est sélectionnée. Ne pas remplacer en place un fichier déjà suivi par Alloy ; faire préparer une nouvelle source/version avec le formateur.
-6. Remplacer l’ancien `verifier_normalisation13bis.py` par la version incluse dans cette révision, puis lancer :
-
 ```bash
 export LOKI_URL='http://127.0.0.1:3100'
 python3 verifier_normalisation13bis.py \
@@ -30,7 +24,7 @@ python3 verifier_normalisation13bis.py \
   --output reference-normalisation13bis-corpus.json
 ```
 
-Ce vérificateur utilise des agrégations côté Loki au lieu de télécharger 2000 lignes. Il contrôle les volumes total et access séparément dans JSON et logfmt. Il ne prétend plus vérifier chaque ID en ligne. Une perte et un doublon peuvent se compenser : égalité des comptes n’est pas preuve d’identité événement par événement. [web:186]
+Ce vérificateur utilise des agrégations côté Loki au lieu de télécharger 2000 lignes. Il contrôle les volumes total et access séparément dans JSON et logfmt. Il ne prétend plus vérifier chaque ID en ligne. Une perte et un doublon peuvent se compenser : égalité des comptes n’est pas preuve d’identité événement par événement.
 
 7. Après succès, générer les documents et expressions de la séance :
 
