@@ -1,0 +1,41 @@
+{
+  "scope": "Revision des documents attaches pour le corpus access complet, et corrections des outils associes",
+  "source": {
+    "filename": "access_log_actualise",
+    "sha256": "09693e55a8bcb1dedd3659c23833aa06a4ad2c8fb5f46b7fd2d9b93ee941c815",
+    "nonempty_lines": 102972,
+    "full_file_analyzed_locally": true,
+    "apache_prefix_recognized": 102972,
+    "known_bytes": 67987,
+    "missing_bytes": 34985,
+    "method_missing": 267
+  },
+  "changes": {
+    "old_synthetic_run_removed_from_primary_queries": true,
+    "new_explore_queries": 60,
+    "new_dashboard_panels": 24,
+    "log_limit_in_display_only": 500,
+    "full_population_bins": true,
+    "sample_histogram_heatmap_explicit": true,
+    "new_verifier_method": "server side aggregate counts, not event identity"
+  },
+  "local_tests": {
+    "new_preparer_full_source_copy_sha_matches": true,
+    "normalization_representative_input_rows": 20,
+    "source_analysis_script_matches_computed_counts": true,
+    "python_syntax": true,
+    "json_parsing": true,
+    "logql_parentheses_static_check": true,
+    "mock_count_verifier_success": true,
+    "mock_count_verifier_surplus_rejected": true,
+    "support_personalization": true,
+    "dashboard_json_generation": true
+  },
+  "not_performed": {
+    "loki_query_execution": true,
+    "logql_server_compilation": true,
+    "alloy_installation_or_new_ingestion": true,
+    "grafana_ui_import_or_click_validation": true,
+    "all_ids_checked_in_live_loki": true
+  }
+}
