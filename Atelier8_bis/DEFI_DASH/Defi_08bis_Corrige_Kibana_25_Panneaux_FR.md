@@ -4,7 +4,7 @@ Version cible : Kibana 9.5.7 en français. Suite du défi Loghub OpenSSH et de l
 
 ## 1. Ce que remplace ce document
 
-Ce corrigé remplace la partie Kibana du premier corrigé du défi OpenSSH : préparation de la vue de données, création des graphiques, cartes, contrôles et assemblage. Il ne modifie ni le corpus, ni le mapping, ni les scripts du pack initial. La reprise de la chaîne Bulk est fournie en section 3 pour éviter une dépendance implicite.
+Ce corrigé pour la partie Kibana du défi OpenSSH : préparation de la vue de données, création des graphiques, cartes, contrôles et assemblage. Il ne modifie ni le corpus, ni le mapping, ni les scripts du pack initial. La reprise de la chaîne Bulk est fournie en section 3 pour éviter une dépendance implicite.
 
 Chaque visualisation a son parcours complet, sans renvoi à une procédure commune d’ouverture ou d’enregistrement. Le type de graphique de valeur unique se nomme « Indicateur », conformément à votre interface. Les autres libellés français sont des repères fonctionnels : ils ne sont pas présentés comme une validation de chaque écran de votre instance.
 
@@ -17,11 +17,11 @@ Chaque visualisation a son parcours complet, sans renvoi à une procédure commu
 - Formule : texte à coller dans l’onglet « Formule » d’un calcul, jamais dans la barre KQL.
 - Les noms `[D08B] ...`, les champs et les formules doivent être copiés sans traduction.
 
-Ce niveau de guidage reprend le principe du support de l’atelier 8 fourni : une manipulation suivie jusqu’à l’enregistrement, avec un contrôle du résultat. [file:122]
+Ce niveau de guidage reprend le principe du support de l’atelier 8 fourni : une manipulation suivie jusqu’à l’enregistrement, avec un contrôle du résultat. 
 
 ### Durée réaliste
 
-Un débutant ne construit pas 25 panneaux en une heure. Prévoir deux demi-journées pour tout réaliser avec les explications, ou répartir les panneaux entre binômes. Pour un socle de demi-journée, réaliser P01 à P06, P09, P12, P15, P17, P20, P23 et P25 ; utiliser les autres comme approfondissements. Les cartes P21/P22 sont des variantes de lecture du même corpus, pas de nouvelles sources.
+Pour un socle de demi-journée, réaliser P01 à P06, P09, P12, P15, P17, P20, P23 et P25 ; utiliser les autres comme approfondissements. Les cartes P21/P22 sont des variantes de lecture du même corpus, pas de nouvelles sources.
 
 ## 2. Tableau de bord cible : 25 panneaux
 
@@ -53,7 +53,7 @@ Un débutant ne construit pas 25 panneaux en une heure. Prévoir deux demi-journ
 | P24 | Détail des lignes non localisées | Session Découvrir | Comprendre la couverture |
 | P25 | Contrat de lecture | Texte Markdown | Source, définitions et limites |
 
-Les tableaux Lens permettent de combiner regroupements, comptages et colonnes de formules. La matrice Lens et la carte de densité géographique sont deux représentations distinctes. [web:151][web:155][web:153]
+Les tableaux Lens permettent de combiner regroupements, comptages et colonnes de formules. La matrice Lens et la carte de densité géographique sont deux représentations distinctes.
 
 ## 3. Reprendre les données du pack initial sans repartir dans une installation
 
@@ -783,7 +783,7 @@ La somme du top peut être inférieure à G, à cause de la limite de dix valeur
 
 ## 9. Deux tableaux analytiques
 
-Les valeurs des colonnes sont des calculs ; les catégories sont définies dans la zone des lignes. Déposer un champ n’assure pas automatiquement le calcul souhaité : ouvrir chaque dimension pour vérifier sa fonction. [web:151]
+Les valeurs des colonnes sont des calculs ; les catégories sont définies dans la zone des lignes. Déposer un champ n’assure pas automatiquement le calcul souhaité : ouvrir chaque dimension pour vérifier sa fonction.
 
 ### 9.1 P15 — Analyse par IP — volume et taux canonique
 
@@ -986,7 +986,7 @@ But : visualiser les ports sources extraits des lignes canoniques. Il ne s’agi
 
 ## 11. Trois cartes géographiques complètes
 
-Les trois cartes utilisent le même `source_geo.location` et la même vue de données que les autres panneaux. Ce sont trois objets enregistrés séparément, pas trois sources de données ni trois couches superposées dans un unique panneau. Cela permet de comparer une lecture documentaire, une agrégation spatiale et une densité. Cartes permet ces représentations et leur intégration au tableau de bord. [web:153]
+Les trois cartes utilisent le même `source_geo.location` et la même vue de données que les autres panneaux. Ce sont trois objets enregistrés séparément, pas trois sources de données ni trois couches superposées dans un unique panneau. Cela permet de comparer une lecture documentaire, une agrégation spatiale et une densité. Cartes permet ces représentations et leur intégration au tableau de bord. 
 
 ### 11.1 Vérification obligatoire avant de tracer
 
@@ -1095,7 +1095,7 @@ Si la couche de regroupements n’est pas proposée dans ce déploiement, ne pas
 6. Placer ce panneau à côté ou sous P20 et agrandir sa zone.
 7. Enregistrer le tableau de bord.
 
-Contrôle : les symboles représentent des volumes agrégés de documents et changent avec le zoom ; ils ne désignent ni une IP unique ni un nombre de personnes. Les agrégations spatiales sous-jacentes regroupent les documents dans une grille. [web:153]
+Contrôle : les symboles représentent des volumes agrégés de documents et changent avec le zoom ; ils ne désignent ni une IP unique ni un nombre de personnes. Les agrégations spatiales sous-jacentes regroupent les documents dans une grille. 
 
 ### 11.4 P22 — Carte de densité des échecs géolocalisés
 
@@ -1138,7 +1138,7 @@ Dans le fichier de contrôle, lire `aggregations.located_failures.doc_count`. Si
 6. Ajouter un panneau depuis la bibliothèque, rechercher `P22` et cliquer la carte.
 7. Fermer le volet, agrandir le panneau puis enregistrer le tableau de bord.
 
-Contrôle : la couche est bien géographique. Elle ne contient pas les axes temps/type de P17 ; les deux « cartes thermiques » ne mesurent pas la même chose. [web:155][web:153]
+Contrôle : la couche est bien géographique. Elle ne contient pas les axes temps/type de P17 ; les deux « cartes thermiques » ne mesurent pas la même chose. [web:155]
 
 ### 11.5 Géolocalisation et filtre de temps : limites à afficher
 
@@ -1415,4 +1415,4 @@ La quantité seule n’est pas l’objectif : un panneau sans donnée réelle ni
 
 Ce document enrichit le parcours de visualisation en conservant le schéma du premier pack et les préférences d’interface de l’atelier 8. Le JSON de contrôle a été vérifié syntaxiquement, de même que la cohérence des noms de champs et la liste des 25 panneaux. Aucun chiffre de production n’est inventé : ils sont à relever sur le corpus effectivement importé.
 
-Les opérations Elasticsearch, le service GeoIP et les clics exacts de votre instance Kibana 9.5.7 n’ont pas été exécutés pendant cette rédaction. Les fonctions de tableaux, indicateurs, cartes thermiques, cartes multicouches et filtres sont appuyées sur la documentation ; les traductions non confirmées sont décrites aussi par leur rôle fonctionnel. [web:151][web:154][web:155][web:153][web:156]
+Les opérations Elasticsearch, le service GeoIP et les clics exacts de votre instance Kibana 9.5.7 n’ont pas été exécutés pendant cette rédaction. Les fonctions de tableaux, indicateurs, cartes thermiques, cartes multicouches et filtres sont appuyées sur la documentation ; 
