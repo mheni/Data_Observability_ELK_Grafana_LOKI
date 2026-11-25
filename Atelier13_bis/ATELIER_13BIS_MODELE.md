@@ -124,7 +124,31 @@ python3 --version
 Ne pas créer ensuite un nouveau dossier vide et y lancer les commandes sans copier les fichiers.
 
 ### 4.2 Générer les références autonomes
+```bash
+python3 - <<'PY'
+import json
+from pathlib import Path
 
+dossier = Path("sources13bis")
+manifeste = dossier / "sources-manifest.json"
+m = json.loads(manifeste.read_text(encoding="utf-8"))
+
+with (dossier / "access_log").open(encoding="utf-8") as f:
+    m["access"] = sum(1 for ligne in f if ligne.strip())
+
+m["raw_marker"] = ""
+m["access_source"] = "access_log_actualise"
+m["provenance"] = (
+    "Access : fichier fourni par le participant. "
+    "Movies : cinq références synthétiques de démonstration."
+)
+
+manifeste.write_text(
+    json.dumps(m, ensure_ascii=False, indent=2) + "\n",
+    encoding="utf-8"
+)
+PY
+```
 ```bash
 python3 preparer_sources13bis.py --output-dir sources13bis
 cat sources13bis/sources-manifest.json
