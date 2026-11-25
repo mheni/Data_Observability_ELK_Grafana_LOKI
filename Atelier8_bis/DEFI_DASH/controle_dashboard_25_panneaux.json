@@ -1,0 +1,220 @@
+{
+  "size": 0,
+  "track_total_hits": true,
+  "aggs": {
+    "first_event": {
+      "min": {
+        "field": "@timestamp"
+      }
+    },
+    "last_event": {
+      "max": {
+        "field": "@timestamp"
+      }
+    },
+    "auth_records": {
+      "filter": {
+        "term": {
+          "auth_record": true
+        }
+      }
+    },
+    "failures": {
+      "filter": {
+        "term": {
+          "auth_outcome": "failure"
+        }
+      }
+    },
+    "successes": {
+      "filter": {
+        "term": {
+          "auth_outcome": "success"
+        }
+      }
+    },
+    "with_ip": {
+      "filter": {
+        "exists": {
+          "field": "source_ip"
+        }
+      }
+    },
+    "located": {
+      "filter": {
+        "exists": {
+          "field": "source_geo.location"
+        }
+      }
+    },
+    "located_failures": {
+      "filter": {
+        "bool": {
+          "filter": [
+            {
+              "term": {
+                "auth_outcome": "failure"
+              }
+            },
+            {
+              "exists": {
+                "field": "source_geo.location"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "without_ip": {
+      "filter": {
+        "bool": {
+          "must_not": [
+            {
+              "exists": {
+                "field": "source_ip"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ip_without_geo": {
+      "filter": {
+        "bool": {
+          "filter": [
+            {
+              "exists": {
+                "field": "source_ip"
+              }
+            }
+          ],
+          "must_not": [
+            {
+              "exists": {
+                "field": "source_geo.location"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "unique_ips": {
+      "cardinality": {
+        "field": "source_ip",
+        "precision_threshold": 3000
+      }
+    },
+    "missing_date": {
+      "missing": {
+        "field": "@timestamp"
+      }
+    },
+    "event_types": {
+      "terms": {
+        "field": "event_type",
+        "size": 30
+      }
+    },
+    "countries": {
+      "terms": {
+        "field": "source_geo.country_name",
+        "size": 300
+      }
+    },
+    "geo_sources": {
+      "terms": {
+        "field": "geo_source",
+        "size": 10
+      }
+    },
+    "geo_status": {
+      "terms": {
+        "field": "geo_status",
+        "size": 10
+      }
+    },
+    "geo_tags": {
+      "terms": {
+        "field": "tags",
+        "size": 30
+      }
+    },
+    "top_ips_failures": {
+      "filter": {
+        "term": {
+          "auth_outcome": "failure"
+        }
+      },
+      "aggs": {
+        "ips": {
+          "terms": {
+            "field": "source_ip",
+            "size": 10
+          }
+        }
+      }
+    },
+    "top_users_failures": {
+      "filter": {
+        "term": {
+          "auth_outcome": "failure"
+        }
+      },
+      "aggs": {
+        "users": {
+          "terms": {
+            "field": "user_name",
+            "size": 10
+          }
+        }
+      }
+    },
+    "source_ports_auth": {
+      "filter": {
+        "bool": {
+          "filter": [
+            {
+              "term": {
+                "auth_record": true
+              }
+            },
+            {
+              "exists": {
+                "field": "source_port"
+              }
+            }
+          ]
+        }
+      },
+      "aggs": {
+        "ranges": {
+          "range": {
+            "field": "source_port",
+            "ranges": [
+              {
+                "key": "0-1023",
+                "from": 0,
+                "to": 1024
+              },
+              {
+                "key": "1024-32767",
+                "from": 1024,
+                "to": 32768
+              },
+              {
+                "key": "32768-49151",
+                "from": 32768,
+                "to": 49152
+              },
+              {
+                "key": "49152-65535",
+                "from": 49152,
+                "to": 65536
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
