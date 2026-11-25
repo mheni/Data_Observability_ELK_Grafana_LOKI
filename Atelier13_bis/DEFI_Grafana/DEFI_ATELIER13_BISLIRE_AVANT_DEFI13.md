@@ -5,7 +5,7 @@
 | Dossier | Public | Contenu |
 |---|---|---|
 | `participant/` | Stagiaires | Énoncé en deux parties, scripts d’indexation, modèles de configuration et grille de validation |
-| `formateur/` | Formateur | Corrigé de 25 panneaux, registre de requêtes, générateur de JSON de secours et grille de correction |
+| `Corrigé` | Formateur | Corrigé de 25 panneaux, registre de requêtes, générateur de JSON de secours et grille de correction |
 
 Ne pas donner le dossier `formateur/` avant la fin du défi.
 
