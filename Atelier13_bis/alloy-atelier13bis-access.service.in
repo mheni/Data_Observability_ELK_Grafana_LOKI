@@ -1,0 +1,14 @@
+[Unit]
+Description=Grafana Alloy - atelier 13 bis access
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=alloy
+Group=alloy
+ExecStart=__BINARY__ run --server.http.listen-addr=127.0.0.1:12347 --storage.path=/var/lib/alloy-atelier13bis-access /etc/alloy-atelier13bis-access/config.alloy
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

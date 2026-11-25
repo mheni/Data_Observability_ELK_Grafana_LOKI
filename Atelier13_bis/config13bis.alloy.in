@@ -1,0 +1,48 @@
+// Collecte du corpus access, un lot et trois representations.
+loki.source.file "access_raw" {
+  targets = [
+    {
+      __path__ = "/var/log/atelier13bis-access/access_log",
+      job = "atelier13bis_raw",
+      dataset = "access",
+      lot = "__LOT__",
+      format = "raw",
+      environment = "formation",
+      time_basis = "collection",
+    },
+  ]
+  tail_from_end = false
+  forward_to = [loki.write.formation.receiver]
+}
+loki.source.file "access_structured" {
+  targets = [
+    {
+      __path__ = "/var/log/atelier13bis-access/events.jsonl",
+      job = "atelier13bis",
+      format = "json",
+      lot = "__LOT__",
+      environment = "formation",
+      time_basis = "collection",
+    },
+    {
+      __path__ = "/var/log/atelier13bis-access/events.logfmt",
+      job = "atelier13bis",
+      format = "logfmt",
+      lot = "__LOT__",
+      environment = "formation",
+      time_basis = "collection",
+    },
+  ]
+  tail_from_end = false
+  forward_to = [loki.write.formation.receiver]
+}
+loki.write "formation" {
+  endpoint {
+    url = "http://127.0.0.1:3100/loki/api/v1/push"
+    batch_size = "256KiB"
+    retry_on_http_429 = true
+    min_backoff_period = "1s"
+    max_backoff_period = "30s"
+    max_backoff_retries = 0
+  }
+}

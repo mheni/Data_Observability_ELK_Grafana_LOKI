@@ -1,0 +1,542 @@
+[
+  {
+    "id": "E01",
+    "title": "Voir le flux Apache brut",
+    "query": "{job=\"atelier13bis_raw\",dataset=\"access\",format=\"raw\",lot=\"__LOT__\"}",
+    "expected": "102972 lignes dans la population ; la liste affichée est plafonnée",
+    "explanation": "Le lot est un label d’ingestion commun aux trois représentations. Le texte reste Apache.",
+    "kind": "logs",
+    "format": "raw"
+  },
+  {
+    "id": "E02",
+    "title": "Voir les lignes JSON",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}",
+    "expected": "102972 documents JSON, une copie par ligne source",
+    "explanation": "Les champs ne deviennent pas tous des labels d’ingestion : le parser agit pendant la recherche.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E03",
+    "title": "Voir les lignes logfmt",
+    "query": "{job=\"atelier13bis\",format=\"logfmt\",lot=\"__LOT__\"}",
+    "expected": "102972 lignes, même population sous un autre format",
+    "explanation": "Ne pas additionner les copies comme de nouveaux accès.",
+    "kind": "logs",
+    "format": "logfmt"
+  },
+  {
+    "id": "E04",
+    "title": "Chercher wp-login dans le texte",
+    "query": "{job=\"atelier13bis_raw\",dataset=\"access\",format=\"raw\",lot=\"__LOT__\"} |= \"/wp-login.php\"",
+    "expected": "Des lignes contenant le texte",
+    "explanation": "Ce motif peut être présent dans plusieurs parties d’une ligne ; le filtre de chemin exact vient ensuite.",
+    "kind": "logs",
+    "format": "raw"
+  },
+  {
+    "id": "E05",
+    "title": "Chercher POST dans le texte",
+    "query": "{job=\"atelier13bis_raw\",dataset=\"access\",format=\"raw\",lot=\"__LOT__\"} |= \"POST\"",
+    "expected": "Des lignes contenant POST",
+    "explanation": "Une sous-chaîne n’est pas encore une égalité sur method.",
+    "kind": "logs",
+    "format": "raw"
+  },
+  {
+    "id": "E06",
+    "title": "Regex textuelle GET ou HEAD",
+    "query": "{job=\"atelier13bis_raw\",dataset=\"access\",format=\"raw\",lot=\"__LOT__\"} |~ `\"(GET|HEAD) `",
+    "expected": "Des lignes présentes dans le fichier",
+    "explanation": "Le filtre regex cherche du texte. Inspecter ensuite les captures.",
+    "kind": "logs",
+    "format": "raw"
+  },
+  {
+    "id": "E07",
+    "title": "Extraire le début Apache par regexp",
+    "query": "{job=\"atelier13bis_raw\",dataset=\"access\",format=\"raw\",lot=\"__LOT__\"}\n| regexp `^(?P<v_ip>\\S+) \\S+ \\S+ \\[[^\\]]+\\] \"(?P<v_request>(?:\\\\.|[^\"\\\\])*)\" (?P<v_status>[0-9]{3}) (?P<v_size>[0-9]+|-)`\n| v_status!=\"\"",
+    "expected": "IP, requête, statut et taille extraits",
+    "explanation": "La capture size peut valoir le tiret. Cette extraction ne valide pas toute la syntaxe HTTP.",
+    "kind": "logs",
+    "format": "raw"
+  },
+  {
+    "id": "E08",
+    "title": "Extraire la requête entière par pattern",
+    "query": "{job=\"atelier13bis_raw\",dataset=\"access\",format=\"raw\",lot=\"__LOT__\"}\n| pattern `<v_ip> <_> <_> [<v_date>] \"<v_request>\" <v_status> <v_size> <_>`\n| v_status!=\"\"",
+    "expected": "Des lignes reconnues ; ouvrir une requête atypique pour discuter les limites",
+    "explanation": "Ne pas présumer que chaque request contient méthode/chemin/protocole séparables.",
+    "kind": "logs",
+    "format": "raw"
+  },
+  {
+    "id": "E09",
+    "title": "Parser les champs du JSON",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json src=\"source_dataset\", ok=\"parse_ok\"\n| __error__=\"\"",
+    "expected": "102972",
+    "explanation": "JSON bien formé n’est pas synonyme de requête HTTP complète. parse_ok décrit la reconnaissance du début Apache.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E10",
+    "title": "Réponses 200",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status=\"200\"",
+    "expected": "91074",
+    "explanation": "Égalité sur le statut extrait, pas sur un nombre trouvé dans le texte.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E11",
+    "title": "Réponses 404",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status=\"404\"",
+    "expected": "2298",
+    "explanation": "Égalité sur le statut extrait, pas sur un nombre trouvé dans le texte.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E12",
+    "title": "Réponses 500",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status=\"500\"",
+    "expected": "248",
+    "explanation": "Égalité sur le statut extrait, pas sur un nombre trouvé dans le texte.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E13",
+    "title": "Famille 4xx",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status!=\"\"\n| v_status >= 400\n| v_status < 500\n| __error__=\"\"",
+    "expected": "2670",
+    "explanation": "Le deuxième filtre d’erreur est après la comparaison numérique.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E14",
+    "title": "Famille 5xx",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status!=\"\"\n| v_status >= 500\n| v_status < 600\n| __error__=\"\"",
+    "expected": "248",
+    "explanation": "Le deuxième filtre d’erreur est après la comparaison numérique.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E15",
+    "title": "Méthode GET",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_method=\"method\"\n| __error__=\"\"\n| v_method=\"GET\"",
+    "expected": "61858",
+    "explanation": "Une méthode n’est disponible que si la requête a pu être découpée par le normaliseur.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E16",
+    "title": "Méthode POST",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_method=\"method\"\n| __error__=\"\"\n| v_method=\"POST\"",
+    "expected": "36988",
+    "explanation": "Une méthode n’est disponible que si la requête a pu être découpée par le normaliseur.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E17",
+    "title": "Méthode HEAD",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_method=\"method\"\n| __error__=\"\"\n| v_method=\"HEAD\"",
+    "expected": "635",
+    "explanation": "Une méthode n’est disponible que si la requête a pu être découpée par le normaliseur.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E18",
+    "title": "Méthode OPTIONS",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_method=\"method\"\n| __error__=\"\"\n| v_method=\"OPTIONS\"",
+    "expected": "3221",
+    "explanation": "Une méthode n’est disponible que si la requête a pu être découpée par le normaliseur.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E19",
+    "title": "Méthode non extraite",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_method=\"method\"\n| __error__=\"\"\n| v_method=\"\"",
+    "expected": "267",
+    "explanation": "Les lignes restent dans le total et conservent request_line/raw_line. Ne pas les supprimer silencieusement.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E20",
+    "title": "Tailles connues",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"",
+    "expected": "67987",
+    "explanation": "Le champ bytes est absent quand la source vaut le tiret.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E21",
+    "title": "Tailles absentes",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes=\"\"",
+    "expected": "34985",
+    "explanation": "Une absence ne vaut pas zéro octet et ne signifie pas un document perdu.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E22",
+    "title": "Taille au moins 100000 octets",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 100000\n| __error__=\"\"",
+    "expected": "1134",
+    "explanation": "La valeur source est en octets, pas en millisecondes.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E23",
+    "title": "Taille au moins 1000000 octets",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 1000000\n| __error__=\"\"",
+    "expected": "13",
+    "explanation": "La valeur source est en octets, pas en millisecondes.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E24",
+    "title": "Adresse exacte 54.210.20.202",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_ip=\"client_ip\"\n| __error__=\"\"\n| v_ip=\"54.210.20.202\"",
+    "expected": "34469",
+    "explanation": "Une IP n’est pas une personne. ::1 est la boucle locale, à ne pas géolocaliser.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E25",
+    "title": "Adresse exacte ::1",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_ip=\"client_ip\"\n| __error__=\"\"\n| v_ip=\"::1\"",
+    "expected": "3219",
+    "explanation": "Une IP n’est pas une personne. ::1 est la boucle locale, à ne pas géolocaliser.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E26",
+    "title": "Chemin exact /wp-login.php",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_path=\"path\"\n| __error__=\"\"\n| v_path=\"/wp-login.php\"",
+    "expected": "7902",
+    "explanation": "Les paramètres éventuels restent dans path. Cette présence seule ne prouve pas une attaque.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E27",
+    "title": "Chemin exact /xmlrpc.php",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_path=\"path\"\n| __error__=\"\"\n| v_path=\"/xmlrpc.php\"",
+    "expected": "5329",
+    "explanation": "Les paramètres éventuels restent dans path. Cette présence seule ne prouve pas une attaque.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E28",
+    "title": "Chemin exact /",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_path=\"path\"\n| __error__=\"\"\n| v_path=\"/\"",
+    "expected": "4019",
+    "explanation": "Les paramètres éventuels restent dans path. Cette présence seule ne prouve pas une attaque.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E29",
+    "title": "Chemin exact /robots.txt",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_path=\"path\"\n| __error__=\"\"\n| v_path=\"/robots.txt\"",
+    "expected": "1005",
+    "explanation": "Les paramètres éventuels restent dans path. Cette présence seule ne prouve pas une attaque.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E30",
+    "title": "Afficher la ligne Apache depuis le JSON",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json original=\"raw_line\"\n| __error__=\"\"\n| line_format `{{.original}}`",
+    "expected": "Les lignes affichées reprennent le texte source",
+    "explanation": "line_format modifie le résultat visible, pas le document conservé. Un parser JSON placé après ne reçoit plus le JSON initial.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E31",
+    "title": "Afficher méthode, statut et chemin",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_method=\"method\", v_status=\"status\", v_path=\"path\"\n| __error__=\"\"\n| v_method!=\"\"\n| line_format `{{.v_method}} {{.v_status}} {{.v_path}}`",
+    "expected": "102705",
+    "explanation": "La présentation exclut explicitement les 267 méthodes absentes ; le total général ne les exclut pas.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E32",
+    "title": "Filtrer la date écrite dans la source",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_date=\"apache_time\"\n| __error__=\"\"\n| v_date=~\"22/Nov/2026:18:5.*\"",
+    "expected": "87526",
+    "explanation": "Filtre de contenu, pas changement de l’horloge Loki. La période globale reste celle de collecte.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E33",
+    "title": "Objet imbriqué et alias",
+    "query": "{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json origin=\"metadata.origin\", body_service=\"service\"\n| __error__=\"\"",
+    "expected": "origin=atelier13bis_access ; body_service=web-formation",
+    "explanation": "Utiliser des alias explicites pour éviter de masquer une collision avec un label portant le même nom.",
+    "kind": "logs",
+    "format": "json"
+  },
+  {
+    "id": "E34",
+    "title": "Parser logfmt de façon ciblée",
+    "query": "{job=\"atelier13bis\",format=\"logfmt\",lot=\"__LOT__\"}\n| logfmt v_status=\"status\", v_method=\"method\"\n| __error__=\"\"",
+    "expected": "102972",
+    "explanation": "Les objets imbriqués JSON ne sont pas implicitement reconstruits dans le logfmt.",
+    "kind": "logs",
+    "format": "logfmt"
+  },
+  {
+    "id": "E35",
+    "title": "Méthode POST dans logfmt",
+    "query": "{job=\"atelier13bis\",format=\"logfmt\",lot=\"__LOT__\"}\n| logfmt v_method=\"method\"\n| __error__=\"\"\n| v_method=\"POST\"",
+    "expected": "36988",
+    "explanation": "Même compte que dans JSON si le lot complet est collecté.",
+    "kind": "logs",
+    "format": "logfmt"
+  },
+  {
+    "id": "E36",
+    "title": "Réponses 500 dans logfmt",
+    "query": "{job=\"atelier13bis\",format=\"logfmt\",lot=\"__LOT__\"}\n| logfmt v_status=\"status\"\n| __error__=\"\"\n| v_status=\"500\"",
+    "expected": "248",
+    "explanation": "Le parser change, pas les lignes métier représentées.",
+    "kind": "logs",
+    "format": "logfmt"
+  },
+  {
+    "id": "E37",
+    "title": "Compter tous les accès",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n[$__range]\n))",
+    "expected": "102972",
+    "explanation": "Compte backend, non limité au nombre de lignes affichées.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E38",
+    "title": "Compter les 2xx",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status!=\"\"\n| v_status >= 200\n| v_status < 300\n| __error__=\"\"\n[$__range]\n))",
+    "expected": "91145",
+    "explanation": "200 et 206 sont inclus.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E39",
+    "title": "Compter les 4xx",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status!=\"\"\n| v_status >= 400\n| v_status < 500\n| __error__=\"\"\n[$__range]\n))",
+    "expected": "2670",
+    "explanation": "Famille 400 à 499.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E40",
+    "title": "Compter les 5xx",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status!=\"\"\n| v_status >= 500\n| v_status < 600\n| __error__=\"\"\n[$__range]\n))",
+    "expected": "248",
+    "explanation": "Famille 500 à 599 ; le fichier contient des 500.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E41",
+    "title": "Part de 4xx",
+    "query": "((sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status!=\"\"\n| v_status >= 400\n| v_status < 500\n| __error__=\"\"\n[$__range]\n))) or (0 * (sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n[$__range]\n))))) / (sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n[$__range]\n)))",
+    "expected": "0,02592937886, soit 2,592937886 %",
+    "explanation": "Le dénominateur est tous les access logs du lot.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E42",
+    "title": "Part de 5xx",
+    "query": "((sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status!=\"\"\n| v_status >= 500\n| v_status < 600\n| __error__=\"\"\n[$__range]\n))) or (0 * (sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n[$__range]\n))))) / (sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n[$__range]\n)))",
+    "expected": "0,002408421707, soit 0,240842171 %",
+    "explanation": "Pas de filtre global 5xx sur le dénominateur.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E43",
+    "title": "Codes HTTP par valeur",
+    "query": "sum by (v_status) (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status!=\"\"\n[$__range]\n))",
+    "expected": "Onze séries ; voir le tableau des codes",
+    "explanation": "Extraire seulement le statut pour limiter la cardinalité.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E44",
+    "title": "Méthodes reconnues par valeur",
+    "query": "sum by (v_method) (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_method=\"method\"\n| __error__=\"\"\n| v_method!=\"\"\n[$__range]\n))",
+    "expected": "GET=61858 ; POST=36988 ; OPTIONS=3221 ; HEAD=635 ; PUT=3",
+    "explanation": "Les méthodes absentes ne sont pas inventées.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E45",
+    "title": "Somme des tailles connues",
+    "query": "sum(sum_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 0\n| __error__=\"\"\n| unwrap v_bytes\n| __error__=\"\"\n[$__range]\n))",
+    "expected": "1293498000 octets",
+    "explanation": "Somme des tailles de réponse, pas taille des fichiers Loki.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E46",
+    "title": "Moyenne des tailles connues",
+    "query": "(sum(sum_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 0\n| __error__=\"\"\n| unwrap v_bytes\n| __error__=\"\"\n[$__range]\n))) / (sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 0\n| __error__=\"\"\n[$__range]\n)))",
+    "expected": "19025,66667 octets",
+    "explanation": "Somme divisée par 67987 valeurs connues, pas moyenne de moyennes.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E47",
+    "title": "P95 global des tailles connues",
+    "query": "quantile_over_time(0.95, \n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 0\n| __error__=\"\"\n| unwrap v_bytes\n| __error__=\"\"\n[$__range]\n) by ()",
+    "expected": "Référence locale linéaire : 58043 octets",
+    "explanation": "Le by() est global, pas un maximum de P95 par IP. Comparer la convention Loki.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E48",
+    "title": "Maximum des tailles connues",
+    "query": "max(max_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 0\n| __error__=\"\"\n| unwrap v_bytes\n| __error__=\"\"\n[$__range]\n))",
+    "expected": "2017208 octets",
+    "explanation": "Ce maximum ne dépend pas de l’échantillon d’histogramme.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E49",
+    "title": "Compter les tailles absentes",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes=\"\"\n[$__range]\n))",
+    "expected": "34985",
+    "explanation": "Absent ne devient pas zéro.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E50",
+    "title": "Part de tailles connues",
+    "query": "(sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 0\n| __error__=\"\"\n[$__range]\n))) / (sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n[$__range]\n)))",
+    "expected": "0.6602474459",
+    "explanation": "Renseignement du champ, pas preuve de livraison.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E51",
+    "title": "Volume dans le temps de collecte",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n[1m]\n))",
+    "expected": "Un pic ou des fenêtres près du chargement",
+    "explanation": "Une fenêtre 1 min ne doit pas être présentée comme historique des requêtes source.",
+    "kind": "metric_range",
+    "format": "json"
+  },
+  {
+    "id": "E52",
+    "title": "Débit de collecte",
+    "query": "sum(rate(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n[1m]\n))",
+    "expected": "Valeurs en lignes par seconde",
+    "explanation": "Pas une latence, ni nécessairement le débit du serveur source.",
+    "kind": "metric_range",
+    "format": "json"
+  },
+  {
+    "id": "E53",
+    "title": "Comparer dix IP suivies",
+    "query": "sum by (v_ip) (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_ip=\"client_ip\"\n| __error__=\"\"\n| v_ip=~\"54\\\\.210\\\\.20\\\\.202|::1|148\\\\.251\\\\.21\\\\.227|81\\\\.22\\\\.242\\\\.55|46\\\\.101\\\\.48\\\\.46|104\\\\.236\\\\.254\\\\.104|199\\\\.21\\\\.99\\\\.207|192\\\\.187\\\\.98\\\\.42|148\\\\.251\\\\.184\\\\.139|104\\\\.154\\\\.198\\\\.228\"\n[$__range]\n))",
+    "expected": "54.210.20.202=34469 ; ::1=3219",
+    "explanation": "Liste bornée, choisie depuis l’analyse locale.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E54",
+    "title": "Comparer cinq chemins suivis",
+    "query": "sum by (v_path) (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_path=\"path\"\n| __error__=\"\"\n| v_path=~\"/wp\\\\-login\\\\.php|/xmlrpc\\\\.php|/|/feed/|/favicon\\\\.ico\"\n[$__range]\n))",
+    "expected": "7902 ; 5329 ; 4019 ; 2816 ; 1891",
+    "explanation": "Sélection explicite, pas top global recalculé sur 30610 chemins.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E55",
+    "title": "Classe de taille 1 à 999 octets",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 1\n| v_bytes < 1000\n| __error__=\"\"\n[$__range]\n))",
+    "expected": "16792",
+    "explanation": "Classe disjointe, les absences ne sont pas incluses.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E56",
+    "title": "Classe de taille au moins un million d’octets",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_bytes=\"bytes\"\n| __error__=\"\"\n| v_bytes!=\"\"\n| v_bytes >= 1000000\n| __error__=\"\"\n[$__range]\n))",
+    "expected": "13",
+    "explanation": "Un Mo décimal ici, pas un MiB.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E57",
+    "title": "Part des méthodes extraites",
+    "query": "(sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_method=\"method\"\n| __error__=\"\"\n| v_method!=\"\"\n[$__range]\n))) / (sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n[$__range]\n)))",
+    "expected": "0.9974070621",
+    "explanation": "Ne pas appeler cet indicateur taux de livraison.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E58",
+    "title": "Protocoles reconnus",
+    "query": "sum by (v_protocol) (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_protocol=\"protocol\"\n| __error__=\"\"\n| v_protocol!=\"\"\n[$__range]\n))",
+    "expected": "HTTP/1.1=93595 ; HTTP/1.0=9110",
+    "explanation": "267 lignes sans découpage complet restent dans le total.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E59",
+    "title": "Compter les méthodes absentes",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_method=\"method\"\n| __error__=\"\"\n| v_method=\"\"\n[$__range]\n))",
+    "expected": "267",
+    "explanation": "La conversion JSON est réussie, mais ce découpage est absent.",
+    "kind": "metric_instant",
+    "format": "json"
+  },
+  {
+    "id": "E60",
+    "title": "Compter toutes les erreurs 4xx et 5xx",
+    "query": "sum (count_over_time(\n{job=\"atelier13bis\",format=\"json\",lot=\"__LOT__\"}\n| json v_status=\"status\"\n| __error__=\"\"\n| v_status!=\"\"\n| v_status >= 400\n| v_status < 600\n| __error__=\"\"\n[$__range]\n))",
+    "expected": "2918",
+    "explanation": "Une erreur HTTP n’est pas un visiteur unique ni une cause racine établie.",
+    "kind": "metric_instant",
+    "format": "json"
+  }
+]

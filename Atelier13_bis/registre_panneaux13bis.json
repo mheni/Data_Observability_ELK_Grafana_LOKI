@@ -1,0 +1,222 @@
+[
+  {
+    "id": "P01",
+    "title": "Nombre de logs access",
+    "kind": "stat",
+    "key": "total",
+    "expected": "102 972",
+    "note": "Toutes les lignes JSON de ce lot, sans additionner les autres formats.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P02",
+    "title": "Réponses HTTP 2xx",
+    "kind": "stat",
+    "key": "http_2xx",
+    "expected": "91 145",
+    "note": "Inclut les réponses 200 et 206.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P03",
+    "title": "Réponses HTTP 4xx",
+    "kind": "stat",
+    "key": "http_4xx",
+    "expected": "2 670",
+    "note": "Erreurs HTTP côté requête, pas rejets d’un import de catalogue.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P04",
+    "title": "Réponses HTTP 5xx",
+    "kind": "stat",
+    "key": "http_5xx",
+    "expected": "248",
+    "note": "Dans ce fichier, le code de cette famille est 500.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P05",
+    "title": "Part de réponses 4xx",
+    "kind": "stat",
+    "key": "ratio_4xx",
+    "expected": "2,592937886 %",
+    "note": "Rapport sur tous les access logs du lot dans la période.",
+    "unit": "percentunit",
+    "legend": null
+  },
+  {
+    "id": "P06",
+    "title": "Part de réponses 5xx",
+    "kind": "stat",
+    "key": "ratio_5xx",
+    "expected": "0,240842171 %",
+    "note": "Le dénominateur ne doit pas être restreint globalement aux erreurs.",
+    "unit": "percentunit",
+    "legend": null
+  },
+  {
+    "id": "P07",
+    "title": "Volume dans le temps de collecte, fenêtre 1 min",
+    "kind": "timeseries",
+    "key": "timeline",
+    "expected": "Un pic ou plusieurs fenêtres de collecte",
+    "note": "Ne pas interpréter cette courbe comme la chronologie historique des requêtes du serveur.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P08",
+    "title": "Répartition par code HTTP",
+    "kind": "bargauge",
+    "key": "codes",
+    "expected": "200=91074 ; 206=71 ; 301=7833 ; 302=20 ; 304=1056 ; 400=29 ; 403=88 ; 404=2298 ; 405=3 ; 408=252 ; 500=248",
+    "note": "Onze codes réellement présents.",
+    "unit": "none",
+    "legend": "{{v_status}}"
+  },
+  {
+    "id": "P09",
+    "title": "Méthodes reconnues",
+    "kind": "bargauge",
+    "key": "methods",
+    "expected": "GET=61858 ; POST=36988 ; OPTIONS=3221 ; HEAD=635 ; PUT=3",
+    "note": "La somme vaut 102705 ; les 267 méthodes non extraites restent dans le total.",
+    "unit": "none",
+    "legend": "{{v_method}}"
+  },
+  {
+    "id": "P10",
+    "title": "Somme des tailles connues, en octets",
+    "kind": "stat",
+    "key": "bytes_sum",
+    "expected": "1 293 498 000 octets",
+    "note": "Ce n’est pas la taille de stockage des logs dans Loki.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P11",
+    "title": "Moyenne des tailles connues, en octets",
+    "kind": "stat",
+    "key": "bytes_mean",
+    "expected": "19 025,66667 octets",
+    "note": "Moyenne pondérée par les 67987 valeurs connues, pas par les 102972 lignes.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P12",
+    "title": "P95 global des tailles connues, en octets",
+    "kind": "stat",
+    "key": "bytes_p95",
+    "expected": "Référence locale linéaire : 58 043 octets",
+    "note": "Comparer la convention de quantile de Loki ; ce n’est pas une latence HTTP.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P13",
+    "title": "Taille maximale connue, en octets",
+    "kind": "stat",
+    "key": "bytes_max",
+    "expected": "2 017 208 octets",
+    "note": "Maximum calculé côté Loki, pas estimé sur un échantillon affiché.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P14",
+    "title": "Lignes sans taille renseignée",
+    "kind": "stat",
+    "key": "bytes_missing",
+    "expected": "34 985",
+    "note": "Le tiret Apache correspond à une absence de taille, pas à zéro octet.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P15",
+    "title": "Part des lignes avec taille connue",
+    "kind": "stat",
+    "key": "bytes_coverage",
+    "expected": "66.024745 %",
+    "note": "Renseignement du champ, pas indicateur de livraison du transport.",
+    "unit": "percentunit",
+    "legend": null
+  },
+  {
+    "id": "P16",
+    "title": "Dix IP suivies",
+    "kind": "bargauge",
+    "key": "ips",
+    "expected": "54.210.20.202=34469 ; ::1=3219 ; autres valeurs dans la référence",
+    "note": "Liste bornée documentée depuis l’analyse locale pour maîtriser le nombre de séries. Ce n’est pas une découverte exhaustive sur un autre fichier.",
+    "unit": "none",
+    "legend": "{{v_ip}}"
+  },
+  {
+    "id": "P17",
+    "title": "Cinq chemins suivis",
+    "kind": "bargauge",
+    "key": "paths",
+    "expected": "/wp-login.php=7902 ; /xmlrpc.php=5329 ; /=4019 ; /feed/=2816 ; /favicon.ico=1891",
+    "note": "Sélection explicite de chemins ; les paramètres éventuels font partie de path.",
+    "unit": "none",
+    "legend": "{{v_path}}"
+  },
+  {
+    "id": "P18",
+    "title": "Classes de taille sur toutes les valeurs connues",
+    "kind": "bins",
+    "key": null,
+    "expected": "16792 ; 21193 ; 28868 ; 1121 ; 13",
+    "note": "Cinq classes disjointes, somme 67987 ; leurs largeurs diffèrent, donc barres catégorielles.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P19",
+    "title": "Table des erreurs HTTP, extrait",
+    "kind": "table",
+    "key": "errors_logs",
+    "expected": "Population 2918 ; affichage limité à 500 lignes",
+    "note": "Une table d’investigation n’est pas un compteur exhaustif.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P20",
+    "title": "Histogramme des tailles, échantillon 500 max",
+    "kind": "histogram",
+    "key": "bytes_logs",
+    "expected": "Au plus 500 valeurs connues affichées",
+    "note": "Exercice de transformation côté navigateur. La distribution de population complète est P18.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P21",
+    "title": "Heatmap des tailles et de la collecte, échantillon",
+    "kind": "heatmap",
+    "key": "bytes_logs",
+    "expected": "Au plus 500 observations ; temps de collecte",
+    "note": "Un chargement bref peut occuper une seule colonne. Ce n’est pas un historique source reconstruit.",
+    "unit": "none",
+    "legend": null
+  },
+  {
+    "id": "P22",
+    "title": "Logs JSON détaillés, extrait",
+    "kind": "logs",
+    "key": "all_logs",
+    "expected": "Au plus 500 logs du lot choisi",
+    "note": "Développer raw_line et request_line pour lire la preuve source.",
+    "unit": "none",
+    "legend": null
+  }
+]
